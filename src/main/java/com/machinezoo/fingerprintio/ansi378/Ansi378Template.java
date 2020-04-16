@@ -143,7 +143,7 @@ public class Ansi378Template {
 		Validate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
 		for (Ansi378Fingerprint fp : fingerprints)
 			fp.validate(width, height);
-		if (fingerprints.size() != fingerprints.stream().mapToInt(fp -> fingerprintId(fp.position, fp.view)).distinct().count())
+		if (fingerprints.size() != fingerprints.stream().mapToInt(fp -> (fp.position.ordinal() << 16) + fp.view).distinct().count())
 			throw new TemplateFormatException("Every fingerprint must have a unique combination of finger position and view offset.");
 		fingerprints.stream()
 			.collect(groupingBy(fp -> fp.position))
@@ -155,8 +155,5 @@ public class Ansi378Template {
 						throw new TemplateFormatException("Fingerprints with the same finger position must be sorted by view number.");
 				}
 			});
-	}
-	private static int fingerprintId(Ansi378Position position, int view) {
-		return (position.ordinal() << 16) + view;
 	}
 }
