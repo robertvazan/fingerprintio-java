@@ -1,0 +1,350 @@
+{
+  "vendorId" : 66,
+  "subformat" : 17,
+  "sensorCertified" : false,
+  "sensorId" : 181,
+  "fingerprints" : [ {
+    "position" : "LEFT_INDEX",
+    "view" : 0,
+    "scanType" : "LIVE_PLAIN",
+    "quality" : 90,
+    "qualityVendorId" : 6,
+    "qualityAlgorithmId" : 55,
+    "width" : 512,
+    "height" : 512,
+    "resolutionX" : 197,
+    "resolutionY" : 197,
+    "minutiae" : [ {
+      "type" : "ENDING",
+      "positionX" : 100,
+      "positionY" : 14,
+      "angle" : 56,
+      "quality" : 90
+    }, {
+      "type" : "ENDING",
+      "positionX" : 164,
+      "positionY" : 17,
+      "angle" : 43,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 55,
+      "positionY" : 18,
+      "angle" : 11,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 74,
+      "positionY" : 22,
+      "angle" : 38,
+      "quality" : 60
+    }, {
+      "type" : "ENDING",
+      "positionX" : 112,
+      "positionY" : 22,
+      "angle" : 45,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 42,
+      "positionY" : 31,
+      "angle" : 22,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 147,
+      "positionY" : 35,
+      "angle" : 26,
+      "quality" : 90
+    }, {
+      "type" : "ENDING",
+      "positionX" : 88,
+      "positionY" : 38,
+      "angle" : 83,
+      "quality" : 40
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 43,
+      "positionY" : 42,
+      "angle" : 2,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 56,
+      "positionY" : 48,
+      "angle" : 17,
+      "quality" : 70
+    }, {
+      "type" : "ENDING",
+      "positionX" : 132,
+      "positionY" : 49,
+      "angle" : 36,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 71,
+      "positionY" : 50,
+      "angle" : 47,
+      "quality" : 80
+    }, {
+      "type" : "EITHER",
+      "positionX" : 95,
+      "positionY" : 51,
+      "angle" : 41,
+      "quality" : 90
+    }, {
+      "type" : "ENDING",
+      "positionX" : 112,
+      "positionY" : 53,
+      "angle" : 61,
+      "quality" : 50
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 135,
+      "positionY" : 58,
+      "angle" : 16,
+      "quality" : 80
+    }, {
+      "type" : "EITHER",
+      "positionX" : 41,
+      "positionY" : 60,
+      "angle" : 30,
+      "quality" : 70
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 67,
+      "positionY" : 62,
+      "angle" : 73,
+      "quality" : 90
+    }, {
+      "type" : "ENDING",
+      "positionX" : 91,
+      "positionY" : 63,
+      "angle" : 61,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 112,
+      "positionY" : 65,
+      "angle" : 17,
+      "quality" : 60
+    }, {
+      "type" : "ENDING",
+      "positionX" : 53,
+      "positionY" : 71,
+      "angle" : 23,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 104,
+      "positionY" : 74,
+      "angle" : 6,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 75,
+      "positionY" : 79,
+      "angle" : 11,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 48,
+      "positionY" : 80,
+      "angle" : 46,
+      "quality" : 90
+    }, {
+      "type" : "ENDING",
+      "positionX" : 130,
+      "positionY" : 89,
+      "angle" : 23,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 63,
+      "positionY" : 95,
+      "angle" : 63,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 47,
+      "positionY" : 108,
+      "angle" : 82,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 126,
+      "positionY" : 115,
+      "angle" : 86,
+      "quality" : 30
+    } ],
+    "counts" : null,
+    "coredelta" : null,
+    "extensions" : [ ]
+  }, {
+    "position" : "RIGHT_INDEX",
+    "view" : 0,
+    "scanType" : "LIVE_PLAIN",
+    "quality" : 70,
+    "qualityVendorId" : 66,
+    "qualityAlgorithmId" : 12,
+    "width" : 512,
+    "height" : 512,
+    "resolutionX" : 197,
+    "resolutionY" : 197,
+    "minutiae" : [ {
+      "type" : "ENDING",
+      "positionX" : 40,
+      "positionY" : 93,
+      "angle" : 0,
+      "quality" : 90
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 116,
+      "positionY" : 100,
+      "angle" : 0,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 82,
+      "positionY" : 95,
+      "angle" : 6,
+      "quality" : 70
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 140,
+      "positionY" : 113,
+      "angle" : 8,
+      "quality" : 70
+    }, {
+      "type" : "ENDING",
+      "positionX" : 122,
+      "positionY" : 135,
+      "angle" : 9,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 55,
+      "positionY" : 72,
+      "angle" : 11,
+      "quality" : 50
+    }, {
+      "type" : "ENDING",
+      "positionX" : 94,
+      "positionY" : 74,
+      "angle" : 12,
+      "quality" : 60
+    }, {
+      "type" : "ENDING",
+      "positionX" : 155,
+      "positionY" : 62,
+      "angle" : 21,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 42,
+      "positionY" : 64,
+      "angle" : 28,
+      "quality" : 70
+    }, {
+      "type" : "ENDING",
+      "positionX" : 155,
+      "positionY" : 85,
+      "angle" : 30,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 96,
+      "positionY" : 192,
+      "angle" : 31,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 114,
+      "positionY" : 86,
+      "angle" : 43,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 142,
+      "positionY" : 90,
+      "angle" : 45,
+      "quality" : 70
+    }, {
+      "type" : "ENDING",
+      "positionX" : 57,
+      "positionY" : 137,
+      "angle" : 50,
+      "quality" : 90
+    }, {
+      "type" : "ENDING",
+      "positionX" : 131,
+      "positionY" : 75,
+      "angle" : 55,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 45,
+      "positionY" : 113,
+      "angle" : 60,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 111,
+      "positionY" : 171,
+      "angle" : 65,
+      "quality" : 50
+    }, {
+      "type" : "ENDING",
+      "positionX" : 95,
+      "positionY" : 62,
+      "angle" : 75,
+      "quality" : 60
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 61,
+      "positionY" : 114,
+      "angle" : 100,
+      "quality" : 80
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 143,
+      "positionY" : 72,
+      "angle" : 125,
+      "quality" : 80
+    }, {
+      "type" : "ENDING",
+      "positionX" : 63,
+      "positionY" : 104,
+      "angle" : 150,
+      "quality" : 70
+    }, {
+      "type" : "BIFURCATION",
+      "positionX" : 125,
+      "positionY" : 73,
+      "angle" : 175,
+      "quality" : 40
+    } ],
+    "counts" : {
+      "type" : "QUADRANTS",
+      "edges" : [ {
+        "from" : 18,
+        "to" : 2,
+        "count" : 3
+      }, {
+        "from" : 18,
+        "to" : 7,
+        "count" : 1
+      }, {
+        "from" : 18,
+        "to" : 8,
+        "count" : 2
+      }, {
+        "from" : 18,
+        "to" : 10,
+        "count" : 5
+      } ]
+    },
+    "coredelta" : null,
+    "extensions" : [ ]
+  } ]
+}
