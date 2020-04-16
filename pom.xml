@@ -7,18 +7,42 @@
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
-	<name>fingerprintio-java</name>
-	<url>http://maven.apache.org</url>
+	<name>FingerprintIO</name>
+	<url>https://fingerprintio.machinezoo.com/</url>
+	<description>Implementation of fingerprint template formats published by ANSI and ISO.</description>
+
+	<licenses>
+		<license>
+			<name>The Apache License, Version 2.0</name>
+			<url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Robert Važan</name>
+			<email>robvcode@gmail.com</email>
+			<url>https://robert.machinezoo.com/</url>
+		</developer>
+	</developers>
+
+	<scm>
+		<connection>scm:git:https://bitbucket.org/robertvazan/fingerprintio-java</connection>
+		<developerConnection>scm:git:https://bitbucket.org/robertvazan/fingerprintio-java</developerConnection>
+		<url>https://bitbucket.org/robertvazan/fingerprintio-java</url>
+	</scm>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
 		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>3.8.1</version>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<version>5.6.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
