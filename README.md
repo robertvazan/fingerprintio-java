@@ -7,5 +7,5 @@ See [FingerprintIO homepage](https://fingerprintio.machinezoo.com/).
 * Download: see the [homepage](https://fingerprintio.machinezoo.com/)
 * Sources: [GitHub](https://github.com/robertvazan/fingerprintio-java), [Bitbucket](https://bitbucket.org/robertvazan/fingerprintio-java)
 * Issues: [GitHub](https://github.com/robertvazan/fingerprintio-java/issues), [Bitbucket](https://bitbucket.org/robertvazan/fingerprintio-java/issues)
-* License: [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0)
+* License: [Apache License 2.0](LICENSE)
 
