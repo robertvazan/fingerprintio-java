@@ -1,5 +1,7 @@
 # FingerprintIO for Java #
 
+[![Maven Central](https://img.shields.io/maven-central/v/com.machinezoo.fingerprintio/fingerprintio)](https://search.maven.org/artifact/com.machinezoo.fingerprintio/fingerprintio)
+
 FingerprintIO for Java is a library that decodes and encodes several [documented fingerprint template formats](https://templates.machinezoo.com/).
 See [FingerprintIO homepage](https://fingerprintio.machinezoo.com/).
 
