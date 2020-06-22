@@ -7,7 +7,7 @@
 	<version>0.1.1</version>
 	<packaging>jar</packaging>
 
-	<name>FingerprintIO</name>
+	<name>FingerprintIO for Java</name>
 	<url>https://fingerprintio.machinezoo.com/</url>
 	<description>Implementation of fingerprint template formats published by ANSI and ISO.</description>
 
@@ -122,12 +122,7 @@
 				<configuration>
 					<!-- Make the CI server email us when we break javadoc. -->
 					<failOnWarnings>true</failOnWarnings>
-					<nohelp>true</nohelp>
-					<noindex>true</noindex>
-					<notree>true</notree>
 					<notimestamp>true</notimestamp>
-					<use>false</use>
-					<doctitle>${project.name} for Java API Reference</doctitle>
 				</configuration>
 				<executions>
 					<execution>
