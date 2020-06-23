@@ -10,6 +10,7 @@
 	<name>FingerprintIO for Java</name>
 	<url>https://fingerprintio.machinezoo.com/</url>
 	<description>Implementation of fingerprint template formats published by ANSI and ISO.</description>
+	<inceptionYear>2019</inceptionYear>
 
 	<licenses>
 		<license>
@@ -18,6 +19,10 @@
 		</license>
 	</licenses>
 
+	<organization>
+		<name>Robert Važan</name>
+		<url>https://robert.machinezoo.com/</url>
+	</organization>
 	<developers>
 		<developer>
 			<name>Robert Važan</name>
