@@ -7,7 +7,8 @@ import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.common.*;
 
 public class Ansi378TemplateTest {
-	@Test public void roundtrip() {
+	@Test
+	public void roundtrip() {
 		Ansi378Template t = new Ansi378Template();
 		t.width = 600;
 		t.height = 400;
@@ -123,10 +124,12 @@ public class Ansi378TemplateTest {
 		assertEquals(0x4455, x.type);
 		assertArrayEquals(new byte[] { 1, 2, 3 }, x.data);
 	}
-	@Test public void json() {
+	@Test
+	public void json() {
 		TestUtils.compareJson(Ansi378TemplateTest.class, "ansi378-sample.json", decode());
 	}
-	@Test public void spec() {
+	@Test
+	public void spec() {
 		Ansi378Template t = decode();
 		assertEquals(512, t.width);
 		assertEquals(512, t.height);

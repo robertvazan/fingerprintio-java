@@ -6,7 +6,8 @@ import org.junit.jupiter.api.*;
 import com.machinezoo.fingerprintio.*;
 
 public class Ansi378v2009TemplateTest {
-	@Test public void roundtrip() {
+	@Test
+	public void roundtrip() {
 		Ansi378v2009Template t = new Ansi378v2009Template();
 		t.sensorCertified = true;
 		t.sensorId = 0x6789;
@@ -134,16 +135,19 @@ public class Ansi378v2009TemplateTest {
 		assertEquals(0x4455, x.type);
 		assertArrayEquals(new byte[] { 1, 2, 3 }, x.data);
 	}
-	@Test public void compatibility() {
+	@Test
+	public void compatibility() {
 		byte[] am1 = Ansi378v2009Am1TemplateTest.sample();
 		assertTrue(Ansi378v2009Am1Template.accepts(am1));
 		assertFalse(Ansi378v2009Template.accepts(am1));
 		new Ansi378v2009Template(am1, true);
 	}
-	@Test public void json() {
+	@Test
+	public void json() {
 		TestUtils.compareJson(Ansi378v2009TemplateTest.class, "ansi378v2009-sample.json", decode());
 	}
-	@Test public void spec() {
+	@Test
+	public void spec() {
 		Ansi378v2009Template t = decode();
 		assertEquals(0x0042, t.vendorId);
 		assertEquals(0x0011, t.subformat);
@@ -200,7 +204,8 @@ public class Ansi378v2009TemplateTest {
 		assertEquals(20, ce0.to);
 		assertEquals(3, ce0.count);
 	}
-	@Test public void roundtripSpec() {
+	@Test
+	public void roundtripSpec() {
 		byte[] original = sample();
 		/*
 		 * ANSI 378-2009 spec doesn't get its own sample right.
@@ -210,7 +215,8 @@ public class Ansi378v2009TemplateTest {
 		byte[] roundtripped = new Ansi378v2009Template(original).toByteArray();
 		assertArrayEquals(original, roundtripped);
 	}
-	@Test public void upgrade() {
+	@Test
+	public void upgrade() {
 		byte[] original = sample();
 		/*
 		 * ANSI 378-2009 spec doesn't get its own sample right. Length field is off by one. Let's correct it here.
