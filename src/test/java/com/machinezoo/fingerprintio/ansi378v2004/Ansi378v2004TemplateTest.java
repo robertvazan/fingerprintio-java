@@ -179,13 +179,7 @@ public class Ansi378v2004TemplateTest {
 		assertNotNull(fb.counts);
 	}
 	private Ansi378v2004Template decode() {
-		byte[] bytes = sample();
-		/*
-		 * Sample template from the spec doesn't even get its version number right.
-		 * Fix it here, so that we can load it.
-		 */
-		bytes[4] = ' ';
-		assertTrue(Ansi378v2004Template.accepts(bytes));
+		byte[] bytes = sampleWithFixedVersion();
 		/*
 		 * Sample template in the spec is bogus. Check for exception. Then enable permissive decoding.
 		 */
@@ -197,10 +191,20 @@ public class Ansi378v2004TemplateTest {
 		}
 		return new Ansi378v2004Template(bytes, false);
 	}
-	static byte[] sample() {
+	public static byte[] sample() {
 		/*
 		 * Sample template from the spec.
 		 */
 		return TestUtils.resource(Ansi378v2004TemplateTest.class, "ansi378-sample.dat");
+	}
+	public static byte[] sampleWithFixedVersion() {
+		byte[] bytes = sample();
+		/*
+		 * Sample template from the spec doesn't even get its version number right.
+		 * Fix it here, so that we can load it.
+		 */
+		bytes[4] = ' ';
+		assertTrue(Ansi378v2004Template.accepts(bytes));
+		return bytes;
 	}
 }

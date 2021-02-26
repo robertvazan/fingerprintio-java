@@ -11,7 +11,7 @@ public enum TemplateFormat {
 	ANSI_378_2009,
 	ANSI_378_2009_AM1,
 	ISO_19794_2_2005;
-	public static TemplateFormat detect(byte[] template) {
+	public static TemplateFormat identify(byte[] template) {
 		if (Ansi378v2004Template.accepts(template))
 			return ANSI_378_2004;
 		if (Ansi378v2009Template.accepts(template))
