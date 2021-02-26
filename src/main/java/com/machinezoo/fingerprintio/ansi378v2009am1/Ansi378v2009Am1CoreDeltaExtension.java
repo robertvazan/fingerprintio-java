@@ -5,10 +5,22 @@ import java.util.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Core and delta extension (<a href="https://templates.machinezoo.com/ansi378-2009am1#coredelta">COREDELTA</a>).
+ */
 public class Ansi378v2009Am1CoreDeltaExtension {
 	static final int IDENTIFIER = 2;
+	/**
+	 * List of core points (<a href="https://templates.machinezoo.com/ansi378-2009am1#coredata">COREDATA</a>).
+	 */
 	public List<Ansi378v2009Am1Core> cores = new ArrayList<>();
+	/**
+	 * List of delta points (<a href="https://templates.machinezoo.com/ansi378-2009am1#deltadata">DELTADATA</a>).
+	 */
 	public List<Ansi378v2009Am1Delta> deltas = new ArrayList<>();
+	/**
+	 * Creates new core and delta extension (<a href="https://templates.machinezoo.com/ansi378-2009am1#coredelta">COREDELTA</a>).
+	 */
 	public Ansi378v2009Am1CoreDeltaExtension() {
 	}
 	Ansi378v2009Am1CoreDeltaExtension(byte[] extension, boolean strict) {

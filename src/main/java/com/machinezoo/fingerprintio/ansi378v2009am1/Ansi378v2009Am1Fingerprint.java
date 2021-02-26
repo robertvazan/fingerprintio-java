@@ -7,22 +7,77 @@ import org.slf4j.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Fingerprint (<a href="https://templates.machinezoo.com/ansi378-2009am1#fingerprint">FINGERPRINT</a>).
+ */
 public class Ansi378v2009Am1Fingerprint {
 	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2009Am1Fingerprint.class);
+	/**
+	 * Finger position on hands (<a href="https://templates.machinezoo.com/ansi378-2009am1#position">POSITION</a>).
+	 * Defaults to {@link Ansi378v2009Am1Position#UNKNOWN}.
+	 */
 	public Ansi378v2009Am1Position position = Ansi378v2009Am1Position.UNKNOWN;
+	/**
+	 * Finger view number (<a href="https://templates.machinezoo.com/ansi378-2009am1#viewoffset">VIEWOFFSET</a>).
+	 */
 	public int view;
+	/**
+	 * Impression type (<a href="https://templates.machinezoo.com/ansi378-2009am1#sampletype">SAMPLETYPE</a>).
+	 * Defaults to {@link Ansi378v2009Am1ScanType#LIVE_PLAIN}.
+	 */
 	public Ansi378v2009Am1ScanType scanType = Ansi378v2009Am1ScanType.LIVE_PLAIN;
+	/**
+	 * Fingerprint quality (<a href="https://templates.machinezoo.com/ansi378-2009am1#fpquality">FPQUALITY</a>).
+	 * Defaults to 254.
+	 */
 	public int quality = 254;
+	/**
+	 * Quality algorithm vendor (<a href="https://templates.machinezoo.com/ansi378-2009am1#qvendor">QVENDOR</a>).
+	 * Defaults to {@link IbiaOrganizations#UNKNOWN}.
+	 */
 	public int qualityVendorId = IbiaOrganizations.UNKNOWN;
+	/**
+	 * Quality algorithm (<a href="https://templates.machinezoo.com/ansi378-2009am1#qalgo">QALGO</a>).
+	 * Defaults to {@link IbiaQualityAlgorithms#UNKNOWN}.
+	 */
 	public int qualityAlgorithmId = IbiaQualityAlgorithms.UNKNOWN;
+	/**
+	 * Image width (<a href="https://templates.machinezoo.com/ansi378-2009am1#width">WIDTH</a>).
+	 */
 	public int width;
+	/**
+	 * Image height (<a href="https://templates.machinezoo.com/ansi378-2009am1#height">HEIGHT</a>).
+	 */
 	public int height;
+	/**
+	 * Horizontal pixel density (<a href="https://templates.machinezoo.com/ansi378-2009am1#resolutionx">RESOLUTIONX</a>).
+	 */
 	public int resolutionX;
+	/**
+	 * Vertical pixel density (<a href="https://templates.machinezoo.com/ansi378-2009am1#resolutiony">RESOLUTIONY</a>).
+	 */
 	public int resolutionY;
+	/**
+	 * List of minutiae (<a href="https://templates.machinezoo.com/ansi378-2009am1#minutia">MINUTIA</a>).
+	 */
 	public List<Ansi378v2009Am1Minutia> minutiae = new ArrayList<>();
+	/**
+	 * Ridge count extension (<a href="https://templates.machinezoo.com/ansi378-2009am1#rcountext">RCOUNTEXT</a>).
+	 * This field is {@code null} if ridge count extension is not present.
+	 */
 	public Ansi378v2009Am1CountExtension counts;
+	/**
+	 * Core and delta extension (<a href="https://templates.machinezoo.com/ansi378-2009am1#coredelta">COREDELTA</a>).
+	 * This field is {@code null} if core and delta extension is not present.
+	 */
 	public Ansi378v2009Am1CoreDeltaExtension coredelta;
+	/**
+	 * List of extension data blocks (<a href="https://templates.machinezoo.com/ansi378-2009am1#extension">EXTENSION</a>).
+	 */
 	public List<Ansi378v2009Am1Extension> extensions = new ArrayList<>();
+	/**
+	 * Creates new fingerprint (<a href="https://templates.machinezoo.com/ansi378-2009am1#fingerprint">FINGERPRINT</a>).
+	 */
 	public Ansi378v2009Am1Fingerprint() {
 	}
 	Ansi378v2009Am1Fingerprint(TemplateReader in, boolean strict) {
