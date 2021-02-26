@@ -1,3 +1,4 @@
+// Part of FingerprintIO: https://fingerprintio.machinezoo.com
 package com.machinezoo.fingerprintio;
 
 import static org.junit.jupiter.api.Assertions.*;
