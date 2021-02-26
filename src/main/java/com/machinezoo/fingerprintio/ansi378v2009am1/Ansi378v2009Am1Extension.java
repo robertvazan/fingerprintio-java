@@ -8,7 +8,7 @@ import com.machinezoo.fingerprintio.utils.*;
 /**
  * Extension data block (<a href="https://templates.machinezoo.com/ansi378-2009am1#extension">EXTENSION</a>).
  * Predefined extension blocks have specialized representation.
- * See {@link Ansi378v2009CountExtension} and {@link Ansi378v2009CoreDeltaExtension}.
+ * See {@link Ansi378v2009Am1CountExtension} and {@link Ansi378v2009Am1CoreDeltaExtension}.
  */
 public class Ansi378v2009Am1Extension {
 	/**
