@@ -15,28 +15,28 @@ public enum TemplateFormat {
 	 * ANSI 378-2004 template.
 	 * The template can be parsed by {@link Ansi378v2004Template}.
 	 * 
-	 * @see <a href="https://templates.machinezoo.com/ansi378-2004">ANSI 378-2004</a>
+	 * @see <a href="https://templates.machinezoo.com/ansi378-2004">ANSI INCITS 378-2004 Summary</a>
 	 */
 	ANSI_378_2004,
 	/**
 	 * ANSI 378-2009 template.
 	 * The template can be parsed by {@link Ansi378v2009Template}.
 	 * 
-	 * @see <a href="https://templates.machinezoo.com/ansi378-2009">ANSI 378-2009</a>
+	 * @see <a href="https://templates.machinezoo.com/ansi378-2009">ANSI INCITS 378-2009 Summary</a>
 	 */
 	ANSI_378_2009,
 	/**
 	 * ANSI 378-2009/AM1 template.
 	 * The template can be parsed by {@link Ansi378v2009Am1Template}.
 	 * 
-	 * @see <a href="https://templates.machinezoo.com/ansi378-2009am1">ANSI 378-2009/AM 1</a>
+	 * @see <a href="https://templates.machinezoo.com/ansi378-2009am1">ANSI INCITS 378-2009/AM 1 Summary</a>
 	 */
 	ANSI_378_2009_AM1,
 	/**
 	 * ISO 19794-2:2005 template.
 	 * The template can be parsed by {@link Iso19794p2v2005Template}.
 	 * 
-	 * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO 19794-2:2005</a>
+	 * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO/IEC 19794-2:2005 Summary</a>
 	 */
 	ISO_19794_2_2005;
 	/**
