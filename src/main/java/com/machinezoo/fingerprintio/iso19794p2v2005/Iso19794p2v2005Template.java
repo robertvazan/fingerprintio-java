@@ -56,16 +56,16 @@ public class Iso19794p2v2005Template {
 	public Iso19794p2v2005Template() {
 	}
 	public Iso19794p2v2005Template(byte[] template) {
-		this(template, false);
+		this(template, true);
 	}
-	public Iso19794p2v2005Template(byte[] template, boolean lax) {
+	public Iso19794p2v2005Template(byte[] template, boolean strict) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2005 template.");
 		TemplateUtils.decodeTemplate(template, in -> {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
 			ValidateTemplate.condition(length >= 24, "Total length must be at least 24 bytes.");
-			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), false, "Total length indicates trimmed template.");
 			in.skipBytes(2);
 			width = in.readUnsignedShort();
 			height = in.readUnsignedShort();
@@ -74,10 +74,10 @@ public class Iso19794p2v2005Template {
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Iso19794p2v2005Fingerprint(in, width, height, lax));
+				fingerprints.add(new Iso19794p2v2005Fingerprint(in, width, height, strict));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, lax);
+			ValidateTemplate.structure(this::validate, strict);
 		});
 	}
 	private void validate() {

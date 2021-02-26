@@ -25,11 +25,11 @@ public class Ansi378v2009Am1Template {
 	public Ansi378v2009Am1Template() {
 	}
 	public Ansi378v2009Am1Template(byte[] template) {
-		this(template, false);
+		this(template, true);
 	}
-	public Ansi378v2009Am1Template(byte[] template, boolean lax) {
+	public Ansi378v2009Am1Template(byte[] template, boolean strict) {
 		if (!accepts(template)) {
-			if (lax && Ansi378v2009Template.accepts(template)) {
+			if (!strict && Ansi378v2009Template.accepts(template)) {
 				template = Arrays.copyOf(template, template.length);
 				template[6] = '5';
 			} else
@@ -39,7 +39,7 @@ public class Ansi378v2009Am1Template {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
 			ValidateTemplate.condition(length >= 21, "Total length must be at least 21 bytes.");
-			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), false, "Total length indicates trimmed template.");
 			vendorId = in.readUnsignedShort();
 			subformat = in.readUnsignedShort();
 			int certification = in.readUnsignedByte();
@@ -50,10 +50,10 @@ public class Ansi378v2009Am1Template {
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Ansi378v2009Am1Fingerprint(in, lax));
+				fingerprints.add(new Ansi378v2009Am1Fingerprint(in, strict));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, lax);
+			ValidateTemplate.structure(this::validate, strict);
 		});
 	}
 	public byte[] toByteArray() {

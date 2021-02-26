@@ -10,11 +10,11 @@ public class Ansi378v2009CountExtension {
 	public List<Ansi378v2009CountEdge> edges = new ArrayList<>();
 	public Ansi378v2009CountExtension() {
 	}
-	Ansi378v2009CountExtension(byte[] extension, boolean lax) {
+	Ansi378v2009CountExtension(byte[] extension, boolean strict) {
 		TemplateUtils.decodeExtension(extension, in -> {
-			type = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009CountType.class, lax, "Unrecognized edge picking method.");
+			type = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009CountType.class, strict, "Unrecognized edge picking method.");
 			int count = (extension.length - 1) / 3;
-			ValidateTemplate.condition(3 * count == extension.length - 1, lax, "Extra misaligned data at the end of ridge count extension.");
+			ValidateTemplate.condition(3 * count == extension.length - 1, strict, "Extra misaligned data at the end of ridge count extension.");
 			for (int i = 0; i < count; ++i)
 				edges.add(new Ansi378v2009CountEdge(in));
 		});

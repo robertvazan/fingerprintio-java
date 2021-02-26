@@ -10,13 +10,13 @@ public class Iso19794p2v2005Fingerprint {
 	public List<Iso19794p2v2005Minutia> minutiae = new ArrayList<>();
 	public Iso19794p2v2005Fingerprint() {
 	}
-	Iso19794p2v2005Fingerprint(TemplateReader in, int width, int height, boolean lax) {
-		position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2005Position.class, lax, "Unrecognized finger position code.");
+	Iso19794p2v2005Fingerprint(TemplateReader in, int width, int height, boolean strict) {
+		position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2005Position.class, strict, "Unrecognized finger position code.");
 		in.skipBytes(1);
 		quality = in.readUnsignedByte();
 		int count = in.readUnsignedByte();
 		for (int i = 0; i < count; ++i)
-			minutiae.add(new Iso19794p2v2005Minutia(in, lax));
+			minutiae.add(new Iso19794p2v2005Minutia(in, strict));
 		int extensionBytes = in.readUnsignedShort();
 		in.skipBytes(extensionBytes);
 	}

@@ -12,9 +12,9 @@ public class Ansi378v2009Minutia {
 	public int quality = 254;
 	public Ansi378v2009Minutia() {
 	}
-	Ansi378v2009Minutia(TemplateReader in, boolean lax) {
+	Ansi378v2009Minutia(TemplateReader in, boolean strict) {
 		positionX = in.readUnsignedShort();
-		type = TemplateUtils.decodeType(positionX >> 14, Ansi378v2009MinutiaType.class, lax, "Unrecognized minutia type code.");
+		type = TemplateUtils.decodeType(positionX >> 14, Ansi378v2009MinutiaType.class, strict, "Unrecognized minutia type code.");
 		positionX &= 0x3fff;
 		positionY = in.readUnsignedShort();
 		angle = in.readUnsignedByte();

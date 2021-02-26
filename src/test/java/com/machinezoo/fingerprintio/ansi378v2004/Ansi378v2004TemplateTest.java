@@ -195,7 +195,7 @@ public class Ansi378v2004TemplateTest {
 		} catch (Throwable ex) {
 			assertTrue(ex instanceof TemplateFormatException);
 		}
-		return new Ansi378v2004Template(bytes, true);
+		return new Ansi378v2004Template(bytes, false);
 	}
 	static byte[] sample() {
 		/*

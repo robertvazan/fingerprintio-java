@@ -12,9 +12,9 @@ public class Iso19794p2v2005Minutia {
 	public int quality;
 	public Iso19794p2v2005Minutia() {
 	}
-	Iso19794p2v2005Minutia(TemplateReader in, boolean lax) {
+	Iso19794p2v2005Minutia(TemplateReader in, boolean strict) {
 		positionX = in.readUnsignedShort();
-		type = TemplateUtils.decodeType(positionX >> 14, Iso19794p2v2005MinutiaType.class, lax, "Unrecognized minutia type code.");
+		type = TemplateUtils.decodeType(positionX >> 14, Iso19794p2v2005MinutiaType.class, strict, "Unrecognized minutia type code.");
 		positionX &= 0x3fff;
 		positionY = in.readUnsignedShort();
 		angle = in.readUnsignedByte();

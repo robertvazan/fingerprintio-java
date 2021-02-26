@@ -11,7 +11,7 @@ public class Ansi378v2004CoreDeltaExtension {
 	public List<Ansi378v2004Delta> deltas = new ArrayList<>();
 	public Ansi378v2004CoreDeltaExtension() {
 	}
-	Ansi378v2004CoreDeltaExtension(byte[] extension, boolean lax) {
+	Ansi378v2004CoreDeltaExtension(byte[] extension, boolean strict) {
 		TemplateUtils.decodeExtension(extension, in -> {
 			int coreInfo = in.readUnsignedByte();
 			for (int i = 0; i < (coreInfo & 0xf); ++i)
@@ -19,7 +19,7 @@ public class Ansi378v2004CoreDeltaExtension {
 			int deltaInfo = in.readUnsignedByte();
 			for (int i = 0; i < (deltaInfo & 0xf); ++i)
 				deltas.add(new Ansi378v2004Delta(in, (deltaInfo & 0x40) != 0));
-			ValidateTemplate.condition(in.available() == 0, lax, "Extra data at the end of core/delta extension.");
+			ValidateTemplate.condition(in.available() == 0, strict, "Extra data at the end of core/delta extension.");
 		});
 	}
 	Ansi378v2004Extension extension() {

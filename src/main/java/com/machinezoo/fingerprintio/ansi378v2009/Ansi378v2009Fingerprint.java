@@ -25,10 +25,10 @@ public class Ansi378v2009Fingerprint {
 	public List<Ansi378v2009Extension> extensions = new ArrayList<>();
 	public Ansi378v2009Fingerprint() {
 	}
-	Ansi378v2009Fingerprint(TemplateReader in, boolean lax) {
-		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Position.class, lax, "Unrecognized finger position code.");
+	Ansi378v2009Fingerprint(TemplateReader in, boolean strict) {
+		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Position.class, strict, "Unrecognized finger position code.");
 		view = in.readUnsignedByte();
-		scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009ScanType.values(), t -> t.code, lax, "Unrecognized sensor type code.");
+		scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009ScanType.values(), t -> t.code, strict, "Unrecognized sensor type code.");
 		quality = in.readUnsignedByte();
 		qualityVendorId = in.readUnsignedShort();
 		qualityAlgorithmId = in.readUnsignedShort();
@@ -38,26 +38,26 @@ public class Ansi378v2009Fingerprint {
 		resolutionY = in.readUnsignedShort();
 		int count = in.readUnsignedByte();
 		for (int i = 0; i < count; ++i)
-			minutiae.add(new Ansi378v2009Minutia(in, lax));
+			minutiae.add(new Ansi378v2009Minutia(in, strict));
 		int totalBytes = in.readUnsignedShort();
 		int readBytes = 0;
 		while (readBytes < totalBytes) {
 			Ansi378v2009Extension extension = new Ansi378v2009Extension(in);
 			if (extension.type == Ansi378v2009CountExtension.IDENTIFIER)
-				decodeExtension(extension, data -> counts = new Ansi378v2009CountExtension(data, lax), lax, "Unable to decode ridge count extension.");
+				decodeExtension(extension, data -> counts = new Ansi378v2009CountExtension(data, strict), strict, "Unable to decode ridge count extension.");
 			else if (extension.type == Ansi378v2009CoreDeltaExtension.IDENTIFIER)
-				decodeExtension(extension, data -> coredelta = new Ansi378v2009CoreDeltaExtension(data, lax), lax, "Unable to decode core/delta extension.");
+				decodeExtension(extension, data -> coredelta = new Ansi378v2009CoreDeltaExtension(data, strict), strict, "Unable to decode core/delta extension.");
 			else
 				extensions.add(extension);
 			readBytes += extension.measure();
 		}
-		ValidateTemplate.condition(readBytes == totalBytes, lax, "Total length of extension data doesn't match the sum of extension block lengths.");
+		ValidateTemplate.condition(readBytes == totalBytes, strict, "Total length of extension data doesn't match the sum of extension block lengths.");
 	}
-	private void decodeExtension(Ansi378v2009Extension extension, Consumer<byte[]> decoder, boolean lax, String message) {
+	private void decodeExtension(Ansi378v2009Extension extension, Consumer<byte[]> decoder, boolean strict, String message) {
 		try {
 			decoder.accept(extension.data);
 		} catch (Throwable ex) {
-			if (!lax)
+			if (strict)
 				throw ex;
 			logger.warn(message, ex);
 			extensions.add(extension);

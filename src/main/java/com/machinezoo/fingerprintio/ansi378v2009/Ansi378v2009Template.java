@@ -49,11 +49,11 @@ public class Ansi378v2009Template {
 	public Ansi378v2009Template() {
 	}
 	public Ansi378v2009Template(byte[] template) {
-		this(template, false);
+		this(template, true);
 	}
-	public Ansi378v2009Template(byte[] template, boolean lax) {
+	public Ansi378v2009Template(byte[] template, boolean strict) {
 		if (!accepts(template)) {
-			if (lax && Ansi378v2009Am1Template.accepts(template)) {
+			if (!strict && Ansi378v2009Am1Template.accepts(template)) {
 				template = Arrays.copyOf(template, template.length);
 				template[6] = '0';
 			} else
@@ -74,10 +74,10 @@ public class Ansi378v2009Template {
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Ansi378v2009Fingerprint(in, lax));
+				fingerprints.add(new Ansi378v2009Fingerprint(in, strict));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, lax);
+			ValidateTemplate.structure(this::validate, strict);
 		});
 	}
 	public byte[] toByteArray() {

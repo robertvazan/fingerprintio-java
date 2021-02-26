@@ -61,9 +61,9 @@ public class Ansi378v2004Template {
 	public Ansi378v2004Template() {
 	}
 	public Ansi378v2004Template(byte[] template) {
-		this(template, false);
+		this(template, true);
 	}
-	public Ansi378v2004Template(byte[] template, boolean lax) {
+	public Ansi378v2004Template(byte[] template, boolean strict) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ANSI INCITS 378-2004 template.");
 		TemplateUtils.decodeTemplate(template, in -> {
@@ -83,10 +83,10 @@ public class Ansi378v2004Template {
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Ansi378v2004Fingerprint(in, lax));
+				fingerprints.add(new Ansi378v2004Fingerprint(in, strict));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, lax);
+			ValidateTemplate.structure(this::validate, strict);
 		});
 	}
 	private void skipLength(TemplateReader in) {
@@ -101,7 +101,7 @@ public class Ansi378v2004Template {
 				logger.debug("Not strictly compliant template: 6-byte length field should have value of at least 0x10000.");
 		}
 		ValidateTemplate.condition(length >= 26, "Total length must be at least 26 bytes.");
-		ValidateTemplate.condition(length <= magic.length + available, true, "Total length indicates trimmed template.");
+		ValidateTemplate.condition(length <= magic.length + available, false, "Total length indicates trimmed template.");
 	}
 	public byte[] toByteArray() {
 		validate();

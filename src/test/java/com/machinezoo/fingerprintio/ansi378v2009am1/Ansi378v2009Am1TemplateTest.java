@@ -141,7 +141,7 @@ public class Ansi378v2009Am1TemplateTest {
 		byte[] v2009 = Ansi378v2009TemplateTest.sample();
 		assertTrue(Ansi378v2009Template.accepts(v2009));
 		assertFalse(Ansi378v2009Am1Template.accepts(v2009));
-		new Ansi378v2009Am1Template(v2009, true);
+		new Ansi378v2009Am1Template(v2009, false);
 	}
 	@Test
 	public void json() {

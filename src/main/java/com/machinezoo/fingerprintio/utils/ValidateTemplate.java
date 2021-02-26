@@ -6,18 +6,18 @@ import com.machinezoo.fingerprintio.common.*;
 
 public class ValidateTemplate {
 	private static Logger logger = LoggerFactory.getLogger(ValidateTemplate.class);
-	public static void fail(boolean lax, String message) {
-		if (lax)
-			logger.warn(message);
-		else
+	public static void fail(boolean strict, String message) {
+		if (strict)
 			throw new TemplateFormatException(message);
+		else
+			logger.warn(message);
 	}
-	public static void condition(boolean condition, boolean lax, String message) {
+	public static void condition(boolean condition, boolean strict, String message) {
 		if (!condition)
-			fail(lax, message);
+			fail(strict, message);
 	}
 	public static void condition(boolean condition, String message) {
-		condition(condition, false, message);
+		condition(condition, true, message);
 	}
 	public static void range(int value, int min, int max, String message) {
 		condition(value >= min && value <= max, message);
@@ -53,16 +53,16 @@ public class ValidateTemplate {
 		int14(value, message);
 		range(value, 0, size - 1, message);
 	}
-	public static void rules(Runnable validator, boolean lax, String message) {
+	public static void rules(Runnable validator, boolean strict, String message) {
 		try {
 			validator.run();
 		} catch (Throwable ex) {
-			if (!lax)
+			if (strict)
 				throw ex;
 			logger.warn(message, ex);
 		}
 	}
-	public static void structure(Runnable validator, boolean lax) {
-		rules(validator, lax, "Template failed validation.");
+	public static void structure(Runnable validator, boolean strict) {
+		rules(validator, strict, "Template failed validation.");
 	}
 }
