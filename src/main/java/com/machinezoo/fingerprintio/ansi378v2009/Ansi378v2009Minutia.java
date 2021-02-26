@@ -4,12 +4,35 @@ package com.machinezoo.fingerprintio.ansi378v2009;
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Minutia (<a href="https://templates.machinezoo.com/ansi378-2009#minutia">MINUTIA</a>).
+ */
 public class Ansi378v2009Minutia {
+	/**
+	 * Minutia type (<a href="https://templates.machinezoo.com/ansi378-2009#mintype">MINTYPE</a>).
+	 * Defaults to {@link Ansi378v2009MinutiaType#EITHER}.
+	 */
 	public Ansi378v2009MinutiaType type = Ansi378v2009MinutiaType.EITHER;
+	/**
+	 * Minutia X position (<a href="https://templates.machinezoo.com/ansi378-2009#minx">MINX</a>).
+	 */
 	public int positionX;
+	/**
+	 * Minutia Y position (<a href="https://templates.machinezoo.com/ansi378-2009#miny">MINY</a>).
+	 */
 	public int positionY;
+	/**
+	 * Minutia angle (<a href="https://templates.machinezoo.com/ansi378-2009#minangle">MINANGLE</a>).
+	 */
 	public int angle;
+	/**
+	 * Minutia quality (<a href="https://templates.machinezoo.com/ansi378-2009#minquality">MINQUALITY</a>).
+	 * Defaults to 254.
+	 */
 	public int quality = 254;
+	/**
+	 * Creates new minutia (<a href="https://templates.machinezoo.com/ansi378-2009#minutia">MINUTIA</a>).
+	 */
 	public Ansi378v2009Minutia() {
 	}
 	Ansi378v2009Minutia(TemplateReader in, boolean strict) {

@@ -53,6 +53,7 @@ public class Ansi378v2004Template {
 	}
 	/**
 	 * Vendor ID (<a href="https://templates.machinezoo.com/ansi378-2004#vendor">VENDOR</a>).
+	 * Defaults to {@link IbiaOrganizations#UNKNOWN}.
 	 */
 	public int vendorId = IbiaOrganizations.UNKNOWN;
 	/**

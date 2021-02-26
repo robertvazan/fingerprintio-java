@@ -9,8 +9,10 @@ import com.machinezoo.fingerprintio.ansi378v2009am1.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
-/*
- * Object model of ANSI INCITS 378-2009 template.
+/**
+ * ANSI INCITS 378-2009 template.
+ * 
+ * @see <a href="https://templates.machinezoo.com/ansi378-2009">ANSI INCITS 378-2009 Summary</a>
  */
 public class Ansi378v2009Template {
 	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2009Template.class);
@@ -41,11 +43,31 @@ public class Ansi378v2009Template {
 			return true;
 		}
 	}
+	/**
+	 * Vendor ID (<a href="https://templates.machinezoo.com/ansi378-2009#vendor">VENDOR</a>).
+	 * Defaults to {@link IbiaOrganizations#UNKNOWN}.
+	 */
 	public int vendorId = IbiaOrganizations.UNKNOWN;
+	/**
+	 * Vendor-specified subformat (<a href="https://templates.machinezoo.com/ansi378-2009#subformat">SUBFORMAT</a>).
+	 */
 	public int subformat;
+	/**
+	 * Indicates that the fingerprint reader has certificate of compliance with Appendix F of CJIS-RS-0010 V7.
+	 * This is the top bit of <a href="https://templates.machinezoo.com/ansi378-2009#devstamp">DEVSTAMP</a> field.
+	 */
 	public boolean sensorCertified;
+	/**
+	 * Sensor ID (<a href="https://templates.machinezoo.com/ansi378-2009#devid">DEVID</a>).
+	 */
 	public int sensorId;
+	/**
+	 * List of fingerprints (<a href="https://templates.machinezoo.com/ansi378-2009#fingerprint">FINGERPRINT</a>).
+	 */
 	public List<Ansi378v2009Fingerprint> fingerprints = new ArrayList<>();
+	/**
+	 * Creates new ANSI INCITS 378-2009 template.
+	 */
 	public Ansi378v2009Template() {
 	}
 	public Ansi378v2009Template(byte[] template) {

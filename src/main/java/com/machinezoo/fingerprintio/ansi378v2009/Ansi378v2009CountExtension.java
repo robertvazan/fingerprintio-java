@@ -4,10 +4,23 @@ package com.machinezoo.fingerprintio.ansi378v2009;
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Ridge count extension (<a href="https://templates.machinezoo.com/ansi378-2009#rcountext">RCOUNTEXT</a>).
+ */
 public class Ansi378v2009CountExtension {
 	static final int IDENTIFIER = 1;
+	/**
+	 * Edge picking method (<a href="https://templates.machinezoo.com/ansi378-2009#startype">STARTYPE</a>).
+	 * Defaults to {@link Ansi378v2009CountType#CUSTOM}.
+	 */
 	public Ansi378v2009CountType type = Ansi378v2009CountType.CUSTOM;
+	/**
+	 * List of edges (<a href="https://templates.machinezoo.com/ansi378-2009#edgedef">EDGEDEF</a>).
+	 */
 	public List<Ansi378v2009CountEdge> edges = new ArrayList<>();
+	/**
+	 * Creates new ridge count extension (<a href="https://templates.machinezoo.com/ansi378-2009#rcountext">RCOUNTEXT</a>).
+	 */
 	public Ansi378v2009CountExtension() {
 	}
 	Ansi378v2009CountExtension(byte[] extension, boolean strict) {

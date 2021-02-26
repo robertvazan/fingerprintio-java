@@ -3,10 +3,26 @@ package com.machinezoo.fingerprintio.ansi378v2009;
 
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Core point (<a href="https://templates.machinezoo.com/ansi378-2009#coredef">COREDEF</a>).
+ */
 public class Ansi378v2009Core {
+	/**
+	 * Core X position (<a href="https://templates.machinezoo.com/ansi378-2009#corex">COREX</a>).
+	 */
 	public int positionX;
+	/**
+	 * Core Y position (<a href="https://templates.machinezoo.com/ansi378-2009#corey">COREY</a>).
+	 */
 	public int positionY;
+	/**
+	 * Core angle (<a href="https://templates.machinezoo.com/ansi378-2009#coreangle">COREANGLE</a>).
+	 * This field is {@code null} if core angle is not present.
+	 */
 	public Integer angle;
+	/**
+	 * Creates new core point (<a href="https://templates.machinezoo.com/ansi378-2009#coredef">COREDEF</a>).
+	 */
 	public Ansi378v2009Core() {
 	}
 	Ansi378v2009Core(TemplateReader in, boolean hasAngle) {
