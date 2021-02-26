@@ -4,16 +4,16 @@ package com.machinezoo.fingerprintio.utils;
 import java.io.*;
 import com.machinezoo.noexception.*;
 
-public class DataInputBuffer implements DataInput {
+public class TemplateReader implements DataInput {
 	private final DataInputStream stream;
-	public DataInputBuffer(byte[] buffer) {
+	public TemplateReader(byte[] buffer) {
 		stream = new DataInputStream(new ByteArrayInputStream(buffer));
 	}
 	private static final CheckedExceptionHandler handler = new CheckedExceptionHandler() {
 		@Override
 		public RuntimeException handle(Exception exception) {
 			if (exception instanceof EOFException)
-				return new BufferEofException();
+				return new TemplateEofException();
 			/*
 			 * We should never get here, because byte array reads cannot fail.
 			 */

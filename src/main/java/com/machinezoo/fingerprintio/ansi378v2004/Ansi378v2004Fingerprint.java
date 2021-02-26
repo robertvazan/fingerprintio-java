@@ -18,7 +18,7 @@ public class Ansi378v2004Fingerprint {
 	public List<Ansi378v2004Extension> extensions = new ArrayList<>();
 	public Ansi378v2004Fingerprint() {
 	}
-	Ansi378v2004Fingerprint(DataInputBuffer in, boolean lax) {
+	Ansi378v2004Fingerprint(TemplateReader in, boolean lax) {
 		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2004Position.class, lax, "Unrecognized finger position code.");
 		int offsetAndType = in.readUnsignedByte();
 		view = offsetAndType >> 4;
@@ -39,7 +39,7 @@ public class Ansi378v2004Fingerprint {
 				extensions.add(extension);
 			readBytes += extension.measure();
 		}
-		Validate.condition(readBytes == totalBytes, lax, "Total length of extension data doesn't match the sum of extension block lengths.");
+		ValidateTemplate.condition(readBytes == totalBytes, lax, "Total length of extension data doesn't match the sum of extension block lengths.");
 	}
 	private void decodeExtension(Ansi378v2004Extension extension, Consumer<byte[]> decoder, boolean lax, String message) {
 		try {
@@ -51,7 +51,7 @@ public class Ansi378v2004Fingerprint {
 			extensions.add(extension);
 		}
 	}
-	void write(DataOutputBuffer out) {
+	void write(TemplateWriter out) {
 		out.writeByte(position.ordinal());
 		out.writeByte((view << 4) | scanType.code);
 		out.writeByte(quality);
@@ -74,10 +74,10 @@ public class Ansi378v2004Fingerprint {
 	}
 	void validate(int width, int height) {
 		Objects.requireNonNull(position, "Finger position must be non-null (even if unknown).");
-		Validate.int4(view, "View offset must be an unsigned 4-bit number.");
+		ValidateTemplate.int4(view, "View offset must be an unsigned 4-bit number.");
 		Objects.requireNonNull(scanType, "Scan type must be non-null.");
-		Validate.range(quality, 0, 100, "Fingerprint quality must be in range 0 through 100.");
-		Validate.int8(minutiae.size(), "There cannot be more than 255 minutiae.");
+		ValidateTemplate.range(quality, 0, 100, "Fingerprint quality must be in range 0 through 100.");
+		ValidateTemplate.int8(minutiae.size(), "There cannot be more than 255 minutiae.");
 		for (Ansi378v2004Minutia minutia : minutiae)
 			minutia.validate(width, height);
 		if (counts != null)
@@ -86,7 +86,7 @@ public class Ansi378v2004Fingerprint {
 			coredelta.validate(width, height);
 		for (Ansi378v2004Extension extension : extensions)
 			extension.validate();
-		Validate.int16(extensionBytes(), "Total size of all extension blocks must a 16-bit number.");
+		ValidateTemplate.int16(extensionBytes(), "Total size of all extension blocks must a 16-bit number.");
 		if (coredelta != null && coredelta.cores.isEmpty())
 			logger.debug("Not strictly compliant template. Core count is zero.");
 	}

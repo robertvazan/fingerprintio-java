@@ -9,7 +9,7 @@ public class Ansi378v2004Delta {
 	public int[] angles;
 	public Ansi378v2004Delta() {
 	}
-	Ansi378v2004Delta(DataInputBuffer in, boolean hasAngles) {
+	Ansi378v2004Delta(TemplateReader in, boolean hasAngles) {
 		positionX = in.readUnsignedShort();
 		positionY = in.readUnsignedShort();
 		if (hasAngles) {
@@ -18,7 +18,7 @@ public class Ansi378v2004Delta {
 				angles[i] = in.readUnsignedByte();
 		}
 	}
-	void write(DataOutputBuffer out) {
+	void write(TemplateWriter out) {
 		out.writeShort(positionX);
 		out.writeShort(positionY);
 		if (angles != null)
@@ -26,10 +26,10 @@ public class Ansi378v2004Delta {
 				out.writeByte(angles[i]);
 	}
 	void validate(int width, int height) {
-		Validate.position(positionX, width, "Delta X position must be an unsigned 14-bit number less than image width.");
-		Validate.position(positionY, height, "Delta Y position must be an unsigned 14-bit number less than image height.");
+		ValidateTemplate.position(positionX, width, "Delta X position must be an unsigned 14-bit number less than image width.");
+		ValidateTemplate.position(positionY, height, "Delta Y position must be an unsigned 14-bit number less than image height.");
 		if (angles != null) {
-			Validate.condition(angles.length == 3, "Delta must have exactly 3 angles.");
+			ValidateTemplate.condition(angles.length == 3, "Delta must have exactly 3 angles.");
 			for (int i = 0; i < 3; ++i)
 				ValidateAnsi.angle(angles[i], "Delta angle must be in range 0 through 179.");
 		}

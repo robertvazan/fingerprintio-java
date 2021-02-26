@@ -18,7 +18,7 @@ public class Ansi378v2004Template {
 			return false;
 		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
 			return false;
-		DataInputBuffer in = new DataInputBuffer(template);
+		TemplateReader in = new TemplateReader(template);
 		in.skipBytes(magic.length);
 		/*
 		 * Differentiate from ISO 19794-2 by examining the length field.
@@ -86,10 +86,10 @@ public class Ansi378v2004Template {
 				fingerprints.add(new Ansi378v2004Fingerprint(in, lax));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			Validate.template(this::validate, lax);
+			ValidateTemplate.structure(this::validate, lax);
 		});
 	}
-	private void skipLength(DataInputBuffer in) {
+	private void skipLength(TemplateReader in) {
 		int available = in.available();
 		int length = in.readUnsignedShort();
 		if (length == 0) {
@@ -100,12 +100,12 @@ public class Ansi378v2004Template {
 			if (length < 0x10000)
 				logger.debug("Not strictly compliant template: 6-byte length field should have value of at least 0x10000.");
 		}
-		Validate.condition(length >= 26, "Total length must be at least 26 bytes.");
-		Validate.condition(length <= magic.length + available, true, "Total length indicates trimmed template.");
+		ValidateTemplate.condition(length >= 26, "Total length must be at least 26 bytes.");
+		ValidateTemplate.condition(length <= magic.length + available, true, "Total length indicates trimmed template.");
 	}
 	public byte[] toByteArray() {
 		validate();
-		DataOutputBuffer out = new DataOutputBuffer();
+		TemplateWriter out = new TemplateWriter();
 		out.write(magic);
 		int length = measure();
 		if (length < 0x10000)
@@ -133,14 +133,14 @@ public class Ansi378v2004Template {
 		return length < 0x10000 ? length : length + 4;
 	}
 	private void validate() {
-		Validate.nonzero16(vendorId, "Vendor ID must be a non-zero unsigned 16-bit number.");
-		Validate.int16(subformat, "Vendor subformat must be an unsigned 16-bit number.");
-		Validate.range(sensorId, 0, 0xfff, "Sensor ID must be an unsigned 12-bit number.");
-		Validate.nonzero16(width, "Image width must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(height, "Image height must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(resolutionX, "Horizontal pixel density must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(resolutionY, "Vertical pixel density must be a non-zero unsigned 16-bit number.");
-		Validate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
+		ValidateTemplate.nonzero16(vendorId, "Vendor ID must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.int16(subformat, "Vendor subformat must be an unsigned 16-bit number.");
+		ValidateTemplate.range(sensorId, 0, 0xfff, "Sensor ID must be an unsigned 12-bit number.");
+		ValidateTemplate.nonzero16(width, "Image width must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(height, "Image height must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(resolutionX, "Horizontal pixel density must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(resolutionY, "Vertical pixel density must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
 		for (Ansi378v2004Fingerprint fp : fingerprints)
 			fp.validate(width, height);
 		if (fingerprints.size() != fingerprints.stream().mapToInt(fp -> (fp.position.ordinal() << 16) + fp.view).distinct().count())
@@ -150,7 +150,7 @@ public class Ansi378v2004Template {
 			.values().stream()
 			.forEach(l -> {
 				for (int i = 0; i < l.size(); ++i) {
-					Validate.range(l.get(i).view, 0, l.size() - 1, "Fingerprint view numbers must be assigned contiguously, starting from zero.");
+					ValidateTemplate.range(l.get(i).view, 0, l.size() - 1, "Fingerprint view numbers must be assigned contiguously, starting from zero.");
 					if (!l.equals(l.stream().sorted(Comparator.comparingInt(fp -> fp.view)).collect(toList())))
 						throw new TemplateFormatException("Fingerprints with the same finger position must be sorted by view number.");
 				}

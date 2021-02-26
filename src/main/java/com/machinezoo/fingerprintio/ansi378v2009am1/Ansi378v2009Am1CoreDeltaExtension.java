@@ -19,7 +19,7 @@ public class Ansi378v2009Am1CoreDeltaExtension {
 			int deltaInfo = in.readUnsignedByte();
 			for (int i = 0; i < (deltaInfo & 0xf); ++i)
 				deltas.add(new Ansi378v2009Am1Delta(in, (deltaInfo & 0x40) != 0));
-			Validate.condition(in.available() == 0, lax, "Extra data at the end of core/delta extension.");
+			ValidateTemplate.condition(in.available() == 0, lax, "Extra data at the end of core/delta extension.");
 		});
 	}
 	Ansi378v2009Am1Extension extension() {
@@ -29,7 +29,7 @@ public class Ansi378v2009Am1CoreDeltaExtension {
 		return extension;
 	}
 	byte[] toByteArray() {
-		DataOutputBuffer out = new DataOutputBuffer();
+		TemplateWriter out = new TemplateWriter();
 		out.writeByte((hasCoreAngles() ? 0x40 : 0) | cores.size());
 		for (Ansi378v2009Am1Core core : cores)
 			core.write(out);
@@ -53,12 +53,12 @@ public class Ansi378v2009Am1CoreDeltaExtension {
 			core.validate(width, height);
 		if (hasCoreAngles() && cores.stream().anyMatch(c -> c.angle == null))
 			throw new TemplateFormatException("Inconsistent core angle information. Either all cores should have angle or none should.");
-		Validate.int4(cores.size(), "There can be no more than 15 cores.");
+		ValidateTemplate.int4(cores.size(), "There can be no more than 15 cores.");
 		for (Ansi378v2009Am1Delta delta : deltas)
 			delta.validate(width, height);
 		if (hasDeltaAngles() && deltas.stream().anyMatch(d -> d.angles == null))
 			throw new TemplateFormatException("Inconsistent delta angle information. Either all deltas should have angles or none should.");
-		Validate.int4(deltas.size(), "There can be no more than 15 deltas.");
+		ValidateTemplate.int4(deltas.size(), "There can be no more than 15 deltas.");
 	}
 	private boolean hasCoreAngles() {
 		for (Ansi378v2009Am1Core core : cores)

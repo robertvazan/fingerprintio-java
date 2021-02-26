@@ -10,7 +10,7 @@ public class Iso19794p2v2005Fingerprint {
 	public List<Iso19794p2v2005Minutia> minutiae = new ArrayList<>();
 	public Iso19794p2v2005Fingerprint() {
 	}
-	Iso19794p2v2005Fingerprint(DataInputBuffer in, int width, int height, boolean lax) {
+	Iso19794p2v2005Fingerprint(TemplateReader in, int width, int height, boolean lax) {
 		position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2005Position.class, lax, "Unrecognized finger position code.");
 		in.skipBytes(1);
 		quality = in.readUnsignedByte();
@@ -22,7 +22,7 @@ public class Iso19794p2v2005Fingerprint {
 	}
 	void validate(int width, int height) {
 		Objects.requireNonNull(position, "Finger position must be non-null (even if unknown).");
-		Validate.int8(minutiae.size(), "There cannot be more than 255 minutiae.");
+		ValidateTemplate.int8(minutiae.size(), "There cannot be more than 255 minutiae.");
 		for (Iso19794p2v2005Minutia minutia : minutiae)
 			minutia.validate(width, height);
 	}

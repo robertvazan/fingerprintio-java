@@ -4,7 +4,7 @@ package com.machinezoo.fingerprintio.utils;
 import java.io.*;
 import com.machinezoo.noexception.*;
 
-public class DataOutputBuffer implements DataOutput {
+public class TemplateWriter implements DataOutput {
 	private final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 	private final DataOutputStream stream = new DataOutputStream(buffer);
 	@Override

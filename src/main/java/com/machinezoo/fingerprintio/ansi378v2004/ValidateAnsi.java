@@ -5,6 +5,6 @@ import com.machinezoo.fingerprintio.utils.*;
 
 class ValidateAnsi {
 	static void angle(int value, String message) {
-		Validate.range(value, 0, 179, message);
+		ValidateTemplate.range(value, 0, 179, message);
 	}
 }

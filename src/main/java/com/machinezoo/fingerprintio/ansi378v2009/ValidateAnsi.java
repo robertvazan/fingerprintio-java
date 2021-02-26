@@ -5,9 +5,9 @@ import com.machinezoo.fingerprintio.utils.*;
 
 class ValidateAnsi {
 	static void angle(int value, String message) {
-		Validate.range(value, 0, 179, message);
+		ValidateTemplate.range(value, 0, 179, message);
 	}
 	static void quality(int value, String message) {
-		Validate.condition(value >= 0 && value <= 100 || value == 254 || value == 255, message);
+		ValidateTemplate.condition(value >= 0 && value <= 100 || value == 254 || value == 255, message);
 	}
 }

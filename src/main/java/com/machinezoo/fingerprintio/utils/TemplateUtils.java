@@ -7,30 +7,30 @@ import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.noexception.throwing.*;
 
 public class TemplateUtils {
-	public static void decodeTemplate(byte[] template, ThrowingConsumer<DataInputBuffer> parser) {
+	public static void decodeTemplate(byte[] template, ThrowingConsumer<TemplateReader> parser) {
 		decodeBytes(template, "Unexpected end of template data.", parser);
 	}
-	public static void decodeExtension(byte[] extension, ThrowingConsumer<DataInputBuffer> parser) {
+	public static void decodeExtension(byte[] extension, ThrowingConsumer<TemplateReader> parser) {
 		decodeBytes(extension, "Unexpected end of extension block.", parser);
 	}
-	public static void decodeBytes(byte[] data, String eofMessage, ThrowingConsumer<DataInputBuffer> parser) {
+	public static void decodeBytes(byte[] data, String eofMessage, ThrowingConsumer<TemplateReader> parser) {
 		try {
-			DataInputBuffer in = new DataInputBuffer(data);
+			TemplateReader in = new TemplateReader(data);
 			parser.accept(in);
 		} catch (Throwable ex) {
 			throw convertException(ex, eofMessage);
 		}
 	}
-	public static <T> T decodeBytesTo(byte[] data, String eofMessage, ThrowingFunction<DataInputBuffer, T> parser) {
+	public static <T> T decodeBytesTo(byte[] data, String eofMessage, ThrowingFunction<TemplateReader, T> parser) {
 		try {
-			DataInputBuffer in = new DataInputBuffer(data);
+			TemplateReader in = new TemplateReader(data);
 			return parser.apply(in);
 		} catch (Throwable ex) {
 			throw convertException(ex, eofMessage);
 		}
 	}
 	private static TemplateFormatException convertException(Throwable ex, String eofMessage) {
-		if (ex instanceof BufferEofException)
+		if (ex instanceof TemplateEofException)
 			return new TemplateFormatException(eofMessage);
 		if (ex instanceof TemplateFormatException)
 			return (TemplateFormatException)ex;
@@ -46,7 +46,7 @@ public class TemplateUtils {
 	}
 	public static <T> T decodeType(int code, T[] candidates, ToIntFunction<T> codes, boolean lax, String message) {
 		T type = Arrays.stream(candidates).filter(t -> codes.applyAsInt(t) == code).findFirst().orElse(null);
-		Validate.condition(type != null, lax, message);
+		ValidateTemplate.condition(type != null, lax, message);
 		return type;
 	}
 }

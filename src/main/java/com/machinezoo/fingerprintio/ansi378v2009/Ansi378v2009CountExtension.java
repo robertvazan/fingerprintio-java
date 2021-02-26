@@ -14,7 +14,7 @@ public class Ansi378v2009CountExtension {
 		TemplateUtils.decodeExtension(extension, in -> {
 			type = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009CountType.class, lax, "Unrecognized edge picking method.");
 			int count = (extension.length - 1) / 3;
-			Validate.condition(3 * count == extension.length - 1, lax, "Extra misaligned data at the end of ridge count extension.");
+			ValidateTemplate.condition(3 * count == extension.length - 1, lax, "Extra misaligned data at the end of ridge count extension.");
 			for (int i = 0; i < count; ++i)
 				edges.add(new Ansi378v2009CountEdge(in));
 		});
@@ -26,7 +26,7 @@ public class Ansi378v2009CountExtension {
 		return extension;
 	}
 	byte[] toByteArray() {
-		DataOutputBuffer out = new DataOutputBuffer();
+		TemplateWriter out = new TemplateWriter();
 		out.writeByte(type.ordinal());
 		for (Ansi378v2009CountEdge edge : edges)
 			edge.write(out);
@@ -39,6 +39,6 @@ public class Ansi378v2009CountExtension {
 		Objects.requireNonNull(type, "Edge picking method must be non-null.");
 		for (Ansi378v2009CountEdge edge : edges)
 			edge.validate(minutiaCount);
-		Validate.int16(measure(), "Ridge count extension size must be an unsigned 16-bit number.");
+		ValidateTemplate.int16(measure(), "Ridge count extension size must be an unsigned 16-bit number.");
 	}
 }

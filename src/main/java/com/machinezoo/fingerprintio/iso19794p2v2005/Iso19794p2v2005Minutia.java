@@ -12,7 +12,7 @@ public class Iso19794p2v2005Minutia {
 	public int quality;
 	public Iso19794p2v2005Minutia() {
 	}
-	Iso19794p2v2005Minutia(DataInputBuffer in, boolean lax) {
+	Iso19794p2v2005Minutia(TemplateReader in, boolean lax) {
 		positionX = in.readUnsignedShort();
 		type = TemplateUtils.decodeType(positionX >> 14, Iso19794p2v2005MinutiaType.class, lax, "Unrecognized minutia type code.");
 		positionX &= 0x3fff;
@@ -22,8 +22,8 @@ public class Iso19794p2v2005Minutia {
 	}
 	void validate(int width, int height) {
 		Objects.requireNonNull(type, "Minutia type must be non-null.");
-		Validate.position(positionX, width, "Minutia X position must be an unsigned 14-bit number less than image width.");
-		Validate.position(positionY, height, "Minutia Y position must be an unsigned 14-bit number less than image height.");
-		Validate.int8(angle, "Minutia angle must be an unsigned 8-bit number.");
+		ValidateTemplate.position(positionX, width, "Minutia X position must be an unsigned 14-bit number less than image width.");
+		ValidateTemplate.position(positionY, height, "Minutia Y position must be an unsigned 14-bit number less than image height.");
+		ValidateTemplate.int8(angle, "Minutia angle must be an unsigned 8-bit number.");
 	}
 }

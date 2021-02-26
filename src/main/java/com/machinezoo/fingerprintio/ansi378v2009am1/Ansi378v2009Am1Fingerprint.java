@@ -25,7 +25,7 @@ public class Ansi378v2009Am1Fingerprint {
 	public List<Ansi378v2009Am1Extension> extensions = new ArrayList<>();
 	public Ansi378v2009Am1Fingerprint() {
 	}
-	Ansi378v2009Am1Fingerprint(DataInputBuffer in, boolean lax) {
+	Ansi378v2009Am1Fingerprint(TemplateReader in, boolean lax) {
 		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1Position.class, lax, "Unrecognized finger position code.");
 		view = in.readUnsignedByte();
 		scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1ScanType.values(), t -> t.code, lax, "Unrecognized sensor type code.");
@@ -51,7 +51,7 @@ public class Ansi378v2009Am1Fingerprint {
 				extensions.add(extension);
 			readBytes += extension.measure();
 		}
-		Validate.condition(readBytes == totalBytes, lax, "Total length of extension data doesn't match the sum of extension block lengths.");
+		ValidateTemplate.condition(readBytes == totalBytes, lax, "Total length of extension data doesn't match the sum of extension block lengths.");
 	}
 	private void decodeExtension(Ansi378v2009Am1Extension extension, Consumer<byte[]> decoder, boolean lax, String message) {
 		try {
@@ -63,7 +63,7 @@ public class Ansi378v2009Am1Fingerprint {
 			extensions.add(extension);
 		}
 	}
-	void write(DataOutputBuffer out) {
+	void write(TemplateWriter out) {
 		out.writeByte(position.ordinal());
 		out.writeByte(view);
 		out.writeByte(scanType.code);
@@ -93,16 +93,16 @@ public class Ansi378v2009Am1Fingerprint {
 	}
 	void validate() {
 		Objects.requireNonNull(position, "Finger position must be non-null (even if unknown).");
-		Validate.int4(view, "View offset must be an unsigned 4-bit number.");
+		ValidateTemplate.int4(view, "View offset must be an unsigned 4-bit number.");
 		Objects.requireNonNull(scanType, "Scan type must be non-null.");
 		ValidateAnsi.quality(quality, "Fingerprint quality must be in range 0 through 100 or one of the special values 254 and 255.");
-		Validate.nonzero16(qualityVendorId, "Quality algorithm vendor ID must a nonzero unsigned 16-bit number.");
-		Validate.int16(qualityAlgorithmId, "Quality algorithm ID must an unsigned 16-bit number.");
-		Validate.nonzero16(width, "Image width must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(height, "Image height must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(resolutionX, "Horizontal pixel density must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(resolutionY, "Vertical pixel density must be a non-zero unsigned 16-bit number.");
-		Validate.int8(minutiae.size(), "There cannot be more than 255 minutiae.");
+		ValidateTemplate.nonzero16(qualityVendorId, "Quality algorithm vendor ID must a nonzero unsigned 16-bit number.");
+		ValidateTemplate.int16(qualityAlgorithmId, "Quality algorithm ID must an unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(width, "Image width must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(height, "Image height must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(resolutionX, "Horizontal pixel density must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(resolutionY, "Vertical pixel density must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.int8(minutiae.size(), "There cannot be more than 255 minutiae.");
 		for (Ansi378v2009Am1Minutia minutia : minutiae)
 			minutia.validate(width, height);
 		if (counts != null)
@@ -111,7 +111,7 @@ public class Ansi378v2009Am1Fingerprint {
 			coredelta.validate(width, height);
 		for (Ansi378v2009Am1Extension extension : extensions)
 			extension.validate();
-		Validate.int16(extensionBytes(), "Total size of all extension blocks must a 16-bit number.");
+		ValidateTemplate.int16(extensionBytes(), "Total size of all extension blocks must a 16-bit number.");
 	}
 	private int extensionBytes() {
 		int bytes = extensions.stream().mapToInt(Ansi378v2009Am1Extension::measure).sum();

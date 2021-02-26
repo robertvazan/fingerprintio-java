@@ -10,7 +10,7 @@ public class Ansi378v2009Am1Extension {
 	public byte[] data;
 	public Ansi378v2009Am1Extension() {
 	}
-	Ansi378v2009Am1Extension(DataInputBuffer in) {
+	Ansi378v2009Am1Extension(TemplateReader in) {
 		type = in.readUnsignedShort();
 		int length = in.readUnsignedShort();
 		if (length < 4)
@@ -18,7 +18,7 @@ public class Ansi378v2009Am1Extension {
 		data = new byte[length - 4];
 		in.readFully(data);
 	}
-	void write(DataOutputBuffer out) {
+	void write(TemplateWriter out) {
 		out.writeShort(type);
 		out.writeShort(measure());
 		out.write(data);
@@ -27,11 +27,11 @@ public class Ansi378v2009Am1Extension {
 		return data.length + 4;
 	}
 	void validate() {
-		Validate.nonzero16(type, "Extension type must be a non-zero unsigned 16-bit number.");
-		Validate.condition((type & 0xff) != 0, "Extension type must not be in reserved range.");
+		ValidateTemplate.nonzero16(type, "Extension type must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.condition((type & 0xff) != 0, "Extension type must not be in reserved range.");
 		if ((type >> 8) == 0)
-			Validate.condition((type & 0xff) <= 2, "Extension type must not be in reserved range.");
+			ValidateTemplate.condition((type & 0xff) <= 2, "Extension type must not be in reserved range.");
 		Objects.requireNonNull(data, "Extension data must be non-null.");
-		Validate.int16(measure(), "Extension length must be an unsigned 16-bit number.");
+		ValidateTemplate.int16(measure(), "Extension length must be an unsigned 16-bit number.");
 	}
 }

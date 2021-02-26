@@ -17,7 +17,7 @@ public class Iso19794p2v2005Template {
 			return false;
 		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
 			return false;
-		DataInputBuffer in = new DataInputBuffer(template);
+		TemplateReader in = new TemplateReader(template);
 		in.skipBytes(magic.length);
 		/*
 		 * Differentiate from ANSI 378 by examining the length field.
@@ -64,8 +64,8 @@ public class Iso19794p2v2005Template {
 		TemplateUtils.decodeTemplate(template, in -> {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
-			Validate.condition(length >= 24, "Total length must be at least 24 bytes.");
-			Validate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length >= 24, "Total length must be at least 24 bytes.");
+			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
 			in.skipBytes(2);
 			width = in.readUnsignedShort();
 			height = in.readUnsignedShort();
@@ -77,17 +77,17 @@ public class Iso19794p2v2005Template {
 				fingerprints.add(new Iso19794p2v2005Fingerprint(in, width, height, lax));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			Validate.template(this::validate, lax);
+			ValidateTemplate.structure(this::validate, lax);
 		});
 	}
 	private void validate() {
-		Validate.nonzero16(width, "Image width must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(height, "Image height must be a non-zero unsigned 16-bit number.");
-		Validate.nonzero16(resolutionX, "Horizontal pixel density must be a non-zero unsigned 16-bit number.");
-		Validate.condition(resolutionX >= 99, "Horizontal pixel density must be at least 99 (DPI 250+).");
-		Validate.nonzero16(resolutionY, "Vertical pixel density must be a non-zero unsigned 16-bit number.");
-		Validate.condition(resolutionY >= 99, "Vertical pixel density must be at least 99 (DPI 250+).");
-		Validate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
+		ValidateTemplate.nonzero16(width, "Image width must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(height, "Image height must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.nonzero16(resolutionX, "Horizontal pixel density must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.condition(resolutionX >= 99, "Horizontal pixel density must be at least 99 (DPI 250+).");
+		ValidateTemplate.nonzero16(resolutionY, "Vertical pixel density must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.condition(resolutionY >= 99, "Vertical pixel density must be at least 99 (DPI 250+).");
+		ValidateTemplate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
 		for (Iso19794p2v2005Fingerprint fp : fingerprints)
 			fp.validate(width, height);
 	}

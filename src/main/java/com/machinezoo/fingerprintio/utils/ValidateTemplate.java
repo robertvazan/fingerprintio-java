@@ -4,8 +4,8 @@ package com.machinezoo.fingerprintio.utils;
 import org.slf4j.*;
 import com.machinezoo.fingerprintio.common.*;
 
-public class Validate {
-	private static Logger logger = LoggerFactory.getLogger(Validate.class);
+public class ValidateTemplate {
+	private static Logger logger = LoggerFactory.getLogger(ValidateTemplate.class);
 	public static void fail(boolean lax, String message) {
 		if (lax)
 			logger.warn(message);
@@ -62,7 +62,7 @@ public class Validate {
 			logger.warn(message, ex);
 		}
 	}
-	public static void template(Runnable validator, boolean lax) {
+	public static void structure(Runnable validator, boolean lax) {
 		rules(validator, lax, "Template failed validation.");
 	}
 }

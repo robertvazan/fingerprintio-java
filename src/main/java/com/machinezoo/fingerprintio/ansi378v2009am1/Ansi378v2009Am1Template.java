@@ -38,8 +38,8 @@ public class Ansi378v2009Am1Template {
 		TemplateUtils.decodeTemplate(template, in -> {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
-			Validate.condition(length >= 21, "Total length must be at least 21 bytes.");
-			Validate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length >= 21, "Total length must be at least 21 bytes.");
+			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
 			vendorId = in.readUnsignedShort();
 			subformat = in.readUnsignedShort();
 			int certification = in.readUnsignedByte();
@@ -53,12 +53,12 @@ public class Ansi378v2009Am1Template {
 				fingerprints.add(new Ansi378v2009Am1Fingerprint(in, lax));
 			if (in.available() > 0)
 				logger.debug("Ignored extra data at the end of the template.");
-			Validate.template(this::validate, lax);
+			ValidateTemplate.structure(this::validate, lax);
 		});
 	}
 	public byte[] toByteArray() {
 		validate();
-		DataOutputBuffer out = new DataOutputBuffer();
+		TemplateWriter out = new TemplateWriter();
 		out.write(magic);
 		out.writeInt(measure());
 		out.writeShort(vendorId);
@@ -80,11 +80,11 @@ public class Ansi378v2009Am1Template {
 		return 21 + fingerprints.stream().mapToInt(Ansi378v2009Am1Fingerprint::measure).sum();
 	}
 	private void validate() {
-		Validate.nonzero16(vendorId, "Vendor ID must be a non-zero unsigned 16-bit number.");
-		Validate.int16(subformat, "Vendor subformat must be an unsigned 16-bit number.");
-		Validate.int16(sensorId, "Sensor ID must be an unsigned 16-bit number.");
-		Validate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
-		Validate.nonzero(fingerprints.size(), "At least one fingerprint must be present in the template.");
+		ValidateTemplate.nonzero16(vendorId, "Vendor ID must be a non-zero unsigned 16-bit number.");
+		ValidateTemplate.int16(subformat, "Vendor subformat must be an unsigned 16-bit number.");
+		ValidateTemplate.int16(sensorId, "Sensor ID must be an unsigned 16-bit number.");
+		ValidateTemplate.int8(fingerprints.size(), "There cannot be more than 255 fingerprints.");
+		ValidateTemplate.nonzero(fingerprints.size(), "At least one fingerprint must be present in the template.");
 		for (Ansi378v2009Am1Fingerprint fp : fingerprints)
 			fp.validate();
 		if (fingerprints.size() != fingerprints.stream().map(fp -> (fp.position.ordinal() << 16) + fp.view).distinct().count())
@@ -94,7 +94,7 @@ public class Ansi378v2009Am1Template {
 			.values().stream()
 			.forEach(l -> {
 				for (int i = 0; i < l.size(); ++i) {
-					Validate.range(l.get(i).view, 0, l.size() - 1, "Fingerprint view numbers must be assigned contiguously, starting from zero.");
+					ValidateTemplate.range(l.get(i).view, 0, l.size() - 1, "Fingerprint view numbers must be assigned contiguously, starting from zero.");
 					if (!l.equals(l.stream().sorted(Comparator.comparingInt(fp -> fp.view)).collect(toList())))
 						throw new TemplateFormatException("Fingerprints with the same finger position must be sorted by view number.");
 					if (fingerprints.indexOf(l.get(0)) + l.size() - 1 != fingerprints.indexOf(l.get(l.size() - 1)))

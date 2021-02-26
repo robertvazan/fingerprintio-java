@@ -12,7 +12,7 @@ public class Ansi378v2004Minutia {
 	public int quality;
 	public Ansi378v2004Minutia() {
 	}
-	Ansi378v2004Minutia(DataInputBuffer in, boolean lax) {
+	Ansi378v2004Minutia(TemplateReader in, boolean lax) {
 		positionX = in.readUnsignedShort();
 		type = TemplateUtils.decodeType(positionX >> 14, Ansi378v2004MinutiaType.class, lax, "Unrecognized minutia type code.");
 		positionX &= 0x3fff;
@@ -20,7 +20,7 @@ public class Ansi378v2004Minutia {
 		angle = in.readUnsignedByte();
 		quality = in.readUnsignedByte();
 	}
-	void write(DataOutputBuffer out) {
+	void write(TemplateWriter out) {
 		out.writeShort((type.ordinal() << 14) | positionX);
 		out.writeShort(positionY);
 		out.writeByte(angle);
@@ -28,9 +28,9 @@ public class Ansi378v2004Minutia {
 	}
 	void validate(int width, int height) {
 		Objects.requireNonNull(type, "Minutia type must be non-null.");
-		Validate.position(positionX, width, "Minutia X position must be an unsigned 14-bit number less than image width.");
-		Validate.position(positionY, height, "Minutia Y position must be an unsigned 14-bit number less than image height.");
+		ValidateTemplate.position(positionX, width, "Minutia X position must be an unsigned 14-bit number less than image width.");
+		ValidateTemplate.position(positionY, height, "Minutia Y position must be an unsigned 14-bit number less than image height.");
 		ValidateAnsi.angle(angle, "Minutia angle must be in range 0 through 179.");
-		Validate.range(quality, 0, 100, "Minutia quality must be in range 0 through 100.");
+		ValidateTemplate.range(quality, 0, 100, "Minutia quality must be in range 0 through 100.");
 	}
 }
