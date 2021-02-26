@@ -216,20 +216,6 @@ public class Ansi378v2009TemplateTest {
 		byte[] roundtripped = new Ansi378v2009Template(original).toByteArray();
 		assertArrayEquals(original, roundtripped);
 	}
-	@Test
-	public void upgrade() {
-		byte[] original = sample();
-		/*
-		 * ANSI 378-2009 spec doesn't get its own sample right. Length field is off by one. Let's correct it here.
-		 */
-		original[11] = 108;
-		byte[] upgraded = decode().upgrade().toByteArray();
-		/*
-		 * Version should be the only difference.
-		 */
-		upgraded[6] = '0';
-		assertArrayEquals(original, upgraded);
-	}
 	private Ansi378v2009Template decode() {
 		byte[] bytes = sample();
 		assertTrue(Ansi378v2009Template.accepts(bytes));

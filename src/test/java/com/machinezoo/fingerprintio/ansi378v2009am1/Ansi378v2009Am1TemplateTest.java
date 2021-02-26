@@ -211,16 +211,6 @@ public class Ansi378v2009Am1TemplateTest {
 		byte[] roundtripped = new Ansi378v2009Am1Template(original).toByteArray();
 		assertArrayEquals(original, roundtripped);
 	}
-	@Test
-	public void downgrade() {
-		byte[] original = sample();
-		byte[] downgraded = decode().downgrade().toByteArray();
-		/*
-		 * Version should be the only difference.
-		 */
-		downgraded[6] = '5';
-		assertArrayEquals(original, downgraded);
-	}
 	private Ansi378v2009Am1Template decode() {
 		/*
 		 * Sample template from the spec.

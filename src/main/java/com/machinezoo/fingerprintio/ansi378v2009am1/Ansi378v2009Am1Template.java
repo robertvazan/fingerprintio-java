@@ -118,11 +118,6 @@ public class Ansi378v2009Am1Template {
 			fp.write(out);
 		return out.toByteArray();
 	}
-	public Ansi378v2009Template downgrade() {
-		byte[] serialized = toByteArray();
-		serialized[6] = '0';
-		return new Ansi378v2009Template(serialized);
-	}
 	private int measure() {
 		return 21 + fingerprints.stream().mapToInt(Ansi378v2009Am1Fingerprint::measure).sum();
 	}
