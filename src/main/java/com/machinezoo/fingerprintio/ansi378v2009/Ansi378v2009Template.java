@@ -70,9 +70,27 @@ public class Ansi378v2009Template {
 	 */
 	public Ansi378v2009Template() {
 	}
+	/**
+	 * Parses and validates ANSI INCITS 378-2009 template.
+	 * 
+	 * @param template
+	 *            serialized template in ANSI INCITS 378-2009 format
+	 * @throws TemplateFormatException
+	 *             if the template cannot be parsed or it fails validation
+	 */
 	public Ansi378v2009Template(byte[] template) {
 		this(template, true);
 	}
+	/**
+	 * Parses and optionally validates ANSI INCITS 378-2009 template.
+	 * 
+	 * @param template
+	 *            serialized template in ANSI INCITS 378-2009 format
+	 * @param strict
+	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
+	 * @throws TemplateFormatException
+	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 */
 	public Ansi378v2009Template(byte[] template, boolean strict) {
 		if (!accepts(template)) {
 			if (!strict && Ansi378v2009Am1Template.accepts(template)) {
@@ -102,6 +120,13 @@ public class Ansi378v2009Template {
 			ValidateTemplate.structure(this::validate, strict);
 		});
 	}
+	/**
+	 * Validates and serializes the template in ANSI INCITS 378-2009 format.
+	 * 
+	 * @return serialized template in ANSI INCITS 378-2009 format
+	 * @throws TemplateFormatException
+	 *             if the template fails validation
+	 */
 	public byte[] toByteArray() {
 		validate();
 		TemplateWriter out = new TemplateWriter();
