@@ -7,7 +7,7 @@ public class TemplateFormatException extends RuntimeException {
 		super(message);
 	}
 	public TemplateFormatException(Throwable cause) {
-		super("Bad template.", cause);
+		super("Malformed template.", cause);
 	}
 	public TemplateFormatException(String message, Throwable cause) {
 		super(message, cause);
