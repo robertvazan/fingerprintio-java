@@ -6,16 +6,51 @@ import java.util.function.*;
 import org.slf4j.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Fingerprint (<a href="https://templates.machinezoo.com/ansi378-2004#fingerprint">FINGERPRINT</a>).
+ */
 public class Ansi378v2004Fingerprint {
 	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2004Fingerprint.class);
+	/**
+	 * Finger position on hands (<a href="https://templates.machinezoo.com/ansi378-2004#position">POSITION</a>).
+	 * Defaults to {@link Ansi378v2004Position#UNKNOWN}.
+	 */
 	public Ansi378v2004Position position = Ansi378v2004Position.UNKNOWN;
+	/**
+	 * Finger view number (<a href="https://templates.machinezoo.com/ansi378-2004#viewoffset">VIEWOFFSET</a>).
+	 */
 	public int view;
+	/**
+	 * Impression type (<a href="https://templates.machinezoo.com/ansi378-2004#sampletype">SAMPLETYPE</a>).
+	 * Defaults to {@link Ansi378v2004ScanType#LIVE_PLAIN}.
+	 */
 	public Ansi378v2004ScanType scanType = Ansi378v2004ScanType.LIVE_PLAIN;
+	/**
+	 * Fingerprint quality (<a href="https://templates.machinezoo.com/ansi378-2004#fpquality">FPQUALITY</a>).
+	 * Defaults to 100.
+	 */
 	public int quality = 100;
+	/**
+	 * List of minutiae (<a href="https://templates.machinezoo.com/ansi378-2004#minutia">MINUTIA</a>).
+	 */
 	public List<Ansi378v2004Minutia> minutiae = new ArrayList<>();
+	/**
+	 * Ridge count extension (<a href="https://templates.machinezoo.com/ansi378-2004#rcountext">RCOUNTEXT</a>).
+	 * This field is {@code null} if ridge count extension is not present.
+	 */
 	public Ansi378v2004CountExtension counts;
+	/**
+	 * Core and delta extension (<a href="https://templates.machinezoo.com/ansi378-2004#coredelta">COREDELTA</a>).
+	 * This field is {@code null} if core and delta extension is not present.
+	 */
 	public Ansi378v2004CoreDeltaExtension coredelta;
+	/**
+	 * List of extension data blocks (<a href="https://templates.machinezoo.com/ansi378-2004#extension">EXTENSION</a>).
+	 */
 	public List<Ansi378v2004Extension> extensions = new ArrayList<>();
+	/**
+	 * Creates new fingerprint (<a href="https://templates.machinezoo.com/ansi378-2004#fingerprint">FINGERPRINT</a>).
+	 */
 	public Ansi378v2004Fingerprint() {
 	}
 	Ansi378v2004Fingerprint(TemplateReader in, boolean strict) {

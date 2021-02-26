@@ -7,8 +7,10 @@ import org.slf4j.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
-/*
- * Object model of ANSI INCITS 378-2004 template.
+/**
+ * ANSI INCITS 378-2004 template.
+ * 
+ * @see <a href="https://templates.machinezoo.com/ansi378-2004">ANSI INCITS 378-2004 Summary</a>
  */
 public class Ansi378v2004Template {
 	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2004Template.class);
@@ -49,15 +51,46 @@ public class Ansi378v2004Template {
 			}
 		}
 	}
+	/**
+	 * Vendor ID (<a href="https://templates.machinezoo.com/ansi378-2004#vendor">VENDOR</a>).
+	 */
 	public int vendorId = IbiaOrganizations.UNKNOWN;
+	/**
+	 * Vendor-specified subformat (<a href="https://templates.machinezoo.com/ansi378-2004#subformat">SUBFORMAT</a>).
+	 */
 	public int subformat;
+	/**
+	 * Indicates that the fingerprint reader has certificate of compliance with Appendix F of CJIS-RS-0010 V7.
+	 * This is the top bit of <a href="https://templates.machinezoo.com/ansi378-2004#devstamp">DEVSTAMP</a> field.
+	 */
 	public boolean sensorCertified;
+	/**
+	 * Sensor ID (<a href="https://templates.machinezoo.com/ansi378-2004#devid">DEVID</a>).
+	 */
 	public int sensorId;
+	/**
+	 * Image width (<a href="https://templates.machinezoo.com/ansi378-2004#width">WIDTH</a>).
+	 */
 	public int width;
+	/**
+	 * Image height (<a href="https://templates.machinezoo.com/ansi378-2004#height">HEIGHT</a>).
+	 */
 	public int height;
+	/**
+	 * Horizontal pixel density (<a href="https://templates.machinezoo.com/ansi378-2004#resolutionx">RESOLUTIONX</a>).
+	 */
 	public int resolutionX;
+	/**
+	 * Vertical pixel density (<a href="https://templates.machinezoo.com/ansi378-2004#resolutiony">RESOLUTIONY</a>).
+	 */
 	public int resolutionY;
+	/**
+	 * List of fingerprints (<a href="https://templates.machinezoo.com/ansi378-2004#fingerprint">FINGERPRINT</a>).
+	 */
 	public List<Ansi378v2004Fingerprint> fingerprints = new ArrayList<>();
+	/**
+	 * Creates new ANSI INCITS 378-2004 template.
+	 */
 	public Ansi378v2004Template() {
 	}
 	public Ansi378v2004Template(byte[] template) {

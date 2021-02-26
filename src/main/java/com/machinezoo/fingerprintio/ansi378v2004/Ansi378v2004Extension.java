@@ -5,9 +5,23 @@ import java.util.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Extension data block (<a href="https://templates.machinezoo.com/ansi378-2004#extension">EXTENSION</a>).
+ * Predefined extension blocks have specialized representation.
+ * See {@link Ansi378v2004CountExtension} and {@link Ansi378v2004CoreDeltaExtension}.
+ */
 public class Ansi378v2004Extension {
+	/**
+	 * Extension type (<a href="https://templates.machinezoo.com/ansi378-2004#exttype">EXTTYPE</a>).
+	 */
 	public int type;
+	/**
+	 * Extension data (<a href="https://templates.machinezoo.com/ansi378-2004#extdata">EXTDATA</a>).
+	 */
 	public byte[] data;
+	/**
+	 * Creates new extension data block (<a href="https://templates.machinezoo.com/ansi378-2004#extension">EXTENSION</a>).
+	 */
 	public Ansi378v2004Extension() {
 	}
 	Ansi378v2004Extension(TemplateReader in) {

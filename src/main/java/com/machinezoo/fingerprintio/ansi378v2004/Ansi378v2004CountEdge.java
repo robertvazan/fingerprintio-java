@@ -3,10 +3,25 @@ package com.machinezoo.fingerprintio.ansi378v2004;
 
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Edge between minutiae (<a href="https://templates.machinezoo.com/ansi378-2004#edgedef">EDGEDEF</a>).
+ */
 public class Ansi378v2004CountEdge {
+	/**
+	 * Starting minutia of the edge (<a href="https://templates.machinezoo.com/ansi378-2004#edgefrom">EDGEFROM</a>).
+	 */
 	public int from;
+	/**
+	 * Ending minutia of the edge (<a href="https://templates.machinezoo.com/ansi378-2004#edgeto">EDGETO</a>).
+	 */
 	public int to;
+	/**
+	 * Number of ridges the edge crosses (<a href="https://templates.machinezoo.com/ansi378-2004#ridgecount">RIDGECOUNT</a>).
+	 */
 	public int count;
+	/**
+	 * Creates new edge between minutiae (<a href="https://templates.machinezoo.com/ansi378-2004#edgedef">EDGEDEF</a>).
+	 */
 	public Ansi378v2004CountEdge() {
 	}
 	Ansi378v2004CountEdge(TemplateReader in) {
