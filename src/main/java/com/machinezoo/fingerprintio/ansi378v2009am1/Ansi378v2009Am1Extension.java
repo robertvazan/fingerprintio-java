@@ -2,7 +2,7 @@
 package com.machinezoo.fingerprintio.ansi378v2009am1;
 
 import java.util.*;
-import com.machinezoo.fingerprintio.common.*;
+import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
 
 /**

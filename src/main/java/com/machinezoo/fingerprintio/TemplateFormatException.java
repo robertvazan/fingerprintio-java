@@ -1,5 +1,5 @@
 // Part of FingerprintIO: https://fingerprintio.machinezoo.com
-package com.machinezoo.fingerprintio.common;
+package com.machinezoo.fingerprintio;
 
 @SuppressWarnings("serial")
 public class TemplateFormatException extends RuntimeException {

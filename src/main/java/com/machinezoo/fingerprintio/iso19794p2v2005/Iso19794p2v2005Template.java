@@ -3,7 +3,7 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import java.util.*;
 import org.slf4j.*;
-import com.machinezoo.fingerprintio.common.*;
+import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
 
 /*

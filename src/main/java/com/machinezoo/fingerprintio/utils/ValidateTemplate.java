@@ -2,7 +2,7 @@
 package com.machinezoo.fingerprintio.utils;
 
 import org.slf4j.*;
-import com.machinezoo.fingerprintio.common.*;
+import com.machinezoo.fingerprintio.*;
 
 public class ValidateTemplate {
 	private static Logger logger = LoggerFactory.getLogger(ValidateTemplate.class);

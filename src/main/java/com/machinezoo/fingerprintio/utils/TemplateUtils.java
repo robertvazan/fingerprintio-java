@@ -3,7 +3,7 @@ package com.machinezoo.fingerprintio.utils;
 
 import java.util.*;
 import java.util.function.*;
-import com.machinezoo.fingerprintio.common.*;
+import com.machinezoo.fingerprintio.*;
 import com.machinezoo.noexception.throwing.*;
 
 public class TemplateUtils {

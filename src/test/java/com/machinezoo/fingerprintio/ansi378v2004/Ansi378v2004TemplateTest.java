@@ -4,7 +4,6 @@ package com.machinezoo.fingerprintio.ansi378v2004;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import com.machinezoo.fingerprintio.*;
-import com.machinezoo.fingerprintio.common.*;
 
 public class Ansi378v2004TemplateTest {
 	@Test

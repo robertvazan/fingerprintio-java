@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.*;
 import java.io.*;
 import java.util.*;
 import org.slf4j.*;
+import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.ansi378v2009am1.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
