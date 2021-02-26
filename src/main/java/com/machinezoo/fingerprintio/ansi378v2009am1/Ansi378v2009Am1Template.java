@@ -17,7 +17,7 @@ public class Ansi378v2009Am1Template {
 	public static boolean accepts(byte[] template) {
 		return template.length >= magic.length && Arrays.equals(magic, Arrays.copyOf(template, magic.length));
 	}
-	public int vendorId = BiometricOrganizations.UNKNOWN;
+	public int vendorId = IbiaOrganizations.UNKNOWN;
 	public int subformat;
 	public boolean sensorCertified;
 	public int sensorId;

@@ -13,8 +13,8 @@ public class Ansi378v2009Am1Fingerprint {
 	public int view;
 	public Ansi378v2009Am1ScanType scanType = Ansi378v2009Am1ScanType.LIVE_PLAIN;
 	public int quality = 254;
-	public int qualityVendorId = BiometricOrganizations.UNKNOWN;
-	public int qualityAlgorithmId = BiometricQualityAlgorithms.UNKNOWN;
+	public int qualityVendorId = IbiaOrganizations.UNKNOWN;
+	public int qualityAlgorithmId = IbiaQualityAlgorithms.UNKNOWN;
 	public int width;
 	public int height;
 	public int resolutionX;

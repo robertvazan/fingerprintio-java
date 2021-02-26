@@ -1,13 +1,13 @@
 // Part of FingerprintIO: https://fingerprintio.machinezoo.com
 package com.machinezoo.fingerprintio.common;
 
-public interface BiometricQualityAlgorithms {
+public interface IbiaQualityAlgorithms {
 	/*
-	 * BiometricOrganizations.NIST
+	 * IbiaOrganizations.NIST
 	 */
 	public static final int NIST_NFIQ = 0x377d;
 	/*
-	 * BiometricOrganizations.UNKNOWN
+	 * IbiaOrganizations.UNKNOWN
 	 */
 	public static final int UNKNOWN = 0x0001;
 }

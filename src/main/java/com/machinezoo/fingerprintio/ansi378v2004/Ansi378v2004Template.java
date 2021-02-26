@@ -49,7 +49,7 @@ public class Ansi378v2004Template {
 			}
 		}
 	}
-	public int vendorId = BiometricOrganizations.UNKNOWN;
+	public int vendorId = IbiaOrganizations.UNKNOWN;
 	public int subformat;
 	public boolean sensorCertified;
 	public int sensorId;
