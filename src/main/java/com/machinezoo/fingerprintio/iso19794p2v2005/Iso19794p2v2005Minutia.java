@@ -20,10 +20,17 @@ public class Iso19794p2v2005Minutia {
 		angle = in.readUnsignedByte();
 		quality = in.readUnsignedByte();
 	}
+	void write(TemplateWriter out) {
+		out.writeShort((type.ordinal() << 14) | positionX);
+		out.writeShort(positionY);
+		out.writeByte(angle);
+		out.writeByte(quality);
+	}
 	void validate(int width, int height) {
 		Objects.requireNonNull(type, "Minutia type must be non-null.");
 		ValidateTemplate.position(positionX, width, "Minutia X position must be an unsigned 14-bit number less than image width.");
 		ValidateTemplate.position(positionY, height, "Minutia Y position must be an unsigned 14-bit number less than image height.");
 		ValidateTemplate.int8(angle, "Minutia angle must be an unsigned 8-bit number.");
+		ValidateTemplate.range(quality, 0, 100, "Minutia quality must be in range 0 through 100.");
 	}
 }
