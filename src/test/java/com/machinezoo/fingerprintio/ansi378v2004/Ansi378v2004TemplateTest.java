@@ -125,7 +125,7 @@ public class Ansi378v2004TemplateTest {
 	}
 	@Test
 	public void json() {
-		TestUtils.compareJson(Ansi378v2004TemplateTest.class, "ansi378-sample.json", decode());
+		TestUtils.compareJson(Ansi378v2004TemplateTest.class, "ansi378v2004-sample.json", decode());
 	}
 	@Test
 	public void spec() {
@@ -194,7 +194,7 @@ public class Ansi378v2004TemplateTest {
 		/*
 		 * Sample template from the spec.
 		 */
-		return TestUtils.resource(Ansi378v2004TemplateTest.class, "ansi378-sample.dat");
+		return TestUtils.resource(Ansi378v2004TemplateTest.class, "ansi378v2004-sample.dat");
 	}
 	public static byte[] sampleWithFixedVersion() {
 		byte[] bytes = sample();
