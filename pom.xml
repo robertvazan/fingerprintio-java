@@ -4,7 +4,7 @@
 
 	<groupId>com.machinezoo.fingerprintio</groupId>
 	<artifactId>fingerprintio</artifactId>
-	<version>0.2.1</version>
+	<version>1.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>FingerprintIO for Java</name>
