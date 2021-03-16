@@ -15,6 +15,16 @@ import com.machinezoo.fingerprintio.utils.*;
 public class Iso19794p2v2005Template {
 	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2005Template.class);
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
+	/**
+	 * Checks whether provided template is an ISO/IEC 19794-2:2005 template.
+	 * This method does not do any template validation or conformance checking.
+	 * It just differentiates ISO/IEC 19794-2:2005 from other template formats
+	 * as quickly as possible, mostly by looking at template header.
+	 * 
+	 * @param template
+	 *            serialized template that is to be evaluated
+	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2005 template, {@code false} otherwise
+	 */
 	public static boolean accepts(byte[] template) {
 		if (template.length < magic.length + 4)
 			return false;

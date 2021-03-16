@@ -18,6 +18,16 @@ import com.machinezoo.fingerprintio.utils.*;
 public class Ansi378v2009Template {
 	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2009Template.class);
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, '0', '3', '0', 0 };
+	/**
+	 * Checks whether provided template is an ANSI INCITS 378-2009 template.
+	 * This method does not do any template validation or conformance checking.
+	 * It just differentiates ANSI INCITS 378-2009 from other template formats
+	 * as quickly as possible, mostly by looking at template header.
+	 * 
+	 * @param template
+	 *            serialized template that is to be evaluated
+	 * @return {@code true} if {@code template} is an ANSI INCITS 378-2009 template, {@code false} otherwise
+	 */
 	public static boolean accepts(byte[] template) {
 		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
 			return false;
