@@ -4,9 +4,23 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Extension data block (<a href="https://templates.machinezoo.com/iso-19794-2-2005#extension">EXTENSION</a>).
+ * Predefined extension blocks have specialized representation.
+ * See {@link Iso19794p2v2005CountExtension}, {@link Iso19794p2v2005CoreDeltaExtension}, and {@link Iso19794p2v2005ZonalExtension}.
+ */
 public class Iso19794p2v2005Extension {
+	/**
+	 * Extension type (<a href="https://templates.machinezoo.com/iso-19794-2-2005#exttype">EXTTYPE</a>).
+	 */
 	public int type;
+	/**
+	 * Extension data (<a href="https://templates.machinezoo.com/iso-19794-2-2005#extdata">EXTDATA</a>).
+	 */
 	public byte[] data;
+	/**
+	 * Creates new extension data block (<a href="https://templates.machinezoo.com/iso-19794-2-2005#extension">EXTENSION</a>).
+	 */
 	public Iso19794p2v2005Extension() {
 	}
 	Iso19794p2v2005Extension(TemplateReader in) {

@@ -4,12 +4,31 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Minutia (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minutia">MINUTIA</a>).
+ */
 public class Iso19794p2v2005Minutia {
 	public Iso19794p2v2005MinutiaType type = Iso19794p2v2005MinutiaType.OTHER;
+	/**
+	 * Minutia X position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minx">MINX</a>).
+	 */
 	public int positionX;
+	/**
+	 * Minutia Y position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#miny">MINY</a>).
+	 */
 	public int positionY;
+	/**
+	 * Minutia angle (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minangle">MINANGLE</a>).
+	 */
 	public int angle;
+	/**
+	 * Minutia quality (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minquality">MINQUALITY</a>).
+	 * Defaults to zero.
+	 */
 	public int quality;
+	/**
+	 * Creates new minutia (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minutia">MINUTIA</a>).
+	 */
 	public Iso19794p2v2005Minutia() {
 	}
 	Iso19794p2v2005Minutia(TemplateReader in, boolean strict) {

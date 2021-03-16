@@ -4,10 +4,22 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Core and delta extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coredelta">COREDELTA</a>).
+ */
 public class Iso19794p2v2005CoreDeltaExtension {
 	static final int IDENTIFIER = 2;
+	/**
+	 * List of core points (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coredata">COREDATA</a>).
+	 */
 	public List<Iso19794p2v2005Core> cores = new ArrayList<>();
+	/**
+	 * List of delta points (<a href="https://templates.machinezoo.com/iso-19794-2-2005#deltadata">DELTADATA</a>).
+	 */
 	public List<Iso19794p2v2005Delta> deltas = new ArrayList<>();
+	/**
+	 * Creates new core and delta extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coredelta">COREDELTA</a>).
+	 */
 	public Iso19794p2v2005CoreDeltaExtension() {
 	}
 	Iso19794p2v2005CoreDeltaExtension(byte[] extension, boolean strict) {

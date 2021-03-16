@@ -3,10 +3,26 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Core point (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coredef">COREDEF</a>).
+ */
 public class Iso19794p2v2005Core {
+	/**
+	 * Core X position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#corex">COREX</a>).
+	 */
 	public int positionX;
+	/**
+	 * Core Y position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#corey">COREY</a>).
+	 */
 	public int positionY;
+	/**
+	 * Core angle (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coreangle">COREANGLE</a>).
+	 * This field is {@code null} if core angle is not present.
+	 */
 	public Integer angle;
+	/**
+	 * Creates new core point (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coredef">COREDEF</a>).
+	 */
 	public Iso19794p2v2005Core() {
 	}
 	Iso19794p2v2005Core(TemplateReader in) {

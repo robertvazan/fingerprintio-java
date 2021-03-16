@@ -4,12 +4,32 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Zonal quality extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonalext">ZONALEXT</a>).
+ */
 public class Iso19794p2v2005ZonalExtension {
 	static final int IDENTIFIER = 3;
+	/**
+	 * Zone width (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonewidth">ZONEWIDTH</a>).
+	 */
 	public int zoneWidth;
+	/**
+	 * Zone height (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zoneheight">ZONEHEIGHT</a>).
+	 */
 	public int zoneHeight;
+	/**
+	 * Bits per zone (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonebits">ZONEBITS</a>).
+	 * Defaults to 8.
+	 */
 	public int bits = 8;
+	/**
+	 * Zonal quality data (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonalquality">ZONALQUALITY</a>).
+	 * Every array item represents quality of one zone.
+	 */
 	public int[] quality;
+	/**
+	 * Creates new zonal quality extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonalext">ZONALEXT</a>).
+	 */
 	public Iso19794p2v2005ZonalExtension() {
 	}
 	Iso19794p2v2005ZonalExtension(byte[] extension, int imageWidth, int imageHeight, boolean strict) {

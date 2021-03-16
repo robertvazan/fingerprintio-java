@@ -3,10 +3,26 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Delta point (<a href="https://templates.machinezoo.com/iso-19794-2-2005#deltadef">DELTADEF</a>).
+ */
 public class Iso19794p2v2005Delta {
+	/**
+	 * Delta X position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#deltax">DELTAX</a>).
+	 */
 	public int positionX;
+	/**
+	 * Delta Y position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#deltay">DELTAY</a>).
+	 */
 	public int positionY;
+	/**
+	 * List of delta angles (<a href="https://templates.machinezoo.com/iso-19794-2-2005#deltaangle">DELTAANGLE</a>).
+	 * This field is either {@code null} or it is an array of exactly three angles.
+	 */
 	public int[] angles;
+	/**
+	 * Creates new delta point (<a href="https://templates.machinezoo.com/iso-19794-2-2005#deltadef">DELTADEF</a>).
+	 */
 	public Iso19794p2v2005Delta() {
 	}
 	Iso19794p2v2005Delta(TemplateReader in) {

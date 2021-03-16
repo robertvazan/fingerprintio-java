@@ -7,8 +7,10 @@ import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
 
-/*
- * Object model of ISO/IEC 19794-2:2005 template.
+/**
+ * ISO/IEC 19794-2:2005 template.
+ * 
+ * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO/IEC 19794-2:2005 Summary</a>
  */
 public class Iso19794p2v2005Template {
 	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2005Template.class);
@@ -49,18 +51,62 @@ public class Iso19794p2v2005Template {
 			}
 		}
 	}
+	/**
+	 * Indicates that the fingerprint reader has certificate of compliance with Annex B of ISO 19794-2 spec,
+	 * which is a copy of Appendix F of CJIS-RS-0010 V7.
+	 * This is the top bit of <a href="https://templates.machinezoo.com/iso-19794-2-2005#devstamp">DEVSTAMP</a> field.
+	 */
 	public boolean sensorCertified;
+	/**
+	 * Sensor ID (<a href="https://templates.machinezoo.com/iso-19794-2-2005#devid">DEVID</a>).
+	 */
 	public int sensorId;
+	/**
+	 * Image width (<a href="https://templates.machinezoo.com/iso-19794-2-2005#width">WIDTH</a>).
+	 */
 	public int width;
+	/**
+	 * Image height (<a href="https://templates.machinezoo.com/iso-19794-2-2005#height">HEIGHT</a>).
+	 */
 	public int height;
+	/**
+	 * Horizontal pixel density (<a href="https://templates.machinezoo.com/iso-19794-2-2005#resolutionx">RESOLUTIONX</a>).
+	 */
 	public int resolutionX;
+	/**
+	 * Vertical pixel density (<a href="https://templates.machinezoo.com/iso-19794-2-2005#resolutiony">RESOLUTIONY</a>).
+	 */
 	public int resolutionY;
+	/**
+	 * List of fingerprints (<a href="https://templates.machinezoo.com/iso-19794-2-2005#fingerprint">FINGERPRINT</a>).
+	 */
 	public List<Iso19794p2v2005Fingerprint> fingerprints = new ArrayList<>();
+	/**
+	 * Creates new ISO/IEC 19794-2:2005 template.
+	 */
 	public Iso19794p2v2005Template() {
 	}
+	/**
+	 * Parses and validates ISO/IEC 19794-2:2005 template.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-2:2005 format
+	 * @throws TemplateFormatException
+	 *             if the template cannot be parsed or it fails validation
+	 */
 	public Iso19794p2v2005Template(byte[] template) {
 		this(template, false);
 	}
+	/**
+	 * Parses and optionally validates ISO/IEC 19794-2:2005 template.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-2:2005 format
+	 * @param strict
+	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
+	 * @throws TemplateFormatException
+	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 */
 	public Iso19794p2v2005Template(byte[] template, boolean strict) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2005 template.");
@@ -87,6 +133,13 @@ public class Iso19794p2v2005Template {
 			ValidateTemplate.structure(this::validate, strict);
 		});
 	}
+	/**
+	 * Validates and serializes the template in ISO/IEC 19794-2:2005 format.
+	 * 
+	 * @return serialized template in ISO/IEC 19794-2:2005 format
+	 * @throws TemplateFormatException
+	 *             if the template fails validation
+	 */
 	public byte[] toByteArray() {
 		validate();
 		TemplateWriter out = new TemplateWriter();

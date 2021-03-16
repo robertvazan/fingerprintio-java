@@ -3,10 +3,25 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Edge between minutiae (<a href="https://templates.machinezoo.com/iso-19794-2-2005#edgedef">EDGEDEF</a>).
+ */
 public class Iso19794p2v2005CountEdge {
+	/**
+	 * Starting minutia of the edge (<a href="https://templates.machinezoo.com/iso-19794-2-2005#edgefrom">EDGEFROM</a>).
+	 */
 	public int from;
+	/**
+	 * Ending minutia of the edge (<a href="https://templates.machinezoo.com/iso-19794-2-2005#edgeto">EDGETO</a>).
+	 */
 	public int to;
+	/**
+	 * Number of ridges the edge crosses (<a href="https://templates.machinezoo.com/iso-19794-2-2005#ridgecount">RIDGECOUNT</a>).
+	 */
 	public int count;
+	/**
+	 * Creates new edge between minutiae (<a href="https://templates.machinezoo.com/iso-19794-2-2005#edgedef">EDGEDEF</a>).
+	 */
 	public Iso19794p2v2005CountEdge() {
 	}
 	Iso19794p2v2005CountEdge(TemplateReader in) {

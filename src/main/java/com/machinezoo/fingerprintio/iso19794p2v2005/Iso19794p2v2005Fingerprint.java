@@ -6,17 +6,56 @@ import java.util.function.*;
 import org.slf4j.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Fingerprint (<a href="https://templates.machinezoo.com/iso-19794-2-2005#fingerprint">FINGERPRINT</a>).
+ */
 public class Iso19794p2v2005Fingerprint {
 	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2005Fingerprint.class);
+	/**
+	 * Finger position on hands (<a href="https://templates.machinezoo.com/iso-19794-2-2005#position">POSITION</a>).
+	 * Defaults to {@link Iso19794p2v2005Position#UNKNOWN}.
+	 */
 	public Iso19794p2v2005Position position = Iso19794p2v2005Position.UNKNOWN;
+	/**
+	 * Finger view number (<a href="https://templates.machinezoo.com/iso-19794-2-2005#viewoffset">VIEWOFFSET</a>).
+	 */
 	public int view;
+	/**
+	 * Impression type (<a href="https://templates.machinezoo.com/iso-19794-2-2005#sampletype">SAMPLETYPE</a>).
+	 * Defaults to {@link Iso19794p2v2005ScanType#LIVE_PLAIN}.
+	 */
 	public Iso19794p2v2005ScanType scanType = Iso19794p2v2005ScanType.LIVE_PLAIN;
+	/**
+	 * Fingerprint quality (<a href="https://templates.machinezoo.com/iso-19794-2-2005#fpquality">FPQUALITY</a>).
+	 * Defaults to 100.
+	 */
 	public int quality = 100;
+	/**
+	 * List of minutiae (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minutia">MINUTIA</a>).
+	 */
 	public List<Iso19794p2v2005Minutia> minutiae = new ArrayList<>();
+	/**
+	 * Ridge count extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#rcountext">RCOUNTEXT</a>).
+	 * This field is {@code null} if ridge count extension is not present.
+	 */
 	public Iso19794p2v2005CountExtension counts;
+	/**
+	 * Core and delta extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#coredelta">COREDELTA</a>).
+	 * This field is {@code null} if core and delta extension is not present.
+	 */
 	public Iso19794p2v2005CoreDeltaExtension coredelta;
+	/**
+	 * Zonal quality extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonalext">ZONALEXT</a>).
+	 * This field is {@code null} if zonal quality extension is not present.
+	 */
 	public Iso19794p2v2005ZonalExtension zones;
+	/**
+	 * List of extension data blocks (<a href="https://templates.machinezoo.com/iso-19794-2-2005#extension">EXTENSION</a>).
+	 */
 	public List<Iso19794p2v2005Extension> extensions = new ArrayList<>();
+	/**
+	 * Creates new fingerprint (<a href="https://templates.machinezoo.com/iso-19794-2-2005#fingerprint">FINGERPRINT</a>).
+	 */
 	public Iso19794p2v2005Fingerprint() {
 	}
 	Iso19794p2v2005Fingerprint(TemplateReader in, int width, int height, boolean strict) {
