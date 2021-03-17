@@ -7,11 +7,23 @@ import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
 
-/*
- * Object model of ISO/IEC 19794-1:2011 biometric data record.
+/**
+ * ISO/IEC 19794-1:2011 base template.
+ * 
+ * @see <a href="https://templates.machinezoo.com/iso-19794-1-2011">ISO/IEC 19794-1:2011 Summary</a>
  */
 public class Iso19794p1v2011Template {
 	private static final Logger logger = LoggerFactory.getLogger(Iso19794p1v2011Template.class);
+	/**
+	 * Checks whether provided template is an instance of ISO/IEC 19794-1:2011 base template.
+	 * This method does not do any template validation or conformance checking.
+	 * It just differentiates ISO/IEC 19794-1:2011 from other template formats
+	 * as quickly as possible, mostly by looking at template header.
+	 * 
+	 * @param template
+	 *            serialized template that is to be evaluated
+	 * @return {@code true} if {@code template} is an instance of ISO/IEC 19794-1:2011 base template, {@code false} otherwise
+	 */
 	public static boolean accepts(byte[] template) {
 		if (template.length < 15)
 			return false;
@@ -36,16 +48,60 @@ public class Iso19794p1v2011Template {
 			return false;
 		}
 	}
+	/**
+	 * File signature / magic number (<a href="https://templates.machinezoo.com/iso-19794-1-2011#magic">MAGIC</a>).
+	 */
 	public Iso19794p1v2011Modality modality;
-	public int versionMajor;
+	/**
+	 * Format version / major (<a href="https://templates.machinezoo.com/iso-19794-1-2011#version">VERSION</a>).
+	 * Major version number is stored in the first two bytes of the VERSION field.
+	 * Defaults to 3.
+	 */
+	public int versionMajor = 3;
+	/**
+	 * Format version / minor (<a href="https://templates.machinezoo.com/iso-19794-1-2011#version">VERSION</a>).
+	 * Minor version number is stored in the third byte of the VERSION field.
+	 * Defaults to 0.
+	 */
 	public int versionMinor;
+	/**
+	 * Format-specific template header fields.
+	 */
 	public byte[] extra;
+	/**
+	 * List of biometric samples (<a href="https://templates.machinezoo.com/iso-19794-1-2011#sample">SAMPLE</a>).
+	 */
 	public List<Iso19794p1v2011Sample> samples = new ArrayList<>();
+	/**
+	 * Creates new ISO/IEC 19794-1:2011 template.
+	 */
 	public Iso19794p1v2011Template() {
 	}
+	/**
+	 * Parses and validates ISO/IEC 19794-1:2011 template.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-1:2011 format
+	 * @param format
+	 *            information about optional fields
+	 * @throws TemplateFormatException
+	 *             if the template cannot be parsed or it fails validation
+	 */
 	public Iso19794p1v2011Template(byte[] template, Iso19794p1v2011Format format) {
 		this(template, true, format);
 	}
+	/**
+	 * Parses and optionally validates ISO/IEC 19794-1:2011 template.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-1:2011 format
+	 * @param strict
+	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
+	 * @param format
+	 *            information about optional fields
+	 * @throws TemplateFormatException
+	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 */
 	public Iso19794p1v2011Template(byte[] template, boolean strict, Iso19794p1v2011Format format) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-1:2011 biometric record.");
@@ -75,6 +131,15 @@ public class Iso19794p1v2011Template {
 			ValidateTemplate.structure(() -> validate(format), strict);
 		});
 	}
+	/**
+	 * Validates and serializes the template in ISO/IEC 19794-1:2011 format.
+	 * 
+	 * @param format
+	 *            information about optional fields
+	 * @return serialized template in ISO/IEC 19794-1:2011 format
+	 * @throws TemplateFormatException
+	 *             if the template fails validation
+	 */
 	public byte[] toByteArray(Iso19794p1v2011Format format) {
 		validate(format);
 		TemplateWriter out = new TemplateWriter();

@@ -3,14 +3,48 @@ package com.machinezoo.fingerprintio.iso19794p1v2011;
 
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Capture date and time (<a href="https://templates.machinezoo.com/iso-19794-1-2011#datetime">DATETIME</a>).
+ */
 public class Iso19794p1v2011DateTime {
+	/**
+	 * Year (<a href="https://templates.machinezoo.com/iso-19794-1-2011#year">YEAR</a>).
+	 * Defaults ot 0xffff (not provided).
+	 */
 	public int year = 0xffff;
+	/**
+	 * Month (<a href="https://templates.machinezoo.com/iso-19794-1-2011#month">MONTH</a>).
+	 * Defaults ot 0xff (not provided).
+	 */
 	public int month = 0xff;
+	/**
+	 * Day of month (<a href="https://templates.machinezoo.com/iso-19794-1-2011#day">DAY</a>).
+	 * Defaults ot 0xff (not provided).
+	 */
 	public int day = 0xff;
+	/**
+	 * Hour (<a href="https://templates.machinezoo.com/iso-19794-1-2011#hour">HOUR</a>).
+	 * Defaults ot 0xff (not provided).
+	 */
 	public int hour = 0xff;
+	/**
+	 * Minute (<a href="https://templates.machinezoo.com/iso-19794-1-2011#minute">MINUTE</a>).
+	 * Defaults ot 0xff (not provided).
+	 */
 	public int minute = 0xff;
+	/**
+	 * Second (<a href="https://templates.machinezoo.com/iso-19794-1-2011#second">SECOND</a>).
+	 * Defaults ot 0xff (not provided).
+	 */
 	public int second = 0xff;
+	/**
+	 * Millisecond (<a href="https://templates.machinezoo.com/iso-19794-1-2011#millisecond">MILLISECOND</a>).
+	 * Defaults ot 0xffff (not provided).
+	 */
 	public int millisecond = 0xffff;
+	/**
+	 * Creates new capture date and time (<a href="https://templates.machinezoo.com/iso-19794-1-2011#datetime">DATETIME</a>).
+	 */
 	public Iso19794p1v2011DateTime() {
 	}
 	Iso19794p1v2011DateTime(TemplateReader in) {

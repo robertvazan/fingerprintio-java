@@ -4,9 +4,22 @@ package com.machinezoo.fingerprintio.iso19794p1v2011;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Certification record (<a href="https://templates.machinezoo.com/iso-19794-1-2011#certificate">CERTIFICATE</a>).
+ */
 public class Iso19794p1v2011Certificate {
+	/**
+	 * Certification authority (<a href="https://templates.machinezoo.com/iso-19794-1-2011#certifiedby">CERTIFIEDBY</a>).
+	 * Defaults to {@link IbiaOrganizations#UNKNOWN}.
+	 */
 	public int authority = IbiaOrganizations.UNKNOWN;
+	/**
+	 * Certification scheme (<a href="https://templates.machinezoo.com/iso-19794-1-2011#certtype">CERTTYPE</a>).
+	 */
 	public int scheme;
+	/**
+	 * Creates new certification record (<a href="https://templates.machinezoo.com/iso-19794-1-2011#certificate">CERTIFICATE</a>).
+	 */
 	public Iso19794p1v2011Certificate() {
 	}
 	Iso19794p1v2011Certificate(TemplateReader in) {

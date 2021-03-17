@@ -2,16 +2,45 @@
 package com.machinezoo.fingerprintio.iso19794p1v2011;
 
 import java.util.*;
+import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
 
+/**
+ * Biometric sample (<a href="https://templates.machinezoo.com/iso-19794-1-2011#sample">SAMPLE</a>).
+ */
 public class Iso19794p1v2011Sample {
+	/**
+	 * Capture date and time (<a href="https://templates.machinezoo.com/iso-19794-1-2011#datetime">DATETIME</a>).
+	 */
 	public Iso19794p1v2011DateTime datetime = new Iso19794p1v2011DateTime();
+	/**
+	 * Sensor technology (<a href="https://templates.machinezoo.com/iso-19794-1-2011#devtech">DEVTECH</a>).
+	 */
 	public int sensorType;
-	public int sensorVendor;
+	/**
+	 * Sensor vendor ID (<a href="https://templates.machinezoo.com/iso-19794-1-2011#devvendor">DEVVENDOR</a>).
+	 * Defaults to {@link IbiaOrganizations#UNKNOWN}.
+	 */
+	public int sensorVendor = IbiaOrganizations.UNKNOWN;
+	/**
+	 * Sensor ID (<a href="https://templates.machinezoo.com/iso-19794-1-2011#devid">DEVID</a>).
+	 */
 	public int sensorId;
+	/**
+	 * List of quality records (<a href="https://templates.machinezoo.com/iso-19794-1-2011#qrecord">QRECORD</a>).
+	 */
 	public List<Iso19794p1v2011Quality> qrecords = new ArrayList<>();
+	/**
+	 * List of certification records (<a href="https://templates.machinezoo.com/iso-19794-1-2011#certificate">CERTIFICATE</a>).
+	 */
 	public List<Iso19794p1v2011Certificate> certificates = new ArrayList<>();
+	/**
+	 * Format-specific sample header fields and biometric data.
+	 */
 	public byte[] data;
+	/**
+	 * Creates new biometric sample (<a href="https://templates.machinezoo.com/iso-19794-1-2011#sample">SAMPLE</a>).
+	 */
 	public Iso19794p1v2011Sample() {
 	}
 	Iso19794p1v2011Sample(TemplateReader in, boolean strict, Iso19794p1v2011Format format, boolean hasCertificates) {
