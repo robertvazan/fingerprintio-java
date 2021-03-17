@@ -44,7 +44,7 @@ public class Iso19794p1v2011Template {
 	public Iso19794p1v2011Template() {
 	}
 	public Iso19794p1v2011Template(byte[] template, Iso19794p1v2011Format format) {
-		this(template, false, format);
+		this(template, true, format);
 	}
 	public Iso19794p1v2011Template(byte[] template, boolean strict, Iso19794p1v2011Format format) {
 		if (!accepts(template))

@@ -76,7 +76,7 @@ public class Iso19794p2v2011Template {
 	 *             if the template cannot be parsed or it fails validation
 	 */
 	public Iso19794p2v2011Template(byte[] template) {
-		this(template, false);
+		this(template, true);
 	}
 	/**
 	 * Parses and optionally validates ISO/IEC 19794-2:2011 template.

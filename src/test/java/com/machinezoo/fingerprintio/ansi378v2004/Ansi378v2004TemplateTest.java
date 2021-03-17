@@ -182,12 +182,7 @@ public class Ansi378v2004TemplateTest {
 		/*
 		 * Sample template in the spec is bogus. Check for exception. Then enable permissive decoding.
 		 */
-		try {
-			new Ansi378v2004Template(bytes);
-			fail();
-		} catch (Throwable ex) {
-			assertTrue(ex instanceof TemplateFormatException);
-		}
+		assertThrows(TemplateFormatException.class, () -> new Ansi378v2004Template(bytes));
 		return new Ansi378v2004Template(bytes, false);
 	}
 	public static byte[] sample() {

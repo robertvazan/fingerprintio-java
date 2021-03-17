@@ -19,9 +19,14 @@ public class Iso19794p2v2011Certificate {
 	 * Certification scheme (<a href="https://templates.machinezoo.com/iso-19794-2-2011#certtype">CERTTYPE</a>).
 	 */
 	public Iso19794p2v2011CertificationScheme scheme;
+	/**
+	 * Creates new certification record (<a href="https://templates.machinezoo.com/iso-19794-2-2011#certificate">CERTIFICATE</a>).
+	 */
+	public Iso19794p2v2011Certificate() {
+	}
 	Iso19794p2v2011Certificate(Iso19794p1v2011Certificate certificate, boolean strict) {
 		authority = certificate.authority;
-		scheme = TemplateUtils.decodeType(certificate.scheme, Iso19794p2v2011CertificationScheme.class, strict, "Unrecognized certification scheme.");
+		scheme = TemplateUtils.decodeType(certificate.scheme, Iso19794p2v2011CertificationScheme.values(), s -> s.code, strict, "Unrecognized certification scheme.");
 	}
 	Iso19794p1v2011Certificate toCertificate() {
 		Iso19794p1v2011Certificate certificate = new Iso19794p1v2011Certificate();

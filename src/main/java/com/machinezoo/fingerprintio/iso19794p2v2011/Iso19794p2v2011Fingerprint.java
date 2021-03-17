@@ -182,6 +182,12 @@ public class Iso19794p2v2011Fingerprint {
 		for (Iso19794p2v2011Minutia minutia : minutiae)
 			minutia.write(out, hasMinutiaQuality);
 		out.writeShort(extensionBytes());
+		if (counts != null)
+			counts.extension().write(out);
+		if (coredelta != null)
+			coredelta.extension().write(out);
+		if (zones != null)
+			zones.extension().write(out);
 		for (Iso19794p2v2011Extension extension : extensions)
 			extension.write(out);
 		sample.data = out.toByteArray();
@@ -204,6 +210,12 @@ public class Iso19794p2v2011Fingerprint {
 		ValidateTemplate.nonzero8(minutiae.size(), "Minutia count must be in range 1 through 255.");
 		for (Iso19794p2v2011Minutia minutia : minutiae)
 			minutia.validate(width, height);
+		if (counts != null)
+			counts.validate(minutiae.size());
+		if (coredelta != null)
+			coredelta.validate(width, height);
+		if (zones != null)
+			zones.validate(width, height);
 		for (Iso19794p2v2011Extension extension : extensions)
 			extension.validate();
 		ValidateTemplate.int16(extensionBytes(), "Total size of all extension blocks must a 16-bit number.");
