@@ -51,12 +51,14 @@ public class Ansi378v2009Fingerprint {
 	public int height;
 	/**
 	 * Horizontal pixel density (<a href="https://templates.machinezoo.com/ansi378-2009#resolutionx">RESOLUTIONX</a>).
+	 * Defaults to 197 (500dpi).
 	 */
-	public int resolutionX;
+	public int resolutionX = 197;
 	/**
 	 * Vertical pixel density (<a href="https://templates.machinezoo.com/ansi378-2009#resolutiony">RESOLUTIONY</a>).
+	 * Defaults to 197 (500dpi).
 	 */
-	public int resolutionY;
+	public int resolutionY = 197;
 	/**
 	 * List of minutiae (<a href="https://templates.machinezoo.com/ansi378-2009#minutia">MINUTIA</a>).
 	 */

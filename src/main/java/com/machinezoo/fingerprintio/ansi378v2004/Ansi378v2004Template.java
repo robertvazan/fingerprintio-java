@@ -90,12 +90,14 @@ public class Ansi378v2004Template {
 	public int height;
 	/**
 	 * Horizontal pixel density (<a href="https://templates.machinezoo.com/ansi378-2004#resolutionx">RESOLUTIONX</a>).
+	 * Defaults to 197 (500dpi).
 	 */
-	public int resolutionX;
+	public int resolutionX = 197;
 	/**
 	 * Vertical pixel density (<a href="https://templates.machinezoo.com/ansi378-2004#resolutiony">RESOLUTIONY</a>).
+	 * Defaults to 197 (500dpi).
 	 */
-	public int resolutionY;
+	public int resolutionY = 197;
 	/**
 	 * List of fingerprints (<a href="https://templates.machinezoo.com/ansi378-2004#fingerprint">FINGERPRINT</a>).
 	 */

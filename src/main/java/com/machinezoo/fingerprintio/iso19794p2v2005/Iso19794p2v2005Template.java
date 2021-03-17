@@ -81,12 +81,14 @@ public class Iso19794p2v2005Template {
 	public int height;
 	/**
 	 * Horizontal pixel density (<a href="https://templates.machinezoo.com/iso-19794-2-2005#resolutionx">RESOLUTIONX</a>).
+	 * Defaults to 197 (500dpi).
 	 */
-	public int resolutionX;
+	public int resolutionX = 197;
 	/**
 	 * Vertical pixel density (<a href="https://templates.machinezoo.com/iso-19794-2-2005#resolutiony">RESOLUTIONY</a>).
+	 * Defaults to 197 (500dpi).
 	 */
-	public int resolutionY;
+	public int resolutionY = 197;
 	/**
 	 * List of fingerprints (<a href="https://templates.machinezoo.com/iso-19794-2-2005#fingerprint">FINGERPRINT</a>).
 	 */
