@@ -8,6 +8,10 @@ import com.machinezoo.fingerprintio.utils.*;
  * Minutia (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minutia">MINUTIA</a>).
  */
 public class Iso19794p2v2005Minutia {
+	/**
+	 * Minutia type (<a href="https://templates.machinezoo.com/iso-19794-2-2005#mintype">MINTYPE</a>).
+	 * Defaults to {@link Iso19794p2v2005MinutiaType#OTHER}.
+	 */
 	public Iso19794p2v2005MinutiaType type = Iso19794p2v2005MinutiaType.OTHER;
 	/**
 	 * Minutia X position (<a href="https://templates.machinezoo.com/iso-19794-2-2005#minx">MINX</a>).
