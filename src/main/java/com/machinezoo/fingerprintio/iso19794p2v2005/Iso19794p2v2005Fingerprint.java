@@ -85,7 +85,7 @@ public class Iso19794p2v2005Fingerprint {
 				}
 			});
 		} catch (Throwable ex) {
-			if (!strict)
+			if (strict)
 				throw ex;
 			logger.warn("Failed to parse extension data.", ex);
 		}

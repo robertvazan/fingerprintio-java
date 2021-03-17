@@ -5,6 +5,7 @@ import com.machinezoo.fingerprintio.ansi378v2004.*;
 import com.machinezoo.fingerprintio.ansi378v2009.*;
 import com.machinezoo.fingerprintio.ansi378v2009am1.*;
 import com.machinezoo.fingerprintio.iso19794p2v2005.*;
+import com.machinezoo.fingerprintio.iso19794p2v2011.*;
 
 /**
  * Fingerprint template format.
@@ -38,7 +39,14 @@ public enum TemplateFormat {
 	 * 
 	 * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO/IEC 19794-2:2005 Summary</a>
 	 */
-	ISO_19794_2_2005;
+	ISO_19794_2_2005,
+	/**
+	 * ISO 19794-2:2011 template.
+	 * The template can be parsed by {@link Iso19794p2v2011Template}.
+	 * 
+	 * @see <a href="https://templates.machinezoo.com/iso-19794-2-2011">ISO/IEC 19794-2:2011 Summary</a>
+	 */
+	ISO_19794_2_2011;
 	/**
 	 * Detects template format used to encode provided template.
 	 * 
@@ -55,6 +63,8 @@ public enum TemplateFormat {
 			return ANSI_378_2009_AM1;
 		if (Iso19794p2v2005Template.accepts(template))
 			return ISO_19794_2_2005;
+		if (Iso19794p2v2011Template.accepts(template))
+			return ISO_19794_2_2011;
 		return null;
 	}
 }
