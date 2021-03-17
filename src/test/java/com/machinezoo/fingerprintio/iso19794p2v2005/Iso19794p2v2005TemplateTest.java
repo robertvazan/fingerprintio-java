@@ -196,6 +196,15 @@ public class Iso19794p2v2005TemplateTest {
 		byte[] roundtripped = new Iso19794p2v2005Template(original).toByteArray();
 		assertArrayEquals(original, roundtripped);
 	}
+	@Test
+	public void accepts() {
+		for (TemplateFormat format : TemplateFormat.values()) {
+			byte[] template = TestUtils.sample(format);
+			assertEquals(format == TemplateFormat.ISO_19794_2_2005, Iso19794p2v2005Template.accepts(template));
+			if (format != TemplateFormat.ISO_19794_2_2005)
+				assertThrows(TemplateFormatException.class, () -> new Iso19794p2v2005Template(template, false));
+		}
+	}
 	private Iso19794p2v2005Template decode() {
 		byte[] bytes = sample();
 		assertTrue(Iso19794p2v2005Template.accepts(bytes));

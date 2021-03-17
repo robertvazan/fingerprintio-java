@@ -211,6 +211,15 @@ public class Ansi378v2009Am1TemplateTest {
 		byte[] roundtripped = new Ansi378v2009Am1Template(original).toByteArray();
 		assertArrayEquals(original, roundtripped);
 	}
+	@Test
+	public void accepts() {
+		for (TemplateFormat format : TemplateFormat.values()) {
+			byte[] template = TestUtils.sample(format);
+			assertEquals(format == TemplateFormat.ANSI_378_2009_AM1, Ansi378v2009Am1Template.accepts(template));
+			if (format != TemplateFormat.ANSI_378_2009_AM1 && format != TemplateFormat.ANSI_378_2009)
+				assertThrows(TemplateFormatException.class, () -> new Ansi378v2009Am1Template(template, false));
+		}
+	}
 	private Ansi378v2009Am1Template decode() {
 		/*
 		 * Sample template from the spec.

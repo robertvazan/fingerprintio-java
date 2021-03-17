@@ -177,6 +177,15 @@ public class Ansi378v2004TemplateTest {
 		assertEquals(0, fb.extensions.size());
 		assertNotNull(fb.counts);
 	}
+	@Test
+	public void accepts() {
+		for (TemplateFormat format : TemplateFormat.values()) {
+			byte[] template = TestUtils.sample(format);
+			assertEquals(format == TemplateFormat.ANSI_378_2004, Ansi378v2004Template.accepts(template));
+			if (format != TemplateFormat.ANSI_378_2004)
+				assertThrows(TemplateFormatException.class, () -> new Ansi378v2004Template(template, false));
+		}
+	}
 	private Ansi378v2004Template decode() {
 		byte[] bytes = sampleWithFixedVersion();
 		/*

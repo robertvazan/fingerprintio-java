@@ -245,6 +245,15 @@ public class Iso19794p2v2011TemplateTest {
 		assertEquals(1, f.extensions.size());
 		assertArrayEquals(new byte[] { 0x01, 0x44, (byte)0xBC, 0x36, 0x21, 0x43 }, f.extensions.get(0).data);
 	}
+	@Test
+	public void accepts() {
+		for (TemplateFormat format : TemplateFormat.values()) {
+			byte[] template = TestUtils.sample(format);
+			assertEquals(format == TemplateFormat.ISO_19794_2_2011, Iso19794p2v2011Template.accepts(template));
+			if (format != TemplateFormat.ISO_19794_2_2011)
+				assertThrows(TemplateFormatException.class, () -> new Iso19794p2v2011Template(template, false));
+		}
+	}
 	private Iso19794p2v2011Template decode() {
 		byte[] bytes = sample();
 		assertTrue(Iso19794p2v2011Template.accepts(bytes));

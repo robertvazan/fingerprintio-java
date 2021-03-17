@@ -7,6 +7,11 @@ import java.nio.charset.*;
 import java.nio.file.*;
 import org.apache.commons.io.*;
 import com.fasterxml.jackson.databind.*;
+import com.machinezoo.fingerprintio.ansi378v2004.*;
+import com.machinezoo.fingerprintio.ansi378v2009.*;
+import com.machinezoo.fingerprintio.ansi378v2009am1.*;
+import com.machinezoo.fingerprintio.iso19794p2v2005.*;
+import com.machinezoo.fingerprintio.iso19794p2v2011.*;
 import com.machinezoo.noexception.*;
 
 public class TestUtils {
@@ -46,5 +51,21 @@ public class TestUtils {
 			JsonNode stored = mapper.readTree(new String(resource(clazz, filename), StandardCharsets.UTF_8));
 			assertEquals(stored, fresh);
 		});
+	}
+	public static byte[] sample(TemplateFormat format) {
+		switch (format) {
+		case ANSI_378_2004:
+			return Ansi378v2004TemplateTest.sampleWithFixedVersion();
+		case ANSI_378_2009:
+			return Ansi378v2009TemplateTest.sample();
+		case ANSI_378_2009_AM1:
+			return Ansi378v2009Am1TemplateTest.sample();
+		case ISO_19794_2_2005:
+			return Iso19794p2v2005TemplateTest.sample();
+		case ISO_19794_2_2011:
+			return Iso19794p2v2011TemplateTest.sample();
+		default:
+			throw new IllegalArgumentException();
+		}
 	}
 }
