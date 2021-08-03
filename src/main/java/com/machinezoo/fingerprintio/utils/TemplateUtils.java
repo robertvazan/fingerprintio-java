@@ -4,16 +4,15 @@ package com.machinezoo.fingerprintio.utils;
 import java.util.*;
 import java.util.function.*;
 import com.machinezoo.fingerprintio.*;
-import com.machinezoo.noexception.throwing.*;
 
 public class TemplateUtils {
-	public static void decodeTemplate(byte[] template, ThrowingConsumer<TemplateReader> parser) {
+	public static void decodeTemplate(byte[] template, Consumer<TemplateReader> parser) {
 		decodeBytes(template, "Unexpected end of template data.", parser);
 	}
-	public static void decodeExtension(byte[] extension, ThrowingConsumer<TemplateReader> parser) {
+	public static void decodeExtension(byte[] extension, Consumer<TemplateReader> parser) {
 		decodeBytes(extension, "Unexpected end of extension block.", parser);
 	}
-	public static void decodeBytes(byte[] data, String eofMessage, ThrowingConsumer<TemplateReader> parser) {
+	public static void decodeBytes(byte[] data, String eofMessage, Consumer<TemplateReader> parser) {
 		try {
 			TemplateReader in = new TemplateReader(data);
 			parser.accept(in);
@@ -21,7 +20,7 @@ public class TemplateUtils {
 			throw convertException(ex, eofMessage);
 		}
 	}
-	public static <T> T decodeBytesTo(byte[] data, String eofMessage, ThrowingFunction<TemplateReader, T> parser) {
+	public static <T> T decodeBytesTo(byte[] data, String eofMessage, Function<TemplateReader, T> parser) {
 		try {
 			TemplateReader in = new TemplateReader(data);
 			return parser.apply(in);
