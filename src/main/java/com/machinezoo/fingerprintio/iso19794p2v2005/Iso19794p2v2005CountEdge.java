@@ -36,7 +36,7 @@ public class Iso19794p2v2005CountEdge {
 	}
 	void validate(int minutiaCount) {
 		ValidateTemplate.range(from, 0, minutiaCount - 1, "Start of ridge count edge must be a valid minutia offset.");
-		ValidateTemplate.range(to, 0, minutiaCount - 1, "End of ridge count edge must be a valid minutia offset.");
-		ValidateTemplate.int8(count, "Ridge count must be an unsigned 8-bit number.");
+		ValidateTemplate.range(to, 0, minutiaCount - 1, "End of ridge count edge must be a valid minutia offset or 0 for placeholder.");
+		ValidateTemplate.int8(count, "Ridge count must be an unsigned 8-bit number or 0 for placeholder.");
 	}
 }

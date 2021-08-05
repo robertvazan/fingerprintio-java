@@ -9,7 +9,7 @@ import com.machinezoo.fingerprintio.iso19794p1v2011.*;
 import com.machinezoo.fingerprintio.utils.*;
 
 /**
- * ISO/IEC 19794-2:2011 template.
+ * ISO/IEC 19794-2:2011 off-card template.
  * 
  * @see <a href="https://templates.machinezoo.com/iso-19794-2-2011">ISO/IEC 19794-2:2011 Summary</a>
  */
@@ -23,14 +23,14 @@ public class Iso19794p2v2011Template {
 	}
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, '0', '3', '0', 0 };
 	/**
-	 * Checks whether provided template is an ISO/IEC 19794-2:2011 template.
+	 * Checks whether provided template is an ISO/IEC 19794-2:2011 off-card template.
 	 * This method does not do any template validation or conformance checking.
-	 * It just differentiates ISO/IEC 19794-2:2011 from other template formats
+	 * It just differentiates off-card ISO/IEC 19794-2:2011 from other template formats
 	 * as quickly as possible, mostly by looking at template header.
 	 * 
 	 * @param template
 	 *            serialized template that is to be evaluated
-	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2011 template, {@code false} otherwise
+	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2011 off-card template, {@code false} otherwise
 	 */
 	public static boolean accepts(byte[] template) {
 		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
@@ -63,15 +63,15 @@ public class Iso19794p2v2011Template {
 	 */
 	public List<Iso19794p2v2011Fingerprint> fingerprints = new ArrayList<>();
 	/**
-	 * Creates new ISO/IEC 19794-2:2011 template.
+	 * Creates new ISO/IEC 19794-2:2011 off-card template.
 	 */
 	public Iso19794p2v2011Template() {
 	}
 	/**
-	 * Parses and validates ISO/IEC 19794-2:2011 template.
+	 * Parses and validates ISO/IEC 19794-2:2011 off-card template.
 	 * 
 	 * @param template
-	 *            serialized template in ISO/IEC 19794-2:2011 format
+	 *            serialized template in ISO/IEC 19794-2:2011 off-card format
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or it fails validation
 	 */
@@ -79,10 +79,10 @@ public class Iso19794p2v2011Template {
 		this(template, true);
 	}
 	/**
-	 * Parses and optionally validates ISO/IEC 19794-2:2011 template.
+	 * Parses and optionally validates ISO/IEC 19794-2:2011 off-card template.
 	 * 
 	 * @param template
-	 *            serialized template in ISO/IEC 19794-2:2011 format
+	 *            serialized template in ISO/IEC 19794-2:2011 off-card format
 	 * @param strict
 	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
 	 * @throws TemplateFormatException
@@ -90,7 +90,7 @@ public class Iso19794p2v2011Template {
 	 */
 	public Iso19794p2v2011Template(byte[] template, boolean strict) {
 		if (!accepts(template))
-			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2011 template.");
+			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2011 off-card template.");
 		try {
 			Iso19794p1v2011Template decoded = new Iso19794p1v2011Template(template, strict, format);
 			fingerprints = decoded.samples.stream()
@@ -102,9 +102,9 @@ public class Iso19794p2v2011Template {
 		}
 	}
 	/**
-	 * Validates and serializes the template in ISO/IEC 19794-2:2011 format.
+	 * Validates and serializes the template in ISO/IEC 19794-2:2011 off-card format.
 	 * 
-	 * @return serialized template in ISO/IEC 19794-2:2011 format
+	 * @return serialized template in ISO/IEC 19794-2:2011 off-card format
 	 * @throws TemplateFormatException
 	 *             if the template fails validation
 	 */

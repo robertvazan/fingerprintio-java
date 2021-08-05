@@ -8,7 +8,7 @@ import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
 
 /**
- * ISO/IEC 19794-2:2005 template.
+ * ISO/IEC 19794-2:2005 off-card template.
  * 
  * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO/IEC 19794-2:2005 Summary</a>
  */
@@ -16,14 +16,14 @@ public class Iso19794p2v2005Template {
 	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2005Template.class);
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
 	/**
-	 * Checks whether provided template is an ISO/IEC 19794-2:2005 template.
+	 * Checks whether provided template is an ISO/IEC 19794-2:2005 off-card template.
 	 * This method does not do any template validation or conformance checking.
-	 * It just differentiates ISO/IEC 19794-2:2005 from other template formats
+	 * It just differentiates off-card ISO/IEC 19794-2:2005 from other template formats
 	 * as quickly as possible, mostly by looking at template header.
 	 * 
 	 * @param template
 	 *            serialized template that is to be evaluated
-	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2005 template, {@code false} otherwise
+	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2005 off-card template, {@code false} otherwise
 	 */
 	public static boolean accepts(byte[] template) {
 		if (template.length < magic.length + 4)
@@ -94,15 +94,15 @@ public class Iso19794p2v2005Template {
 	 */
 	public List<Iso19794p2v2005Fingerprint> fingerprints = new ArrayList<>();
 	/**
-	 * Creates new ISO/IEC 19794-2:2005 template.
+	 * Creates new ISO/IEC 19794-2:2005 off-card template.
 	 */
 	public Iso19794p2v2005Template() {
 	}
 	/**
-	 * Parses and validates ISO/IEC 19794-2:2005 template.
+	 * Parses and validates ISO/IEC 19794-2:2005 off-card template.
 	 * 
 	 * @param template
-	 *            serialized template in ISO/IEC 19794-2:2005 format
+	 *            serialized template in ISO/IEC 19794-2:2005 off-card format
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or it fails validation
 	 */
@@ -110,10 +110,10 @@ public class Iso19794p2v2005Template {
 		this(template, true);
 	}
 	/**
-	 * Parses and optionally validates ISO/IEC 19794-2:2005 template.
+	 * Parses and optionally validates ISO/IEC 19794-2:2005 off-card template.
 	 * 
 	 * @param template
-	 *            serialized template in ISO/IEC 19794-2:2005 format
+	 *            serialized template in ISO/IEC 19794-2:2005 off-card format
 	 * @param strict
 	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
 	 * @throws TemplateFormatException
@@ -121,7 +121,7 @@ public class Iso19794p2v2005Template {
 	 */
 	public Iso19794p2v2005Template(byte[] template, boolean strict) {
 		if (!accepts(template))
-			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2005 template.");
+			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2005 off-card template.");
 		TemplateUtils.decodeTemplate(template, in -> {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
@@ -146,9 +146,9 @@ public class Iso19794p2v2005Template {
 		});
 	}
 	/**
-	 * Validates and serializes the template in ISO/IEC 19794-2:2005 format.
+	 * Validates and serializes the template in ISO/IEC 19794-2:2005 off-card format.
 	 * 
-	 * @return serialized template in ISO/IEC 19794-2:2005 format
+	 * @return serialized template in ISO/IEC 19794-2:2005 off-card format
 	 * @throws TemplateFormatException
 	 *             if the template fails validation
 	 */
