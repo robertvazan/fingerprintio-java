@@ -128,8 +128,6 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.2.0</version>
 				<configuration>
-					<!-- Make the CI server email us when we break javadoc. -->
-					<failOnWarnings>true</failOnWarnings>
 					<notimestamp>true</notimestamp>
 					<!-- Internal packages should never show up in javadoc. In the future, they will not be exposed from the module. -->
 					<excludePackageNames>com.machinezoo.fingerprintio.utils</excludePackageNames>
