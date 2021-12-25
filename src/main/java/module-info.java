@@ -15,5 +15,4 @@ module com.machinezoo.fingerprintio {
 	exports com.machinezoo.fingerprintio.iso19794p2v2005;
 	exports com.machinezoo.fingerprintio.iso19794p2v2011;
 	requires com.machinezoo.noexception;
-	requires org.slf4j;
 }
