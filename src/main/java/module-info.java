@@ -15,4 +15,8 @@ module com.machinezoo.fingerprintio {
 	exports com.machinezoo.fingerprintio.iso19794p2v2005;
 	exports com.machinezoo.fingerprintio.iso19794p2v2011;
 	requires com.machinezoo.noexception;
+	/*
+	 * SLF4J is pulled in transitively via noexception, but the transitive dependency will be removed in future versions of noexception.
+	 */
+	requires org.slf4j;
 }

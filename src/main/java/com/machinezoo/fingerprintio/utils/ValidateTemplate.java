@@ -5,7 +5,7 @@ import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 
 public class ValidateTemplate {
-	private static Logger logger = LoggerFactory.getLogger(ValidateTemplate.class);
+	private static final Logger logger = LoggerFactory.getLogger(ValidateTemplate.class);
 	public static void fail(boolean strict, String message) {
 		if (strict)
 			throw new TemplateFormatException(message);
