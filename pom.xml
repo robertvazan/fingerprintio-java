@@ -1,5 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.machinezoo.fingerprintio</groupId>
@@ -139,8 +138,7 @@
 					</bottom>
 					<!-- Explicit link list, because detectLinks would cause every CI build to fail. -->
 					<!-- CI build is configured to fail on javadoc warnings and we want to keep that. -->
-					<links>
-					</links>
+					<links></links>
 				</configuration>
 				<executions>
 					<execution>
@@ -152,6 +150,7 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<!-- Nexus does two-phase staging deployment, which is not supported by maven-deploy-plugin. -->
 				<groupId>org.sonatype.plugins</groupId>
 				<artifactId>nexus-staging-maven-plugin</artifactId>
 				<version>1.6.8</version>
@@ -178,16 +177,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<!-- Required for Maven Central releases. -->
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
 </project>
