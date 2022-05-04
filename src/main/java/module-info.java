@@ -1,10 +1,13 @@
 // Part of FingerprintIO: https://fingerprintio.machinezoo.com
+import com.machinezoo.stagean.*;
+
 /**
  * FingerprintIO library implements a number of <a href="https://templates.machinezoo.com/">publicly documented</a>
  * fingerprint template formats defined by ISO and ANSI. Every version of every format has its own package.
  * 
  * @see <a href="https://fingerprintio.machinezoo.com/">FingerprintIO tutorial</a>
  */
+@ApiIssue("Non-strict parsing should not log anything. It should accept exception handler for warnings.")
 module com.machinezoo.fingerprintio {
 	exports com.machinezoo.fingerprintio;
 	exports com.machinezoo.fingerprintio.common;
@@ -15,6 +18,7 @@ module com.machinezoo.fingerprintio {
 	exports com.machinezoo.fingerprintio.iso19794p2v2005;
 	exports com.machinezoo.fingerprintio.iso19794p2v2011;
 	requires com.machinezoo.noexception;
+	requires com.machinezoo.stagean;
 	/*
 	 * SLF4J is pulled in transitively via noexception, but the transitive dependency will be removed in future versions of noexception.
 	 */

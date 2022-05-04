@@ -17,6 +17,7 @@ pom_name = lambda: 'FingerprintIO'
 pom_description = lambda: 'Implementation of fingerprint template formats published by ANSI and ISO.'
 inception_year = lambda: 2019
 jdk_version = lambda: 11
+stagean_annotations = lambda: True
 
 def dependencies():
     use_noexception()
