@@ -6,11 +6,19 @@ import com.machinezoo.fingerprintio.ansi378v2009.*;
 import com.machinezoo.fingerprintio.ansi378v2009am1.*;
 import com.machinezoo.fingerprintio.iso19794p2v2005.*;
 import com.machinezoo.fingerprintio.iso19794p2v2011.*;
+import com.machinezoo.stagean.*;
 
 /**
  * Fingerprint template format.
  * Only supported template formats are included in this {@code enum}.
  */
+/*
+ * Especially card template formats might need parameters.
+ * Interface hierarchy helps identify format groups using instanceof.
+ * The interface might eventually offer generic serialization methods.
+ * For now, it is enough to support accepts().
+ */
+@DraftApi("Format cannot be an enum, because it can have parameters. It must be an interface.")
 public enum TemplateFormat {
 	/**
 	 * ANSI 378-2004 template.
