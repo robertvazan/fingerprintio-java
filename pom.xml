@@ -51,7 +51,7 @@
 		<dependency>
 			<groupId>com.machinezoo.noexception</groupId>
 			<artifactId>noexception</artifactId>
-			<version>1.7.1</version>
+			<version>1.8.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
@@ -69,12 +69,6 @@
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
 			<version>2.13.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>com.github.valfirst</groupId>
-			<artifactId>slf4j-test</artifactId>
-			<version>2.3.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -120,6 +114,7 @@
 					</bottom>
 					<links>
 						<link>https://stagean.machinezoo.com/javadoc/</link>
+						<link>https://noexception.machinezoo.com/javadoc/</link>
 					</links>
 				</configuration>
 				<executions>

@@ -3,6 +3,7 @@ package com.machinezoo.fingerprintio.ansi378v2009am1;
 
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Ridge count extension (<a href="https://templates.machinezoo.com/ansi378-2009am1#rcountext">RCOUNTEXT</a>).
@@ -23,11 +24,11 @@ public class Ansi378v2009Am1CountExtension {
 	 */
 	public Ansi378v2009Am1CountExtension() {
 	}
-	Ansi378v2009Am1CountExtension(byte[] extension, boolean strict) {
+	Ansi378v2009Am1CountExtension(byte[] extension, ExceptionHandler handler) {
 		TemplateUtils.decodeExtension(extension, in -> {
-			type = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1CountType.class, strict, "Unrecognized edge picking method.");
+			type = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1CountType.class, handler, "Unrecognized edge picking method.");
 			int count = (extension.length - 1) / 3;
-			ValidateTemplate.condition(3 * count == extension.length - 1, strict, "Extra misaligned data at the end of ridge count extension.");
+			ValidateTemplate.condition(3 * count == extension.length - 1, handler, "Extra misaligned data at the end of ridge count extension.");
 			for (int i = 0; i < count; ++i)
 				edges.add(new Ansi378v2009Am1CountEdge(in));
 		});

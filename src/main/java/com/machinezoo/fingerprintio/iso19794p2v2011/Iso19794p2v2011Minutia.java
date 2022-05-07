@@ -3,6 +3,7 @@ package com.machinezoo.fingerprintio.iso19794p2v2011;
 
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Minutia (<a href="https://templates.machinezoo.com/iso-19794-2-2011#minutia">MINUTIA</a>).
@@ -35,9 +36,9 @@ public class Iso19794p2v2011Minutia {
 	 */
 	public Iso19794p2v2011Minutia() {
 	}
-	Iso19794p2v2011Minutia(TemplateReader in, boolean withQuality, boolean strict) {
+	Iso19794p2v2011Minutia(TemplateReader in, boolean withQuality, ExceptionHandler handler) {
 		positionX = in.readUnsignedShort();
-		type = TemplateUtils.decodeType(positionX >> 14, Iso19794p2v2011MinutiaType.class, strict, "Unrecognized minutia type code.");
+		type = TemplateUtils.decodeType(positionX >> 14, Iso19794p2v2011MinutiaType.class, handler, "Unrecognized minutia type code.");
 		positionX &= 0x3fff;
 		positionY = in.readUnsignedShort();
 		angle = in.readUnsignedByte();

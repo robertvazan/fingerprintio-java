@@ -3,6 +3,7 @@ package com.machinezoo.fingerprintio.iso19794p2v2011;
 
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Core and delta extension (<a href="https://templates.machinezoo.com/iso-19794-2-2011#coredelta">COREDELTA</a>).
@@ -22,7 +23,7 @@ public class Iso19794p2v2011CoreDeltaExtension {
 	 */
 	public Iso19794p2v2011CoreDeltaExtension() {
 	}
-	Iso19794p2v2011CoreDeltaExtension(byte[] extension, boolean strict) {
+	Iso19794p2v2011CoreDeltaExtension(byte[] extension, ExceptionHandler handler) {
 		TemplateUtils.decodeExtension(extension, in -> {
 			int coreCount = in.readUnsignedByte();
 			for (int i = 0; i < coreCount; ++i)
@@ -30,7 +31,7 @@ public class Iso19794p2v2011CoreDeltaExtension {
 			int deltaCount = in.readUnsignedByte();
 			for (int i = 0; i < deltaCount; ++i)
 				deltas.add(new Iso19794p2v2011Delta(in));
-			ValidateTemplate.condition(in.available() == 0, strict, "Extra data at the end of core/delta extension.");
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of core/delta extension.");
 		});
 	}
 	Iso19794p2v2011Extension extension() {

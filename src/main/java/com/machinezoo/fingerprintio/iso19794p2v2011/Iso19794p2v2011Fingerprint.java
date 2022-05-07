@@ -4,15 +4,14 @@ package com.machinezoo.fingerprintio.iso19794p2v2011;
 import static java.util.stream.Collectors.*;
 import java.util.*;
 import java.util.function.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.iso19794p1v2011.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Fingerprint (<a href="https://templates.machinezoo.com/iso-19794-2-2011#fingerprint">FINGERPRINT</a>).
  */
 public class Iso19794p2v2011Fingerprint {
-	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2011Fingerprint.class);
 	/**
 	 * Capture date and time (<a href="https://templates.machinezoo.com/iso-19794-2-2011#datetime">DATETIME</a>).
 	 * Defaults to no date/time (0xff filler).
@@ -105,55 +104,53 @@ public class Iso19794p2v2011Fingerprint {
 	 */
 	public Iso19794p2v2011Fingerprint() {
 	}
-	Iso19794p2v2011Fingerprint(Iso19794p1v2011Sample sample, boolean strict) {
+	Iso19794p2v2011Fingerprint(Iso19794p1v2011Sample sample, ExceptionHandler handler) {
 		datetime = sample.datetime;
-		sensorType = TemplateUtils.decodeType(sample.sensorType, Iso19794p2v2011SensorType.class, strict, "Unrecognized sensor type.");
+		sensorType = TemplateUtils.decodeType(sample.sensorType, Iso19794p2v2011SensorType.class, handler, "Unrecognized sensor type.");
 		sensorVendor = sample.sensorVendor;
 		sensorId = sample.sensorId;
 		qrecords = sample.qrecords;
 		certificates = sample.certificates.stream()
-			.map(c -> new Iso19794p2v2011Certificate(c, strict))
+			.map(c -> new Iso19794p2v2011Certificate(c, handler))
 			.collect(toList());
 		TemplateUtils.decodeBytes(sample.data, "Unexpected end of fingerprint block.", in -> {
-			position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2011Position.class, strict, "Unrecognized finger position code.");
+			position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2011Position.class, handler, "Unrecognized finger position code.");
 			view = in.readUnsignedByte();
 			resolutionX = in.readUnsignedShort();
 			resolutionY = in.readUnsignedShort();
-			scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2011ScanType.values(), t -> t.code, strict, "Unrecognized sensor type code.");
+			scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2011ScanType.values(), t -> t.code, handler, "Unrecognized sensor type code.");
 			width = in.readUnsignedShort();
 			height = in.readUnsignedShort();
 			int flags = in.readUnsignedByte();
 			int minBytes = flags >> 4;
-			ValidateTemplate.condition(minBytes == 5 || minBytes == 6, strict, "Minutia record size must be either 5 or 6 bytes.");
-			endingType = TemplateUtils.decodeType(flags & 0xf, Iso19794p2v2011EndingType.class, strict, "Unrecognized ridge ending type code.");
+			ValidateTemplate.condition(minBytes == 5 || minBytes == 6, handler, "Minutia record size must be either 5 or 6 bytes.");
+			endingType = TemplateUtils.decodeType(flags & 0xf, Iso19794p2v2011EndingType.class, handler, "Unrecognized ridge ending type code.");
 			int count = in.readUnsignedByte();
 			for (int i = 0; i < count; ++i)
-				minutiae.add(new Iso19794p2v2011Minutia(in, minBytes == 6, strict));
+				minutiae.add(new Iso19794p2v2011Minutia(in, minBytes == 6, handler));
 			int totalBytes = in.readUnsignedShort();
 			int readBytes = 0;
 			while (readBytes < totalBytes) {
 				Iso19794p2v2011Extension extension = new Iso19794p2v2011Extension(in);
 				readBytes += extension.measure();
 				if (extension.type == Iso19794p2v2011CountExtension.IDENTIFIER)
-					decodeExtension(extension, data -> counts = new Iso19794p2v2011CountExtension(data, strict), strict, "Unable to decode ridge count extension.");
+					decodeExtension(extension, data -> counts = new Iso19794p2v2011CountExtension(data, handler), handler, "Unable to decode ridge count extension.");
 				else if (extension.type == Iso19794p2v2011CoreDeltaExtension.IDENTIFIER)
-					decodeExtension(extension, data -> coredelta = new Iso19794p2v2011CoreDeltaExtension(data, strict), strict, "Unable to decode core/delta extension.");
+					decodeExtension(extension, data -> coredelta = new Iso19794p2v2011CoreDeltaExtension(data, handler), handler, "Unable to decode core/delta extension.");
 				else if (extension.type == Iso19794p2v2011ZonalExtension.IDENTIFIER)
-					decodeExtension(extension, data -> zones = new Iso19794p2v2011ZonalExtension(data, width, height, strict), strict, "Unable to decode zonal quality extension.");
+					decodeExtension(extension, data -> zones = new Iso19794p2v2011ZonalExtension(data, width, height, handler), handler, "Unable to decode zonal quality extension.");
 				else
 					extensions.add(extension);
 			}
-			ValidateTemplate.condition(readBytes == totalBytes, strict, "Total length of extension data does not match the sum of extension block lengths.");
+			ValidateTemplate.condition(readBytes == totalBytes, handler, "Total length of extension data does not match the sum of extension block lengths.");
 			ValidateTemplate.condition(in.available() == 0, "Fingerprint length field value doesn't match natural end of the fingerprint.");
 		});
 	}
-	private void decodeExtension(Iso19794p2v2011Extension extension, Consumer<byte[]> decoder, boolean strict, String message) {
+	private void decodeExtension(Iso19794p2v2011Extension extension, Consumer<byte[]> decoder, ExceptionHandler handler, String message) {
 		try {
 			decoder.accept(extension.data);
 		} catch (Throwable ex) {
-			if (strict)
-				throw ex;
-			logger.warn(message, ex);
+			ValidateTemplate.fail(handler, message, ex);
 			extensions.add(extension);
 		}
 	}

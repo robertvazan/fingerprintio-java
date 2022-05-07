@@ -3,11 +3,11 @@ package com.machinezoo.fingerprintio.ansi378v2009am1;
 
 import static java.util.stream.Collectors.*;
 import java.util.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.ansi378v2009.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * ANSI INCITS 378-2009/AM 1 template.
@@ -15,7 +15,6 @@ import com.machinezoo.fingerprintio.utils.*;
  * @see <a href="https://templates.machinezoo.com/ansi378-2009am1">ANSI INCITS 378-2009/AM 1 Summary</a>
  */
 public class Ansi378v2009Am1Template {
-	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2009Am1Template.class);
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, '0', '3', '5', 0 };
 	/**
 	 * Checks whether provided template is an ANSI INCITS 378-2009/AM 1 template.
@@ -66,7 +65,7 @@ public class Ansi378v2009Am1Template {
 	 *             if the template cannot be parsed or it fails validation
 	 */
 	public Ansi378v2009Am1Template(byte[] template) {
-		this(template, true);
+		this(template, Exceptions.propagate());
 	}
 	/**
 	 * Parses and optionally validates ANSI INCITS 378-2009/AM 1 template.
@@ -77,10 +76,30 @@ public class Ansi378v2009Am1Template {
 	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 * @deprecated Use {@link #Ansi378v2009Am1Template(byte[], ExceptionHandler)} instead.
 	 */
+	@Deprecated
 	public Ansi378v2009Am1Template(byte[] template, boolean strict) {
+		this(template, strict ? Exceptions.propagate() : Exceptions.silence());
+	}
+	/**
+	 * Parses and optionally validates ANSI INCITS 378-2009/AM 1 template.
+	 * <p>
+	 * Recoverable validation exceptions encountered during parsing will be fed to the provided exception handler.
+	 * Pass in {@link Exceptions#silence()} to ignore all recoverable validation errors
+	 * or {@link Exceptions#propagate()} to throw exception even for recoverable errors.
+	 * 
+	 * @param template
+	 *            serialized template in ANSI INCITS 378-2009/AM 1 format
+	 * @param handler
+	 *            handler for recoverable validation exceptions
+	 * @throws TemplateFormatException
+	 *             if unrecoverable validation error is encountered or the provided exception handler returns {@code false}
+	 */
+	public Ansi378v2009Am1Template(byte[] template, ExceptionHandler handler) {
 		if (!accepts(template)) {
-			if (!strict && Ansi378v2009Template.accepts(template)) {
+			if (Ansi378v2009Template.accepts(template)) {
+				ValidateTemplate.fail(handler, "This is ANSI INCITS 378-2009 template, not ANSI INCITS 378-2009/AM1 template.");
 				template = Arrays.copyOf(template, template.length);
 				template[6] = '5';
 			} else
@@ -90,21 +109,19 @@ public class Ansi378v2009Am1Template {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
 			ValidateTemplate.condition(length >= 21, "Total length must be at least 21 bytes.");
-			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), false, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), handler, "Total length indicates trimmed template.");
 			vendorId = in.readUnsignedShort();
 			subformat = in.readUnsignedShort();
 			int certification = in.readUnsignedByte();
 			sensorCertified = (certification & 0x80) != 0;
-			if ((certification & 0x7f) != 0)
-				logger.warn("Ignoring unrecognized sensor compliance bits.");
+			ValidateTemplate.condition((certification & 0x7f) == 0, handler, "Unrecognized sensor compliance bits.");
 			sensorId = in.readUnsignedShort();
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Ansi378v2009Am1Fingerprint(in, strict));
-			if (in.available() > 0)
-				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, strict);
+				fingerprints.add(new Ansi378v2009Am1Fingerprint(in, handler));
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of the template.");
+			ValidateTemplate.structure(this::validate, handler);
 		});
 	}
 	/**

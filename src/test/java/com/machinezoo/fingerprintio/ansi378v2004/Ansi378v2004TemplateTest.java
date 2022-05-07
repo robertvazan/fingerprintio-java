@@ -4,6 +4,7 @@ package com.machinezoo.fingerprintio.ansi378v2004;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import com.machinezoo.fingerprintio.*;
+import com.machinezoo.noexception.*;
 
 public class Ansi378v2004TemplateTest {
 	@Test
@@ -183,7 +184,7 @@ public class Ansi378v2004TemplateTest {
 			byte[] template = TestUtils.sample(format);
 			assertEquals(format == TemplateFormat.ANSI_378_2004, Ansi378v2004Template.accepts(template));
 			if (format != TemplateFormat.ANSI_378_2004)
-				assertThrows(TemplateFormatException.class, () -> new Ansi378v2004Template(template, false));
+				assertThrows(TemplateFormatException.class, () -> new Ansi378v2004Template(template, Exceptions.silence()));
 		}
 	}
 	private Ansi378v2004Template decode() {
@@ -192,7 +193,7 @@ public class Ansi378v2004TemplateTest {
 		 * Sample template in the spec is bogus. Check for exception. Then enable permissive decoding.
 		 */
 		assertThrows(TemplateFormatException.class, () -> new Ansi378v2004Template(bytes));
-		return new Ansi378v2004Template(bytes, false);
+		return new Ansi378v2004Template(bytes, Exceptions.silence());
 	}
 	public static byte[] sample() {
 		/*

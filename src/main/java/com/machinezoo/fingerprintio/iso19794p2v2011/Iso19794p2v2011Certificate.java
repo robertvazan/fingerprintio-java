@@ -5,6 +5,7 @@ import java.util.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.iso19794p1v2011.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Certification record (<a href="https://templates.machinezoo.com/iso-19794-2-2011#certificate">CERTIFICATE</a>).
@@ -24,9 +25,9 @@ public class Iso19794p2v2011Certificate {
 	 */
 	public Iso19794p2v2011Certificate() {
 	}
-	Iso19794p2v2011Certificate(Iso19794p1v2011Certificate certificate, boolean strict) {
+	Iso19794p2v2011Certificate(Iso19794p1v2011Certificate certificate, ExceptionHandler handler) {
 		authority = certificate.authority;
-		scheme = TemplateUtils.decodeType(certificate.scheme, Iso19794p2v2011CertificationScheme.values(), s -> s.code, strict, "Unrecognized certification scheme.");
+		scheme = TemplateUtils.decodeType(certificate.scheme, Iso19794p2v2011CertificationScheme.values(), s -> s.code, handler, "Unrecognized certification scheme.");
 	}
 	Iso19794p1v2011Certificate toCertificate() {
 		Iso19794p1v2011Certificate certificate = new Iso19794p1v2011Certificate();

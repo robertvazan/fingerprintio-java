@@ -3,6 +3,7 @@ package com.machinezoo.fingerprintio.ansi378v2004;
 
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Minutia (<a href="https://templates.machinezoo.com/ansi378-2004#minutia">MINUTIA</a>).
@@ -35,9 +36,9 @@ public class Ansi378v2004Minutia {
 	 */
 	public Ansi378v2004Minutia() {
 	}
-	Ansi378v2004Minutia(TemplateReader in, boolean strict) {
+	Ansi378v2004Minutia(TemplateReader in, ExceptionHandler handler) {
 		positionX = in.readUnsignedShort();
-		type = TemplateUtils.decodeType(positionX >> 14, Ansi378v2004MinutiaType.class, strict, "Unrecognized minutia type code.");
+		type = TemplateUtils.decodeType(positionX >> 14, Ansi378v2004MinutiaType.class, handler, "Unrecognized minutia type code.");
 		positionX &= 0x3fff;
 		positionY = in.readUnsignedShort();
 		angle = in.readUnsignedByte();

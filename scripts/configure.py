@@ -24,6 +24,10 @@ def dependencies():
     use_junit()
     use_commons_io('test')
     use_jackson('test')
-    use_slf4j_test()
+
+javadoc_links = lambda: [
+    *standard_javadoc_links(),
+    'https://noexception.machinezoo.com/javadoc/'
+]
 
 generate(globals())

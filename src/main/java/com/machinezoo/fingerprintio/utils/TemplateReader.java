@@ -17,7 +17,7 @@ public class TemplateReader implements DataInput {
 			/*
 			 * We should never get here, because byte array reads cannot fail.
 			 */
-			return new WrappedException(exception);
+			return Exceptions.wrap().handle(exception);
 		}
 	};
 	public int available() {

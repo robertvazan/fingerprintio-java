@@ -3,10 +3,10 @@ package com.machinezoo.fingerprintio.ansi378v2004;
 
 import static java.util.stream.Collectors.*;
 import java.util.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * ANSI INCITS 378-2004 template.
@@ -14,7 +14,6 @@ import com.machinezoo.fingerprintio.utils.*;
  * @see <a href="https://templates.machinezoo.com/ansi378-2004">ANSI INCITS 378-2004 Summary</a>
  */
 public class Ansi378v2004Template {
-	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2004Template.class);
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
 	/**
 	 * Checks whether provided template is an ANSI INCITS 378-2004 template.
@@ -116,7 +115,7 @@ public class Ansi378v2004Template {
 	 *             if the template cannot be parsed or it fails validation
 	 */
 	public Ansi378v2004Template(byte[] template) {
-		this(template, true);
+		this(template, Exceptions.propagate());
 	}
 	/**
 	 * Parses and optionally validates ANSI INCITS 378-2004 template.
@@ -127,19 +126,37 @@ public class Ansi378v2004Template {
 	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 * @deprecated Use {@link #Ansi378v2004Template(byte[], ExceptionHandler)} instead.
 	 */
+	@Deprecated
 	public Ansi378v2004Template(byte[] template, boolean strict) {
+		this(template, strict ? Exceptions.propagate() : Exceptions.silence());
+	}
+	/**
+	 * Parses and optionally validates ANSI INCITS 378-2004 template.
+	 * <p>
+	 * Recoverable validation exceptions encountered during parsing will be fed to the provided exception handler.
+	 * Pass in {@link Exceptions#silence()} to ignore all recoverable validation errors
+	 * or {@link Exceptions#propagate()} to throw exception even for recoverable errors.
+	 * 
+	 * @param template
+	 *            serialized template in ANSI INCITS 378-2004 format
+	 * @param handler
+	 *            handler for recoverable validation exceptions
+	 * @throws TemplateFormatException
+	 *             if unrecoverable validation error is encountered or the provided exception handler returns {@code false}
+	 */
+	public Ansi378v2004Template(byte[] template, ExceptionHandler handler) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ANSI INCITS 378-2004 template.");
 		TemplateUtils.decodeTemplate(template, in -> {
 			in.skipBytes(magic.length);
-			skipLength(in);
+			skipLength(in, handler);
 			vendorId = in.readUnsignedShort();
 			subformat = in.readUnsignedShort();
 			sensorId = in.readUnsignedShort();
 			sensorCertified = (sensorId & 0x8000) != 0;
-			if ((sensorId & 0x7000) != 0)
-				logger.warn("Ignoring unrecognized sensor compliance bits.");
+			ValidateTemplate.condition((sensorId & 0x7000) == 0, handler, "Unrecognized sensor compliance bits.");
 			sensorId &= 0xfff;
 			width = in.readUnsignedShort();
 			height = in.readUnsignedShort();
@@ -148,13 +165,12 @@ public class Ansi378v2004Template {
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Ansi378v2004Fingerprint(in, strict));
-			if (in.available() > 0)
-				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, strict);
+				fingerprints.add(new Ansi378v2004Fingerprint(in, handler));
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of the template.");
+			ValidateTemplate.structure(this::validate, handler);
 		});
 	}
-	private void skipLength(TemplateReader in) {
+	private void skipLength(TemplateReader in, ExceptionHandler handler) {
 		int available = in.available();
 		int length = in.readUnsignedShort();
 		if (length == 0) {
@@ -162,11 +178,10 @@ public class Ansi378v2004Template {
 			 * Zero 2-byte length means this template has a 6-byte length field.
 			 */
 			length = (in.readUnsignedShort() << 16) | in.readUnsignedShort();
-			if (length < 0x10000)
-				logger.debug("Not strictly compliant template: 6-byte length field should have value of at least 0x10000.");
+			ValidateTemplate.condition(length >= 0x10000, "Not strictly compliant template: 6-byte length field should have value of at least 0x10000.");
 		}
 		ValidateTemplate.condition(length >= 26, "Total length must be at least 26 bytes.");
-		ValidateTemplate.condition(length <= magic.length + available, false, "Total length indicates trimmed template.");
+		ValidateTemplate.condition(length <= magic.length + available, handler, "Total length indicates trimmed template.");
 	}
 	/**
 	 * Validates and serializes the template in ANSI INCITS 378-2004 format.

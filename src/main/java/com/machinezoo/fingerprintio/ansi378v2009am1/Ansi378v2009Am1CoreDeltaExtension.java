@@ -4,6 +4,7 @@ package com.machinezoo.fingerprintio.ansi378v2009am1;
 import java.util.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Core and delta extension (<a href="https://templates.machinezoo.com/ansi378-2009am1#coredelta">COREDELTA</a>).
@@ -23,7 +24,7 @@ public class Ansi378v2009Am1CoreDeltaExtension {
 	 */
 	public Ansi378v2009Am1CoreDeltaExtension() {
 	}
-	Ansi378v2009Am1CoreDeltaExtension(byte[] extension, boolean strict) {
+	Ansi378v2009Am1CoreDeltaExtension(byte[] extension, ExceptionHandler handler) {
 		TemplateUtils.decodeExtension(extension, in -> {
 			int coreInfo = in.readUnsignedByte();
 			for (int i = 0; i < (coreInfo & 0xf); ++i)
@@ -31,7 +32,7 @@ public class Ansi378v2009Am1CoreDeltaExtension {
 			int deltaInfo = in.readUnsignedByte();
 			for (int i = 0; i < (deltaInfo & 0xf); ++i)
 				deltas.add(new Ansi378v2009Am1Delta(in, (deltaInfo & 0x40) != 0));
-			ValidateTemplate.condition(in.available() == 0, strict, "Extra data at the end of core/delta extension.");
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of core/delta extension.");
 		});
 	}
 	Ansi378v2009Am1Extension extension() {

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.ansi378v2009.*;
+import com.machinezoo.noexception.*;
 
 public class Ansi378v2009Am1TemplateTest {
 	@Test
@@ -141,7 +142,7 @@ public class Ansi378v2009Am1TemplateTest {
 		byte[] v2009 = Ansi378v2009TemplateTest.sample();
 		assertTrue(Ansi378v2009Template.accepts(v2009));
 		assertFalse(Ansi378v2009Am1Template.accepts(v2009));
-		new Ansi378v2009Am1Template(v2009, false);
+		new Ansi378v2009Am1Template(v2009, Exceptions.silence());
 	}
 	@Test
 	public void json() {
@@ -217,7 +218,7 @@ public class Ansi378v2009Am1TemplateTest {
 			byte[] template = TestUtils.sample(format);
 			assertEquals(format == TemplateFormat.ANSI_378_2009_AM1, Ansi378v2009Am1Template.accepts(template));
 			if (format != TemplateFormat.ANSI_378_2009_AM1 && format != TemplateFormat.ANSI_378_2009)
-				assertThrows(TemplateFormatException.class, () -> new Ansi378v2009Am1Template(template, false));
+				assertThrows(TemplateFormatException.class, () -> new Ansi378v2009Am1Template(template, Exceptions.silence()));
 		}
 	}
 	private Ansi378v2009Am1Template decode() {

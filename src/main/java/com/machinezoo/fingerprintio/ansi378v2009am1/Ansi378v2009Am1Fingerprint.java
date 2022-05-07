@@ -3,15 +3,14 @@ package com.machinezoo.fingerprintio.ansi378v2009am1;
 
 import java.util.*;
 import java.util.function.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Fingerprint (<a href="https://templates.machinezoo.com/ansi378-2009am1#fingerprint">FINGERPRINT</a>).
  */
 public class Ansi378v2009Am1Fingerprint {
-	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2009Am1Fingerprint.class);
 	/**
 	 * Finger position on hands (<a href="https://templates.machinezoo.com/ansi378-2009am1#position">POSITION</a>).
 	 * Defaults to {@link Ansi378v2009Am1Position#UNKNOWN}.
@@ -82,10 +81,10 @@ public class Ansi378v2009Am1Fingerprint {
 	 */
 	public Ansi378v2009Am1Fingerprint() {
 	}
-	Ansi378v2009Am1Fingerprint(TemplateReader in, boolean strict) {
-		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1Position.class, strict, "Unrecognized finger position code.");
+	Ansi378v2009Am1Fingerprint(TemplateReader in, ExceptionHandler handler) {
+		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1Position.class, handler, "Unrecognized finger position code.");
 		view = in.readUnsignedByte();
-		scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1ScanType.values(), t -> t.code, strict, "Unrecognized sensor type code.");
+		scanType = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2009Am1ScanType.values(), t -> t.code, handler, "Unrecognized sensor type code.");
 		quality = in.readUnsignedByte();
 		qualityVendorId = in.readUnsignedShort();
 		qualityAlgorithmId = in.readUnsignedShort();
@@ -95,28 +94,26 @@ public class Ansi378v2009Am1Fingerprint {
 		resolutionY = in.readUnsignedShort();
 		int count = in.readUnsignedByte();
 		for (int i = 0; i < count; ++i)
-			minutiae.add(new Ansi378v2009Am1Minutia(in, strict));
+			minutiae.add(new Ansi378v2009Am1Minutia(in, handler));
 		int totalBytes = in.readUnsignedShort();
 		int readBytes = 0;
 		while (readBytes < totalBytes) {
 			Ansi378v2009Am1Extension extension = new Ansi378v2009Am1Extension(in);
 			if (extension.type == Ansi378v2009Am1CountExtension.IDENTIFIER)
-				decodeExtension(extension, data -> counts = new Ansi378v2009Am1CountExtension(data, strict), strict, "Unable to decode ridge count extension.");
+				decodeExtension(extension, data -> counts = new Ansi378v2009Am1CountExtension(data, handler), handler, "Unable to decode ridge count extension.");
 			else if (extension.type == Ansi378v2009Am1CoreDeltaExtension.IDENTIFIER)
-				decodeExtension(extension, data -> coredelta = new Ansi378v2009Am1CoreDeltaExtension(data, strict), strict, "Unable to decode core/delta extension.");
+				decodeExtension(extension, data -> coredelta = new Ansi378v2009Am1CoreDeltaExtension(data, handler), handler, "Unable to decode core/delta extension.");
 			else
 				extensions.add(extension);
 			readBytes += extension.measure();
 		}
-		ValidateTemplate.condition(readBytes == totalBytes, strict, "Total length of extension data doesn't match the sum of extension block lengths.");
+		ValidateTemplate.condition(readBytes == totalBytes, handler, "Total length of extension data doesn't match the sum of extension block lengths.");
 	}
-	private void decodeExtension(Ansi378v2009Am1Extension extension, Consumer<byte[]> decoder, boolean strict, String message) {
+	private void decodeExtension(Ansi378v2009Am1Extension extension, Consumer<byte[]> decoder, ExceptionHandler handler, String message) {
 		try {
 			decoder.accept(extension.data);
 		} catch (Throwable ex) {
-			if (strict)
-				throw ex;
-			logger.warn(message, ex);
+			ValidateTemplate.fail(handler, message, ex);
 			extensions.add(extension);
 		}
 	}

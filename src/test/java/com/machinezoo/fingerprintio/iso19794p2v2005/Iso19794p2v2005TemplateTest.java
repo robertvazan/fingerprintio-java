@@ -4,6 +4,7 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.*;
 import com.machinezoo.fingerprintio.*;
+import com.machinezoo.noexception.*;
 
 public class Iso19794p2v2005TemplateTest {
 	@Test
@@ -202,7 +203,7 @@ public class Iso19794p2v2005TemplateTest {
 			byte[] template = TestUtils.sample(format);
 			assertEquals(format == TemplateFormat.ISO_19794_2_2005, Iso19794p2v2005Template.accepts(template));
 			if (format != TemplateFormat.ISO_19794_2_2005)
-				assertThrows(TemplateFormatException.class, () -> new Iso19794p2v2005Template(template, false));
+				assertThrows(TemplateFormatException.class, () -> new Iso19794p2v2005Template(template, Exceptions.silence()));
 		}
 	}
 	private Iso19794p2v2005Template decode() {

@@ -3,14 +3,13 @@ package com.machinezoo.fingerprintio.ansi378v2004;
 
 import java.util.*;
 import java.util.function.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Fingerprint (<a href="https://templates.machinezoo.com/ansi378-2004#fingerprint">FINGERPRINT</a>).
  */
 public class Ansi378v2004Fingerprint {
-	private static final Logger logger = LoggerFactory.getLogger(Ansi378v2004Fingerprint.class);
 	/**
 	 * Finger position on hands (<a href="https://templates.machinezoo.com/ansi378-2004#position">POSITION</a>).
 	 * Defaults to {@link Ansi378v2004Position#UNKNOWN}.
@@ -53,36 +52,34 @@ public class Ansi378v2004Fingerprint {
 	 */
 	public Ansi378v2004Fingerprint() {
 	}
-	Ansi378v2004Fingerprint(TemplateReader in, boolean strict) {
-		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2004Position.class, strict, "Unrecognized finger position code.");
+	Ansi378v2004Fingerprint(TemplateReader in, ExceptionHandler handler) {
+		position = TemplateUtils.decodeType(in.readUnsignedByte(), Ansi378v2004Position.class, handler, "Unrecognized finger position code.");
 		int offsetAndType = in.readUnsignedByte();
 		view = offsetAndType >> 4;
-		scanType = TemplateUtils.decodeType(offsetAndType & 0xf, Ansi378v2004ScanType.values(), t -> t.code, strict, "Unrecognized sensor type code.");
+		scanType = TemplateUtils.decodeType(offsetAndType & 0xf, Ansi378v2004ScanType.values(), t -> t.code, handler, "Unrecognized sensor type code.");
 		quality = in.readUnsignedByte();
 		int count = in.readUnsignedByte();
 		for (int i = 0; i < count; ++i)
-			minutiae.add(new Ansi378v2004Minutia(in, strict));
+			minutiae.add(new Ansi378v2004Minutia(in, handler));
 		int totalBytes = in.readUnsignedShort();
 		int readBytes = 0;
 		while (readBytes < totalBytes) {
 			Ansi378v2004Extension extension = new Ansi378v2004Extension(in);
 			if (extension.type == Ansi378v2004CountExtension.IDENTIFIER)
-				decodeExtension(extension, data -> counts = new Ansi378v2004CountExtension(data, strict), strict, "Unable to decode ridge count extension.");
+				decodeExtension(extension, data -> counts = new Ansi378v2004CountExtension(data, handler), handler, "Unable to decode ridge count extension.");
 			else if (extension.type == Ansi378v2004CoreDeltaExtension.IDENTIFIER)
-				decodeExtension(extension, data -> coredelta = new Ansi378v2004CoreDeltaExtension(data, strict), strict, "Unable to decode core/delta extension.");
+				decodeExtension(extension, data -> coredelta = new Ansi378v2004CoreDeltaExtension(data, handler), handler, "Unable to decode core/delta extension.");
 			else
 				extensions.add(extension);
 			readBytes += extension.measure();
 		}
-		ValidateTemplate.condition(readBytes == totalBytes, strict, "Total length of extension data doesn't match the sum of extension block lengths.");
+		ValidateTemplate.condition(readBytes == totalBytes, handler, "Total length of extension data doesn't match the sum of extension block lengths.");
 	}
-	private void decodeExtension(Ansi378v2004Extension extension, Consumer<byte[]> decoder, boolean strict, String message) {
+	private void decodeExtension(Ansi378v2004Extension extension, Consumer<byte[]> decoder, ExceptionHandler handler, String message) {
 		try {
 			decoder.accept(extension.data);
 		} catch (Throwable ex) {
-			if (strict)
-				throw ex;
-			logger.warn(message, ex);
+			ValidateTemplate.fail(handler, message, ex);
 			extensions.add(extension);
 		}
 	}
@@ -122,8 +119,7 @@ public class Ansi378v2004Fingerprint {
 		for (Ansi378v2004Extension extension : extensions)
 			extension.validate();
 		ValidateTemplate.int16(extensionBytes(), "Total size of all extension blocks must a 16-bit number.");
-		if (coredelta != null && coredelta.cores.isEmpty())
-			logger.debug("Not strictly compliant template. Core count is zero.");
+		ValidateTemplate.condition(coredelta == null || !coredelta.cores.isEmpty(), "Not strictly compliant template. Core count is zero.");
 	}
 	private int extensionBytes() {
 		int bytes = extensions.stream().mapToInt(Ansi378v2004Extension::measure).sum();

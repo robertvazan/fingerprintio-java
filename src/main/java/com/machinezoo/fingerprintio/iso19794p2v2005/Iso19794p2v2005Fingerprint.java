@@ -3,14 +3,13 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import java.util.*;
 import java.util.function.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Fingerprint (<a href="https://templates.machinezoo.com/iso-19794-2-2005#fingerprint">FINGERPRINT</a>).
  */
 public class Iso19794p2v2005Fingerprint {
-	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2005Fingerprint.class);
 	/**
 	 * Finger position on hands (<a href="https://templates.machinezoo.com/iso-19794-2-2005#position">POSITION</a>).
 	 * Defaults to {@link Iso19794p2v2005Position#UNKNOWN}.
@@ -58,15 +57,15 @@ public class Iso19794p2v2005Fingerprint {
 	 */
 	public Iso19794p2v2005Fingerprint() {
 	}
-	Iso19794p2v2005Fingerprint(TemplateReader in, int width, int height, boolean strict) {
-		position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2005Position.class, strict, "Unrecognized finger position code.");
+	Iso19794p2v2005Fingerprint(TemplateReader in, int width, int height, ExceptionHandler handler) {
+		position = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2005Position.class, handler, "Unrecognized finger position code.");
 		int offsetAndType = in.readUnsignedByte();
 		view = offsetAndType >> 4;
-		scanType = TemplateUtils.decodeType(offsetAndType & 0xf, Iso19794p2v2005ScanType.values(), t -> t.code, strict, "Unrecognized sensor type code.");
+		scanType = TemplateUtils.decodeType(offsetAndType & 0xf, Iso19794p2v2005ScanType.values(), t -> t.code, handler, "Unrecognized sensor type code.");
 		quality = in.readUnsignedByte();
 		int count = in.readUnsignedByte();
 		for (int i = 0; i < count; ++i)
-			minutiae.add(new Iso19794p2v2005Minutia(in, strict));
+			minutiae.add(new Iso19794p2v2005Minutia(in, handler));
 		int totalBytes = in.readUnsignedShort();
 		byte[] extensionBlock = new byte[totalBytes];
 		in.readFully(extensionBlock);
@@ -75,28 +74,24 @@ public class Iso19794p2v2005Fingerprint {
 				while (inx.available() > 0) {
 					Iso19794p2v2005Extension extension = new Iso19794p2v2005Extension(inx);
 					if (extension.type == Iso19794p2v2005CountExtension.IDENTIFIER)
-						decodeExtension(extension, data -> counts = new Iso19794p2v2005CountExtension(data, strict), strict, "Unable to decode ridge count extension.");
+						decodeExtension(extension, data -> counts = new Iso19794p2v2005CountExtension(data, handler), handler, "Unable to decode ridge count extension.");
 					else if (extension.type == Iso19794p2v2005CoreDeltaExtension.IDENTIFIER)
-						decodeExtension(extension, data -> coredelta = new Iso19794p2v2005CoreDeltaExtension(data, strict), strict, "Unable to decode core/delta extension.");
+						decodeExtension(extension, data -> coredelta = new Iso19794p2v2005CoreDeltaExtension(data, handler), handler, "Unable to decode core/delta extension.");
 					else if (extension.type == Iso19794p2v2005ZonalExtension.IDENTIFIER)
-						decodeExtension(extension, data -> zones = new Iso19794p2v2005ZonalExtension(data, width, height, strict), strict, "Unable to decode zonal quality extension.");
+						decodeExtension(extension, data -> zones = new Iso19794p2v2005ZonalExtension(data, width, height, handler), handler, "Unable to decode zonal quality extension.");
 					else
 						extensions.add(extension);
 				}
 			});
 		} catch (Throwable ex) {
-			if (strict)
-				throw ex;
-			logger.warn("Failed to parse extension data.", ex);
+			ValidateTemplate.fail(handler, "Failed to parse extension data.", ex);
 		}
 	}
-	private void decodeExtension(Iso19794p2v2005Extension extension, Consumer<byte[]> decoder, boolean strict, String message) {
+	private void decodeExtension(Iso19794p2v2005Extension extension, Consumer<byte[]> decoder, ExceptionHandler handler, String message) {
 		try {
 			decoder.accept(extension.data);
 		} catch (Throwable ex) {
-			if (strict)
-				throw ex;
-			logger.warn(message, ex);
+			ValidateTemplate.fail(handler, message, ex);
 			extensions.add(extension);
 		}
 	}

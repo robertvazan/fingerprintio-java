@@ -7,6 +7,7 @@ import java.util.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.iso19794p1v2011.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * ISO/IEC 19794-2:2011 off-card template.
@@ -76,7 +77,7 @@ public class Iso19794p2v2011Template {
 	 *             if the template cannot be parsed or it fails validation
 	 */
 	public Iso19794p2v2011Template(byte[] template) {
-		this(template, true);
+		this(template, Exceptions.propagate());
 	}
 	/**
 	 * Parses and optionally validates ISO/IEC 19794-2:2011 off-card template.
@@ -87,16 +88,35 @@ public class Iso19794p2v2011Template {
 	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 * @deprecated Use {@link #Iso19794p2v2011Template(byte[], ExceptionHandler)} instead.
 	 */
+	@Deprecated
 	public Iso19794p2v2011Template(byte[] template, boolean strict) {
+		this(template, strict ? Exceptions.propagate() : Exceptions.silence());
+	}
+	/**
+	 * Parses and optionally validates ISO/IEC 19794-2:2011 off-card template.
+	 * <p>
+	 * Recoverable validation exceptions encountered during parsing will be fed to the provided exception handler.
+	 * Pass in {@link Exceptions#silence()} to ignore all recoverable validation errors
+	 * or {@link Exceptions#propagate()} to throw exception even for recoverable errors.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-2:2011 off-card format
+	 * @param handler
+	 *            handler for recoverable validation exceptions
+	 * @throws TemplateFormatException
+	 *             if unrecoverable validation error is encountered or the provided exception handler returns {@code false}
+	 */
+	public Iso19794p2v2011Template(byte[] template, ExceptionHandler handler) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2011 off-card template.");
 		try {
-			Iso19794p1v2011Template decoded = new Iso19794p1v2011Template(template, strict, format);
+			Iso19794p1v2011Template decoded = new Iso19794p1v2011Template(template, handler, format);
 			fingerprints = decoded.samples.stream()
-				.map(s -> new Iso19794p2v2011Fingerprint(s, strict))
+				.map(s -> new Iso19794p2v2011Fingerprint(s, handler))
 				.collect(toList());
-			ValidateTemplate.structure(this::validate, strict);
+			ValidateTemplate.structure(this::validate, handler);
 		} catch (Throwable ex) {
 			throw TemplateUtils.convertException(ex);
 		}

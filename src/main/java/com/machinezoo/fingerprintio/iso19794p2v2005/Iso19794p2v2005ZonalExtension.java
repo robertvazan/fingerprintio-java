@@ -3,6 +3,7 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Zonal quality extension (<a href="https://templates.machinezoo.com/iso-19794-2-2005#zonalext">ZONALEXT</a>).
@@ -32,7 +33,7 @@ public class Iso19794p2v2005ZonalExtension {
 	 */
 	public Iso19794p2v2005ZonalExtension() {
 	}
-	Iso19794p2v2005ZonalExtension(byte[] extension, int imageWidth, int imageHeight, boolean strict) {
+	Iso19794p2v2005ZonalExtension(byte[] extension, int imageWidth, int imageHeight, ExceptionHandler handler) {
 		TemplateUtils.decodeExtension(extension, in -> {
 			zoneWidth = in.readUnsignedByte();
 			zoneHeight = in.readUnsignedByte();
@@ -52,7 +53,7 @@ public class Iso19794p2v2005ZonalExtension {
 				buffered -= bits;
 				buffer &= (1 << buffered) - 1;
 			}
-			ValidateTemplate.condition(in.available() == 0, strict, "Extra data at the end of zonal quality extension.");
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of zonal quality extension.");
 		});
 	}
 	Iso19794p2v2005Extension extension() {

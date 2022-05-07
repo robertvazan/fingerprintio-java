@@ -3,9 +3,9 @@ package com.machinezoo.fingerprintio.iso19794p1v2011;
 
 import java.io.*;
 import java.util.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * ISO/IEC 19794-1:2011 base template.
@@ -13,7 +13,6 @@ import com.machinezoo.fingerprintio.utils.*;
  * @see <a href="https://templates.machinezoo.com/iso-19794-1-2011">ISO/IEC 19794-1:2011 Summary</a>
  */
 public class Iso19794p1v2011Template {
-	private static final Logger logger = LoggerFactory.getLogger(Iso19794p1v2011Template.class);
 	/**
 	 * Checks whether provided template is an instance of ISO/IEC 19794-1:2011 base template.
 	 * This method does not do any template validation or conformance checking.
@@ -88,7 +87,7 @@ public class Iso19794p1v2011Template {
 	 *             if the template cannot be parsed or it fails validation
 	 */
 	public Iso19794p1v2011Template(byte[] template, Iso19794p1v2011Format format) {
-		this(template, true, format);
+		this(template, Exceptions.propagate(), format);
 	}
 	/**
 	 * Parses and optionally validates ISO/IEC 19794-1:2011 template.
@@ -101,34 +100,54 @@ public class Iso19794p1v2011Template {
 	 *            information about optional fields
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 * @deprecated Use {@link #Iso19794p1v2011Template(byte[], ExceptionHandler, Iso19794p1v2011Format)} instead.
 	 */
+	@Deprecated
 	public Iso19794p1v2011Template(byte[] template, boolean strict, Iso19794p1v2011Format format) {
+		this(template, strict ? Exceptions.propagate() : Exceptions.silence(), format);
+	}
+	/**
+	 * Parses and optionally validates ISO/IEC 19794-1:2011 template.
+	 * <p>
+	 * Recoverable validation exceptions encountered during parsing will be fed to the provided exception handler.
+	 * Pass in {@link Exceptions#silence()} to ignore all recoverable validation errors
+	 * or {@link Exceptions#propagate()} to throw exception even for recoverable errors.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-1:2011 format
+	 * @param handler
+	 *            handler for recoverable validation exceptions
+	 * @param format
+	 *            information about optional fields
+	 * @throws TemplateFormatException
+	 *             if unrecoverable validation error is encountered or the provided exception handler returns {@code false}
+	 */
+	public Iso19794p1v2011Template(byte[] template, ExceptionHandler handler, Iso19794p1v2011Format format) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-1:2011 biometric record.");
 		TemplateUtils.decodeTemplate(template, in -> {
 			byte[] magic = new byte[4];
 			in.readFully(magic);
 			modality = Arrays.stream(Iso19794p1v2011Modality.values()).filter(m -> Arrays.equals(m.magic, magic)).findFirst().orElse(null);
-			ValidateTemplate.condition(modality != null, strict, "Unrecognized modality-specific file signature.");
+			ValidateTemplate.condition(modality != null, handler, "Unrecognized modality-specific file signature.");
 			byte[] version = new byte[4];
 			in.readFully(version);
 			versionMajor = (version[0] - '0') * 10 + (version[1] = '0');
 			versionMinor = version[2] - '0';
 			long length = 0xffff_ffffL & in.readInt();
-			ValidateTemplate.condition(length >= 29, strict, "Total length must be at least 29 bytes.");
-			ValidateTemplate.condition(length <= 12 + in.available(), true, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length >= 29, handler, "Total length must be at least 29 bytes.");
+			ValidateTemplate.condition(length <= 12 + in.available(), handler, "Total length indicates trimmed template.");
 			int count = in.readUnsignedShort();
 			int certFlag = in.readUnsignedByte();
-			ValidateTemplate.condition(certFlag < 2, strict, "Certification flag must be either 0 or 1.");
+			ValidateTemplate.condition(certFlag < 2, handler, "Certification flag must be either 0 or 1.");
 			if (!format.hasCertificates)
-				ValidateTemplate.condition(certFlag == 0, strict, "Certificates cannot be present in this modality-specific format.");
+				ValidateTemplate.condition(certFlag == 0, handler, "Certificates cannot be present in this modality-specific format.");
 			byte[] data = new byte[format.extraHeaderLength];
 			in.readFully(data);
 			for (int i = 0; i < count; ++i)
-				samples.add(new Iso19794p1v2011Sample(in, strict, format, certFlag != 0));
-			if (in.available() > 0)
-				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(() -> validate(format), strict);
+				samples.add(new Iso19794p1v2011Sample(in, handler, format, certFlag != 0));
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of the template.");
+			ValidateTemplate.structure(() -> validate(format), handler);
 		});
 	}
 	/**

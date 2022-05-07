@@ -4,6 +4,7 @@ package com.machinezoo.fingerprintio.utils;
 import java.util.*;
 import java.util.function.*;
 import com.machinezoo.fingerprintio.*;
+import com.machinezoo.noexception.*;
 
 public class TemplateUtils {
 	public static void decodeTemplate(byte[] template, Consumer<TemplateReader> parser) {
@@ -40,12 +41,12 @@ public class TemplateUtils {
 			return (TemplateFormatException)ex;
 		return new TemplateFormatException(ex);
 	}
-	public static <T extends Enum<T>> T decodeType(int code, Class<T> clazz, boolean strict, String message) {
-		return decodeType(code, clazz.getEnumConstants(), Enum::ordinal, strict, message);
+	public static <T extends Enum<T>> T decodeType(int code, Class<T> clazz, ExceptionHandler handler, String message) {
+		return decodeType(code, clazz.getEnumConstants(), Enum::ordinal, handler, message);
 	}
-	public static <T> T decodeType(int code, T[] candidates, ToIntFunction<T> codes, boolean strict, String message) {
+	public static <T> T decodeType(int code, T[] candidates, ToIntFunction<T> codes, ExceptionHandler handler, String message) {
 		T type = Arrays.stream(candidates).filter(t -> codes.applyAsInt(t) == code).findFirst().orElse(null);
-		ValidateTemplate.condition(type != null, strict, message);
+		ValidateTemplate.condition(type != null, handler, message);
 		return type;
 	}
 }

@@ -3,9 +3,9 @@ package com.machinezoo.fingerprintio.iso19794p2v2005;
 
 import static java.util.stream.Collectors.*;
 import java.util.*;
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * ISO/IEC 19794-2:2005 off-card template.
@@ -13,7 +13,6 @@ import com.machinezoo.fingerprintio.utils.*;
  * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO/IEC 19794-2:2005 Summary</a>
  */
 public class Iso19794p2v2005Template {
-	private static final Logger logger = LoggerFactory.getLogger(Iso19794p2v2005Template.class);
 	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
 	/**
 	 * Checks whether provided template is an ISO/IEC 19794-2:2005 off-card template.
@@ -107,7 +106,7 @@ public class Iso19794p2v2005Template {
 	 *             if the template cannot be parsed or it fails validation
 	 */
 	public Iso19794p2v2005Template(byte[] template) {
-		this(template, true);
+		this(template, Exceptions.propagate());
 	}
 	/**
 	 * Parses and optionally validates ISO/IEC 19794-2:2005 off-card template.
@@ -118,19 +117,37 @@ public class Iso19794p2v2005Template {
 	 *            {@code true} to validate the template, {@code false} to tolerate parsing errors as much as possible
 	 * @throws TemplateFormatException
 	 *             if the template cannot be parsed or if {@code strict} is {@code true} and the template fails validation
+	 * @deprecated Use {@link #Iso19794p2v2005Template(byte[], ExceptionHandler)} instead.
 	 */
+	@Deprecated
 	public Iso19794p2v2005Template(byte[] template, boolean strict) {
+		this(template, strict ? Exceptions.propagate() : Exceptions.silence());
+	}
+	/**
+	 * Parses and optionally validates ISO/IEC 19794-2:2005 off-card template.
+	 * <p>
+	 * Recoverable validation exceptions encountered during parsing will be fed to the provided exception handler.
+	 * Pass in {@link Exceptions#silence()} to ignore all recoverable validation errors
+	 * or {@link Exceptions#propagate()} to throw exception even for recoverable errors.
+	 * 
+	 * @param template
+	 *            serialized template in ISO/IEC 19794-2:2005 off-card format
+	 * @param handler
+	 *            handler for recoverable validation exceptions
+	 * @throws TemplateFormatException
+	 *             if unrecoverable validation error is encountered or the provided exception handler returns {@code false}
+	 */
+	public Iso19794p2v2005Template(byte[] template, ExceptionHandler handler) {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2005 off-card template.");
 		TemplateUtils.decodeTemplate(template, in -> {
 			in.skipBytes(magic.length);
 			long length = 0xffff_ffffL & in.readInt();
 			ValidateTemplate.condition(length >= 24, "Total length must be at least 24 bytes.");
-			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), true, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), handler, "Total length indicates trimmed template.");
 			sensorId = in.readUnsignedShort();
 			sensorCertified = (sensorId & 0x8000) != 0;
-			if ((sensorId & 0x7000) != 0)
-				logger.warn("Ignoring unrecognized sensor compliance bits.");
+			ValidateTemplate.condition((sensorId & 0x7000) == 0, handler, "Unrecognized sensor compliance bits.");
 			sensorId &= 0xfff;
 			width = in.readUnsignedShort();
 			height = in.readUnsignedShort();
@@ -139,10 +156,9 @@ public class Iso19794p2v2005Template {
 			int count = in.readUnsignedByte();
 			in.skipBytes(1);
 			for (int i = 0; i < count; ++i)
-				fingerprints.add(new Iso19794p2v2005Fingerprint(in, width, height, strict));
-			if (in.available() > 0)
-				logger.debug("Ignored extra data at the end of the template.");
-			ValidateTemplate.structure(this::validate, strict);
+				fingerprints.add(new Iso19794p2v2005Fingerprint(in, width, height, handler));
+			ValidateTemplate.condition(in.available() == 0, handler, "Extra data at the end of the template.");
+			ValidateTemplate.structure(this::validate, handler);
 		});
 	}
 	/**

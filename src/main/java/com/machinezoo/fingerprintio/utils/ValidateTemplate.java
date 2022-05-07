@@ -1,23 +1,26 @@
 // Part of FingerprintIO: https://fingerprintio.machinezoo.com
 package com.machinezoo.fingerprintio.utils;
 
-import org.slf4j.*;
 import com.machinezoo.fingerprintio.*;
+import com.machinezoo.noexception.*;
 
 public class ValidateTemplate {
-	private static final Logger logger = LoggerFactory.getLogger(ValidateTemplate.class);
-	public static void fail(boolean strict, String message) {
-		if (strict)
-			throw new TemplateFormatException(message);
-		else
-			logger.warn(message);
+	public static void fail(ExceptionHandler handler, String message, Throwable cause) {
+		var exception = new TemplateFormatException(message, cause);
+		if (!handler.handle(exception))
+			throw exception;
 	}
-	public static void condition(boolean condition, boolean strict, String message) {
+	public static void fail(ExceptionHandler handler, String message) {
+		var exception = new TemplateFormatException(message);
+		if (!handler.handle(exception))
+			throw exception;
+	}
+	public static void condition(boolean condition, ExceptionHandler handler, String message) {
 		if (!condition)
-			fail(strict, message);
+			fail(handler, message);
 	}
 	public static void condition(boolean condition, String message) {
-		condition(condition, true, message);
+		condition(condition, Exceptions.propagate(), message);
 	}
 	public static void range(int value, int min, int max, String message) {
 		condition(value >= min && value <= max, message);
@@ -53,16 +56,14 @@ public class ValidateTemplate {
 		int14(value, message);
 		range(value, 0, size - 1, message);
 	}
-	public static void rules(Runnable validator, boolean strict, String message) {
+	public static void rules(Runnable validator, ExceptionHandler handler, String message) {
 		try {
 			validator.run();
 		} catch (Throwable ex) {
-			if (strict)
-				throw ex;
-			logger.warn(message, ex);
+			fail(handler, message, ex);
 		}
 	}
-	public static void structure(Runnable validator, boolean strict) {
-		rules(validator, strict, "Template failed validation.");
+	public static void structure(Runnable validator, ExceptionHandler handler) {
+		rules(validator, handler, "Template failed validation.");
 	}
 }

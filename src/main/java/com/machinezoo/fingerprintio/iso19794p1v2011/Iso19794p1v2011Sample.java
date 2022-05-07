@@ -4,6 +4,7 @@ package com.machinezoo.fingerprintio.iso19794p1v2011;
 import java.util.*;
 import com.machinezoo.fingerprintio.common.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Biometric sample (<a href="https://templates.machinezoo.com/iso-19794-1-2011#sample">SAMPLE</a>).
@@ -43,9 +44,9 @@ public class Iso19794p1v2011Sample {
 	 */
 	public Iso19794p1v2011Sample() {
 	}
-	Iso19794p1v2011Sample(TemplateReader in, boolean strict, Iso19794p1v2011Format format, boolean hasCertificates) {
+	Iso19794p1v2011Sample(TemplateReader in, ExceptionHandler handler, Iso19794p1v2011Format format, boolean hasCertificates) {
 		long length = 0xffff_ffffL & in.readInt();
-		ValidateTemplate.condition(length >= 14, strict, "Length of biometric sample must be at least 14 bytes.");
+		ValidateTemplate.condition(length >= 14, handler, "Length of biometric sample must be at least 14 bytes.");
 		long remaining = in.available() - (length - 4);
 		datetime = new Iso19794p1v2011DateTime(in);
 		sensorType = in.readUnsignedByte();

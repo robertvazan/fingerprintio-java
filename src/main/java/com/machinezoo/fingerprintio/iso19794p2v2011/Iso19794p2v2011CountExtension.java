@@ -3,6 +3,7 @@ package com.machinezoo.fingerprintio.iso19794p2v2011;
 
 import java.util.*;
 import com.machinezoo.fingerprintio.utils.*;
+import com.machinezoo.noexception.*;
 
 /**
  * Ridge count extension (<a href="https://templates.machinezoo.com/iso-19794-2-2011#rcountext">RCOUNTEXT</a>).
@@ -23,11 +24,11 @@ public class Iso19794p2v2011CountExtension {
 	 */
 	public Iso19794p2v2011CountExtension() {
 	}
-	Iso19794p2v2011CountExtension(byte[] extension, boolean strict) {
+	Iso19794p2v2011CountExtension(byte[] extension, ExceptionHandler handler) {
 		TemplateUtils.decodeExtension(extension, in -> {
-			type = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2011CountType.class, strict, "Unrecognized edge picking method.");
+			type = TemplateUtils.decodeType(in.readUnsignedByte(), Iso19794p2v2011CountType.class, handler, "Unrecognized edge picking method.");
 			int count = (extension.length - 1) / 3;
-			ValidateTemplate.condition(3 * count == extension.length - 1, strict, "Extra misaligned data at the end of ridge count extension.");
+			ValidateTemplate.condition(3 * count == extension.length - 1, handler, "Extra misaligned data at the end of ridge count extension.");
 			for (int i = 0; i < count; ++i)
 				edges.add(new Iso19794p2v2011CountEdge(in));
 		});
