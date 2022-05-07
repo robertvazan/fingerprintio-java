@@ -14,7 +14,7 @@ import com.machinezoo.noexception.*;
  * @see <a href="https://templates.machinezoo.com/ansi378-2004">ANSI INCITS 378-2004 Summary</a>
  */
 public class Ansi378v2004Template {
-	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
+	private static final byte[] MAGIC = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
 	/**
 	 * Checks whether provided template is an ANSI INCITS 378-2004 template.
 	 * This method does not do any template validation or conformance checking.
@@ -26,12 +26,12 @@ public class Ansi378v2004Template {
 	 * @return {@code true} if {@code template} is an ANSI INCITS 378-2004 template, {@code false} otherwise
 	 */
 	public static boolean accepts(byte[] template) {
-		if (template.length < magic.length + 4)
+		if (template.length < MAGIC.length + 4)
 			return false;
-		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
+		if (!Arrays.equals(MAGIC, Arrays.copyOf(template, MAGIC.length)))
 			return false;
 		TemplateReader in = new TemplateReader(template);
-		in.skipBytes(magic.length);
+		in.skipBytes(MAGIC.length);
 		/*
 		 * Differentiate from ISO 19794-2 by examining the length field.
 		 */
@@ -150,7 +150,7 @@ public class Ansi378v2004Template {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ANSI INCITS 378-2004 template.");
 		TemplateUtils.decodeTemplate(template, in -> {
-			in.skipBytes(magic.length);
+			in.skipBytes(MAGIC.length);
 			skipLength(in, handler);
 			vendorId = in.readUnsignedShort();
 			subformat = in.readUnsignedShort();
@@ -181,7 +181,7 @@ public class Ansi378v2004Template {
 			ValidateTemplate.condition(length >= 0x10000, "Not strictly compliant template: 6-byte length field should have value of at least 0x10000.");
 		}
 		ValidateTemplate.condition(length >= 26, "Total length must be at least 26 bytes.");
-		ValidateTemplate.condition(length <= magic.length + available, handler, "Total length indicates trimmed template.");
+		ValidateTemplate.condition(length <= MAGIC.length + available, handler, "Total length indicates trimmed template.");
 	}
 	/**
 	 * Validates and serializes the template in ANSI INCITS 378-2004 format.
@@ -193,7 +193,7 @@ public class Ansi378v2004Template {
 	public byte[] toByteArray() {
 		validate();
 		TemplateWriter out = new TemplateWriter();
-		out.write(magic);
+		out.write(MAGIC);
 		int length = measure();
 		if (length < 0x10000)
 			out.writeShort(length);

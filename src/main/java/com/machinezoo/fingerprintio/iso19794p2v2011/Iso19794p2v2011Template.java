@@ -15,14 +15,14 @@ import com.machinezoo.noexception.*;
  * @see <a href="https://templates.machinezoo.com/iso-19794-2-2011">ISO/IEC 19794-2:2011 Summary</a>
  */
 public class Iso19794p2v2011Template {
-	private static final Iso19794p1v2011Format format = new Iso19794p1v2011Format();
+	private static final Iso19794p1v2011Format FORMAT = new Iso19794p1v2011Format();
 	static {
-		format.hasSensorVendor = true;
-		format.hasSensorId = true;
-		format.hasQuality = true;
-		format.hasCertificates = true;
+		FORMAT.hasSensorVendor = true;
+		FORMAT.hasSensorId = true;
+		FORMAT.hasQuality = true;
+		FORMAT.hasCertificates = true;
 	}
-	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, '0', '3', '0', 0 };
+	private static final byte[] MAGIC = new byte[] { 'F', 'M', 'R', 0, '0', '3', '0', 0 };
 	/**
 	 * Checks whether provided template is an ISO/IEC 19794-2:2011 off-card template.
 	 * This method does not do any template validation or conformance checking.
@@ -34,11 +34,11 @@ public class Iso19794p2v2011Template {
 	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2011 off-card template, {@code false} otherwise
 	 */
 	public static boolean accepts(byte[] template) {
-		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
+		if (!Arrays.equals(MAGIC, Arrays.copyOf(template, MAGIC.length)))
 			return false;
 		try {
 			DataInputStream in = new DataInputStream(new ByteArrayInputStream(template));
-			in.skip(magic.length);
+			in.skip(MAGIC.length);
 			long total = 0xffff_ffffL & in.readInt();
 			int count = in.readUnsignedShort();
 			in.skip(1);
@@ -112,7 +112,7 @@ public class Iso19794p2v2011Template {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2011 off-card template.");
 		try {
-			Iso19794p1v2011Template decoded = new Iso19794p1v2011Template(template, handler, format);
+			Iso19794p1v2011Template decoded = new Iso19794p1v2011Template(template, handler, FORMAT);
 			fingerprints = decoded.samples.stream()
 				.map(s -> new Iso19794p2v2011Fingerprint(s, handler))
 				.collect(toList());
@@ -137,7 +137,7 @@ public class Iso19794p2v2011Template {
 		container.samples = fingerprints.stream()
 			.map(fp -> fp.toSample())
 			.collect(toList());
-		return container.toByteArray(format);
+		return container.toByteArray(FORMAT);
 	}
 	private void validate() {
 		ValidateTemplate.range(fingerprints.size(), 1, 176, "Fingerprint count must be in range 1 through 176.");

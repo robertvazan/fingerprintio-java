@@ -15,7 +15,7 @@ import com.machinezoo.noexception.*;
  * @see <a href="https://templates.machinezoo.com/ansi378-2009am1">ANSI INCITS 378-2009/AM 1 Summary</a>
  */
 public class Ansi378v2009Am1Template {
-	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, '0', '3', '5', 0 };
+	private static final byte[] MAGIC = new byte[] { 'F', 'M', 'R', 0, '0', '3', '5', 0 };
 	/**
 	 * Checks whether provided template is an ANSI INCITS 378-2009/AM 1 template.
 	 * This method does not do any template validation or conformance checking.
@@ -27,7 +27,7 @@ public class Ansi378v2009Am1Template {
 	 * @return {@code true} if {@code template} is an ANSI INCITS 378-2009/AM 1 template, {@code false} otherwise
 	 */
 	public static boolean accepts(byte[] template) {
-		return template.length >= magic.length && Arrays.equals(magic, Arrays.copyOf(template, magic.length));
+		return template.length >= MAGIC.length && Arrays.equals(MAGIC, Arrays.copyOf(template, MAGIC.length));
 	}
 	/**
 	 * Vendor ID (<a href="https://templates.machinezoo.com/ansi378-2009am1#vendor">VENDOR</a>).
@@ -106,10 +106,10 @@ public class Ansi378v2009Am1Template {
 				throw new TemplateFormatException("This is not an ANSI INCITS 378-2009/AM1 template.");
 		}
 		TemplateUtils.decodeTemplate(template, in -> {
-			in.skipBytes(magic.length);
+			in.skipBytes(MAGIC.length);
 			long length = 0xffff_ffffL & in.readInt();
 			ValidateTemplate.condition(length >= 21, "Total length must be at least 21 bytes.");
-			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), handler, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length <= MAGIC.length + 4 + in.available(), handler, "Total length indicates trimmed template.");
 			vendorId = in.readUnsignedShort();
 			subformat = in.readUnsignedShort();
 			int certification = in.readUnsignedByte();
@@ -134,7 +134,7 @@ public class Ansi378v2009Am1Template {
 	public byte[] toByteArray() {
 		validate();
 		TemplateWriter out = new TemplateWriter();
-		out.write(magic);
+		out.write(MAGIC);
 		out.writeInt(measure());
 		out.writeShort(vendorId);
 		out.writeShort(subformat);

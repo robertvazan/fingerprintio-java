@@ -13,7 +13,7 @@ import com.machinezoo.noexception.*;
  * @see <a href="https://templates.machinezoo.com/iso-19794-2-2005">ISO/IEC 19794-2:2005 Summary</a>
  */
 public class Iso19794p2v2005Template {
-	private static final byte[] magic = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
+	private static final byte[] MAGIC = new byte[] { 'F', 'M', 'R', 0, ' ', '2', '0', 0 };
 	/**
 	 * Checks whether provided template is an ISO/IEC 19794-2:2005 off-card template.
 	 * This method does not do any template validation or conformance checking.
@@ -25,12 +25,12 @@ public class Iso19794p2v2005Template {
 	 * @return {@code true} if {@code template} is an ISO/IEC 19794-2:2005 off-card template, {@code false} otherwise
 	 */
 	public static boolean accepts(byte[] template) {
-		if (template.length < magic.length + 4)
+		if (template.length < MAGIC.length + 4)
 			return false;
-		if (!Arrays.equals(magic, Arrays.copyOf(template, magic.length)))
+		if (!Arrays.equals(MAGIC, Arrays.copyOf(template, MAGIC.length)))
 			return false;
 		TemplateReader in = new TemplateReader(template);
-		in.skipBytes(magic.length);
+		in.skipBytes(MAGIC.length);
 		/*
 		 * Differentiate from ANSI 378 by examining the length field.
 		 */
@@ -141,10 +141,10 @@ public class Iso19794p2v2005Template {
 		if (!accepts(template))
 			throw new TemplateFormatException("This is not an ISO/IEC 19794-2:2005 off-card template.");
 		TemplateUtils.decodeTemplate(template, in -> {
-			in.skipBytes(magic.length);
+			in.skipBytes(MAGIC.length);
 			long length = 0xffff_ffffL & in.readInt();
 			ValidateTemplate.condition(length >= 24, "Total length must be at least 24 bytes.");
-			ValidateTemplate.condition(length <= magic.length + 4 + in.available(), handler, "Total length indicates trimmed template.");
+			ValidateTemplate.condition(length <= MAGIC.length + 4 + in.available(), handler, "Total length indicates trimmed template.");
 			sensorId = in.readUnsignedShort();
 			sensorCertified = (sensorId & 0x8000) != 0;
 			ValidateTemplate.condition((sensorId & 0x7000) == 0, handler, "Unrecognized sensor compliance bits.");
@@ -171,7 +171,7 @@ public class Iso19794p2v2005Template {
 	public byte[] toByteArray() {
 		validate();
 		TemplateWriter out = new TemplateWriter();
-		out.write(magic);
+		out.write(MAGIC);
 		out.writeInt(measure());
 		out.writeShort((sensorCertified ? 0x8000 : 0) | sensorId);
 		out.writeShort(width);
