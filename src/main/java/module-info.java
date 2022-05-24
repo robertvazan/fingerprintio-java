@@ -18,6 +18,9 @@ module com.machinezoo.fingerprintio {
 	exports com.machinezoo.fingerprintio.iso19794p1v2011;
 	exports com.machinezoo.fingerprintio.iso19794p2v2005;
 	exports com.machinezoo.fingerprintio.iso19794p2v2011;
+	/*
+	 * Transitive, because we expose ExceptionHandler in the API.
+	 */
 	requires transitive com.machinezoo.noexception;
 	requires com.machinezoo.stagean;
 }
