@@ -1,33 +1,26 @@
 # This script generates and updates project configuration files.
 
-# We are assuming that project-config is available in sibling directory.
-# Checkout from https://github.com/robertvazan/project-config
-import os.path
-import sys
-sys.path.append(os.path.normpath(os.path.join(__file__, '../../../project-config/src')))
+# Run this script with rvscaffold in PYTHONPATH
+import rvscaffold as scaffold
 
-from java import *
+class Project(scaffold.Java):
+    def script_path_text(self): return __file__
+    def repository_name(self): return 'fingerprintio-java'
+    def pretty_name(self): return 'FingerprintIO for Java'
+    def pom_name(self): return 'FingerprintIO'
+    def pom_description(self): return 'Implementation of fingerprint template formats published by ANSI and ISO.'
+    def inception_year(self): return 2019
+    def stagean_annotations(self): return True
+    
+    def dependencies(self):
+        yield from super().dependencies()
+        yield self.use_noexception()
+        yield self.use_junit()
+        yield self.use_commons_io('test')
+        yield self.use_jackson('test')
+    
+    def javadoc_links(self):
+        yield from super().javadoc_links()
+        yield 'https://noexception.machinezoo.com/javadoc/'
 
-project_script_path = __file__
-repository_name = lambda: 'fingerprintio-java'
-pretty_name = lambda: 'FingerprintIO for Java'
-pom_subgroup = lambda: 'fingerprintio'
-pom_artifact = lambda: 'fingerprintio'
-pom_name = lambda: 'FingerprintIO'
-pom_description = lambda: 'Implementation of fingerprint template formats published by ANSI and ISO.'
-inception_year = lambda: 2019
-jdk_version = lambda: 11
-stagean_annotations = lambda: True
-
-def dependencies():
-    use_noexception()
-    use_junit()
-    use_commons_io('test')
-    use_jackson('test')
-
-javadoc_links = lambda: [
-    *standard_javadoc_links(),
-    'https://noexception.machinezoo.com/javadoc/'
-]
-
-generate(globals())
+Project().generate()

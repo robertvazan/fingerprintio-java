@@ -14,7 +14,7 @@ More on [homepage](https://fingerprintio.machinezoo.com/).
 
 ## Status
 
-Stable and maintained. [Stagean](https://stagean.machinezoo.com/) is used to track progress on class and method level.
+Experimental. [Stagean](https://stagean.machinezoo.com/) is used to track progress on class and method level.
 
 ## Getting started
 
