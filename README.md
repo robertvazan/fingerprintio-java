@@ -3,7 +3,7 @@
 
 # FingerprintIO for Java
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.machinezoo.fingerprintio/fingerprintio)](https://search.maven.org/artifact/com.machinezoo.fingerprintio/fingerprintio)
+[![Maven Central](https://img.shields.io/maven-central/v/com.machinezoo.fingerprintio/fingerprintio)](https://central.sonatype.com/artifact/com.machinezoo.fingerprintio/fingerprintio)
 [![Build status](https://github.com/robertvazan/fingerprintio-java/workflows/build/badge.svg)](https://github.com/robertvazan/fingerprintio-java/actions/workflows/build.yml)
 [![Test coverage](https://codecov.io/gh/robertvazan/fingerprintio-java/branch/master/graph/badge.svg)](https://codecov.io/gh/robertvazan/fingerprintio-java)
 
