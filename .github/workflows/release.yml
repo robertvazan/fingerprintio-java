@@ -10,7 +10,7 @@ jobs:
         with:
           distribution: temurin
           java-version: 11
-          server-id: ossrh
+          server-id: central
           server-username: MAVEN_SERVER_USERNAME
           server-password: MAVEN_SERVER_PASSWORD
           gpg-private-key: ${{ secrets.MAVEN_SIGNING_KEY }}
@@ -20,6 +20,6 @@ jobs:
         # Printing maven version (-V) helps diagnose GitHub-specific build behavior.
         run: mvn -B -V deploy
         env:
-          MAVEN_SERVER_USERNAME: robertvazan
+          MAVEN_SERVER_USERNAME: ${{ secrets.MAVEN_SERVER_USERNAME }}
           MAVEN_SERVER_PASSWORD: ${{ secrets.MAVEN_SERVER_PASSWORD }}
           MAVEN_SIGNING_PASSWORD: ${{ secrets.MAVEN_SIGNING_PASSWORD }}
